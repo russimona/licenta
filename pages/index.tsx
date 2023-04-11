@@ -1,22 +1,19 @@
-import { insertTest } from '@/services/testInsert'
-import Head from 'next/head'
-import { useEffect } from 'react'
-
-
-
+import { getTest } from "@/redux/testSlice/slice";
+import { useAppDispatch } from "@/core/store";
+import Head from "next/head";
+import { useEffect } from "react";
 
 export default function Home() {
+  const data = {
+    email: "string",
+  };
 
-  const data ={
-    email : "test@test.com",
-    testText : "test123"
-  }
+  const dispatch = useAppDispatch();
 
-  useEffect(()=>{
-    insertTest(data)
-    console.log("insert");
-    
-  },[])
+  useEffect(() => {
+    dispatch(getTest(data));
+  }, []);
+
   return (
     <>
       <Head>
@@ -25,9 +22,8 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
-        Apuca-te de Treaba Simona!!
-      </div>
+      <div>Apuca-te de Treaba Simona!!</div>
+      <div>OKKK!!</div>
     </>
-  )
+  );
 }

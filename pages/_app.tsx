@@ -1,7 +1,31 @@
+// import "../styles/globals.css";
+import type { AppProps } from "next/app";
+import { Provider } from "react-redux";
+import { store } from "@/core/store";
+// import { CacheProvider } from "@emotion/react";
+import { ThemeProvider } from "@mui/material";
+// import { theme } from "../core/theme/theme";
+// import { AuthContextProvider } from "../features/authentication/components/authContext/AuthContext";
+// import "./app.css";
+import createCache from "@emotion/cache";
 
-import type { AppProps } from 'next/app'
+export const muiCache = createCache({
+  key: "mui",
+  prepend: true,
+});
 
-
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <Provider store={store}>
+      {/* <CacheProvider value={muiCache}> */}
+      {/* <ThemeProvider theme={theme}> */}
+      {/* <AuthContextProvider> */}
+      <Component {...pageProps} />
+      {/* </AuthContextProvider> */}
+      {/* </ThemeProvider> */}
+      {/* </CacheProvider> */}
+    </Provider>
+  );
 }
+
+export default MyApp;

@@ -1,18 +1,19 @@
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/core/firebaseApp";
+import { ITestData } from "@/utils/interface";
 
-export interface TestData {
-  email: string;
-  testText: string;
-}
 
-export const insertTest = async (data: TestData) => {
+export const insertTest = async (data: ITestData) => {
+  
+  console.log(data);
   try {
     return await addDoc(collection(db, "Test"), {
       ...data,
-      date: new Date(),
     });
   } catch (e) {
+    console.log(e);
     return e;
   }
 };
+
+

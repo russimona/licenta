@@ -1,14 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
+import { testDataReducer } from "../redux/testSlice/slice";
 
 export const store = configureStore({
   reducer: {
+    test : testDataReducer
     // logIn: loginReducer,
   },
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware({
-//       serializableCheck: false,
-//     }),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware({
+  //     serializableCheck: false,
+  //   }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
