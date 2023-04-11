@@ -1,9 +1,22 @@
+import { insertTest } from '@/services/testInsert'
 import Head from 'next/head'
+import { useEffect } from 'react'
 
 
 
 
 export default function Home() {
+
+  const data ={
+    email : "test@test.com",
+    testText : "test123"
+  }
+
+  useEffect(()=>{
+    insertTest(data)
+    console.log("insert");
+    
+  },[])
   return (
     <>
       <Head>
