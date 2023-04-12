@@ -10,9 +10,9 @@ export default function Home() {
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(getTest(data));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getTest(data));
+  // }, []);
 
   return (
     <>
