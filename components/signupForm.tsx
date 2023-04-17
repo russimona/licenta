@@ -12,6 +12,10 @@ import { STRINGS } from "@/utils/strings";
 import { Colors } from "@/utils/colors";
 import GoogleIcon from "@mui/icons-material/Google";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { useRouter } from "next/router";
+import { ROUTES } from "@/utils/routes";
+import { useAppDispatch } from "@/core/store";
+import { signUpUser } from "@/redux/signUp/slice";
 
 export const SignUpForm = () => {
   const { classes } = useStyles();
@@ -21,37 +25,74 @@ export const SignUpForm = () => {
   const [passwordRepeated, setPasswordRepeated] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
+  const router = useRouter();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log(email, password, errorSignUp);
-  }, [email, password, errorSignUp]);
+    // console.log(
+    //   email,
+    //   password,
+    //   passwordRepeated,
+    //   firstName,
+    //   lastName,
+    //   errorSignUp
+    // );
+  }, [email, password, passwordRepeated, firstName, lastName, errorSignUp]);
 
   const checkEmail = () => {
-    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email) &&
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
       setErrorSignUp(true);
+      return false;
+    }
+    return true;
   };
 
   const checkPassword = () => {
-    password.length < 8 &&
-      passwordRepeated.length < 8 &&
-      passwordRepeated !== password &&
+    if (
+      password.length < 8 ||
+      passwordRepeated.length < 8 ||
+      passwordRepeated !== password
+    ) {
       setErrorSignUp(true);
+      return false;
+    }
+    return true;
   };
 
   const checkName = () => {
-    firstName.length !== 0 && lastName.length !== 0 && setErrorSignUp(true);
+    if (firstName.length === 0 || lastName.length === 0) {
+      setErrorSignUp(true);
+      return false;
+    }
+    return true;
   };
 
-  const submitLogin = () => {
-    checkEmail();
-    checkPassword();
-    checkName();
+  const submitSignUp = () => {
+    if ((checkEmail(), checkPassword(), checkName())) {
+      dispatch(signUpUser({ email, firstName, lastName, password })).then(
+        () => {
+          router.push(ROUTES.LOGIN);
+        }
+      );
+    }
+  };
+
+  const loginHandler = () => {
+    router.push(ROUTES.LOGIN);
   };
 
   return (
     <Box className={classes.box}>
       <Box className={classes.form}>
         <Typography className={classes.title}>{STRINGS.SIGN_UP}</Typography>
+        <Typography className={classes.dontHaveAccount}>
+          {STRINGS.ALREADY_HAVE_ACCOUNT} {STRINGS.GO_TO}
+          <span className={classes.login} onClick={loginHandler}>
+            {" "}
+            {STRINGS.LOGIN.toLocaleLowerCase()}{" "}
+          </span>
+          {STRINGS.PAGE}
+        </Typography>
         <Typography>{STRINGS.EMAIL}</Typography>
         <div className={classes.input}>
           <TextField
@@ -126,7 +167,16 @@ export const SignUpForm = () => {
         {errorSignUp && (
           <Alert severity="error">{STRINGS.SIGN_UP_FAILED}</Alert>
         )}
-        <Button onClick={submitLogin}>{STRINGS.SIGN_UP}</Button>
+        <Button onClick={submitSignUp}>{STRINGS.SIGN_UP}</Button>
+        <div className={classes.orBox}>
+          <div className={classes.line} />
+          <Typography>{STRINGS.OR}</Typography>
+          <div className={classes.line} />
+        </div>
+        <Button className={classes.googleLoginButton}>
+          <GoogleIcon />
+          {STRINGS.LOGIN_GOOGLE}
+        </Button>
       </Box>
     </Box>
   );
@@ -135,10 +185,12 @@ export const SignUpForm = () => {
 const useStyles = makeStyles()((theme) => ({
   box: {
     background: `linear-gradient(300deg, ${theme.palette.common.white} 10%, ${theme.palette.primary.main} 70%, ${theme.palette.common.black} 100%)`,
-    height: "100vh",
+    height: "fit-content",
+    minHeight: "100vh",
     width: "100%",
     display: "flex",
     flexDirection: "row",
+    padding: "50px",
   },
   form: {
     background: theme.palette.common.white,
@@ -153,7 +205,7 @@ const useStyles = makeStyles()((theme) => ({
     padding: "30px",
   },
   title: {
-    fontSize: "36px",
+    fontSize: "32px",
     textAlign: "center",
   },
   line: {
@@ -166,13 +218,9 @@ const useStyles = makeStyles()((theme) => ({
     justifyContent: "center",
     flexDirection: "row",
     columnGap: "10px",
-    margin: "0px",
+    margin: "-5px",
   },
-  forgotPassword: {
-    cursor: "pointer",
-    textDecoration: "underline",
-    color: Colors.gray,
-  },
+
   googleLoginButton: {
     display: "flex",
     flexDirection: "row",
@@ -192,13 +240,12 @@ const useStyles = makeStyles()((theme) => ({
   snackbar: {
     background: theme.palette.error.main,
   },
-
   dontHaveAccount: {
     marginBottom: "50px",
     color: Colors.black,
     margin: "auto",
   },
-  signUP: {
+  login: {
     textDecoration: "underline",
     cursor: "pointer",
     fontWeight: "700",

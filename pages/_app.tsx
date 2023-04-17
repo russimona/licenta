@@ -1,3 +1,4 @@
+import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { store } from "@/core/store";
@@ -5,6 +6,7 @@ import { CacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "@/core/theme";
 import createCache from "@emotion/cache";
+import "./app.css";
 
 export const muiCache = createCache({
   key: "mui",

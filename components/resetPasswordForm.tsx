@@ -3,18 +3,17 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { STRINGS } from "@/utils/strings";
 import { Colors } from "@/utils/colors";
-import GoogleIcon from "@mui/icons-material/Google";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/utils/routes";
 import { useAppDispatch } from "@/core/store";
-import { logInUser } from "@/redux/loginSlice/slice";
+import { resetPasswordUser } from "@/redux/forgotPassword/slice";
 
-export const LoginForm = () => {
+export const ResetPassword = () => {
   const { classes } = useStyles();
   const [errorLogin, setErrorLogin] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -26,41 +25,32 @@ export const LoginForm = () => {
     return true;
   };
 
-  const checkPassword = () => {
-    if (password.length < 8) {
-      setErrorLogin(true);
-      return false;
-    }
-    return true;
-  };
-
   const submitLogin = () => {
-    if (checkEmail() && checkPassword()) {
-      dispatch(logInUser({ email, password })).then(() => {
-        router.push(ROUTES.HOME);
-      });
+    if (checkEmail()) {
+      dispatch(resetPasswordUser({ email }));
     }
   };
 
-  const signUpHandler = () => {
-    router.push(ROUTES.SIGN_UP);
-  };
-
-  const forgotPasswordHandler = () => {
-    router.push(ROUTES.FORGOT_PASSWORD);
+  const loginHandler = () => {
+    router.push(ROUTES.LOGIN);
   };
 
   return (
     <Box className={classes.box}>
-      <Box className={classes.info}></Box>
       <Box className={classes.form}>
-        <Typography className={classes.title}>{STRINGS.LOGIN}</Typography>
-        <Typography>{STRINGS.EMAIL}</Typography>
+        <Typography className={classes.title}>
+          {STRINGS.FORGOT_YOUR_PASSWORD}
+        </Typography>
+        <Typography className={classes.subtitle}>
+          {
+            STRINGS.PLEASE_ENTER_YOUR_EMAIL_ADDRESS_YOU_LIKE_YOUR_PASSWORD_INFORMATION_SEND_TO
+          }
+        </Typography>
         <div className={classes.input}>
           <TextField
             error={errorLogin}
             variant="standard"
-            placeholder={STRINGS.EMAIL.toLocaleLowerCase()}
+            placeholder={STRINGS.EMAIL}
             onChange={(event) => {
               setErrorLogin(false);
               setEmail(event.target.value);
@@ -68,44 +58,13 @@ export const LoginForm = () => {
           />
           {errorLogin && <ErrorOutlineIcon className={classes.error} />}
         </div>
-
-        <Typography>{STRINGS.PASSWORD}</Typography>
-        <div className={classes.input}>
-          <TextField
-            error={errorLogin}
-            placeholder={STRINGS.PASSWORD.toLocaleLowerCase()}
-            variant="standard"
-            type="password"
-            onChange={(event) => {
-              setErrorLogin(false);
-              setPassword(event.target.value);
-            }}
-          />
-          {errorLogin && <ErrorOutlineIcon className={classes.error} />}
-        </div>
-        {errorLogin && <Alert severity="error">{STRINGS.LOGIN_FAILED}</Alert>}
-        <Typography
-          className={classes.forgotPassword}
-          onClick={forgotPasswordHandler}
-        >
-          {STRINGS.FORGOT_PASSWORD_QUESTION}
-        </Typography>
-        <Button onClick={submitLogin}>{STRINGS.LOGIN}</Button>
-        <div className={classes.orBox}>
-          <div className={classes.line} />
-          <Typography>{STRINGS.OR}</Typography>
-          <div className={classes.line} />
-        </div>
-        <Button className={classes.googleLoginButton}>
-          <GoogleIcon />
-          {STRINGS.LOGIN_GOOGLE}
-        </Button>
-        <Typography className={classes.dontHaveAccount}>
-          {STRINGS.DONT_HAVE_ACCOUNT}{" "}
-          <span className={classes.signUP} onClick={signUpHandler}>
-            {STRINGS.SIGN_UP}{" "}
-          </span>
-          {STRINGS.NOW}
+        {errorLogin && (
+          <Alert severity="error">{STRINGS.ENTER_VALID_EMAIL}</Alert>
+        )}
+        <Button onClick={submitLogin}>{STRINGS.RESET_PASSWORD}</Button>
+        <Typography className={classes.login} onClick={loginHandler}>
+          <ArrowBackIosIcon className={classes.backIcon} />
+          {STRINGS.BACK_TO_LOGIN}
         </Typography>
       </Box>
     </Box>
@@ -141,6 +100,9 @@ const useStyles = makeStyles()((theme) => ({
     fontSize: "32px",
     textAlign: "center",
   },
+  subtitle: {
+    color: Colors.darkBlue,
+  },
   line: {
     borderTop: `1px solid ${Colors.gray}`,
     width: "40%",
@@ -152,16 +114,6 @@ const useStyles = makeStyles()((theme) => ({
     flexDirection: "row",
     columnGap: "10px",
     margin: "0px",
-  },
-  forgotPassword: {
-    cursor: "pointer",
-    textDecoration: "underline",
-    color: Colors.gray,
-  },
-  googleLoginButton: {
-    display: "flex",
-    flexDirection: "row",
-    columnGap: "10px",
   },
   error: {
     color: theme.palette.error.main,
@@ -177,14 +129,14 @@ const useStyles = makeStyles()((theme) => ({
   snackbar: {
     background: theme.palette.error.main,
   },
-  dontHaveAccount: {
-    marginBottom: "50px",
-    color: Colors.black,
-    margin: "auto",
-  },
-  signUP: {
+  login: {
     textDecoration: "underline",
     cursor: "pointer",
     fontWeight: "700",
+    color: Colors.gray,
+  },
+  backIcon: {
+    height: "10px",
+    width: "10px",
   },
 }));
