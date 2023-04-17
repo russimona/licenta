@@ -7,7 +7,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/utils/routes";
-import { useAppDispatch, useAppSelector } from "@/core/store";
+import { useAppDispatch } from "@/core/store";
 import { logInUser } from "@/redux/loginSlice/slice";
 import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
 

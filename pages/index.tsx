@@ -1,3 +1,4 @@
+import { Navbar } from "@/components/Navbar";
 import { useAppDispatch, useAppSelector } from "@/core/store";
 import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
 import Head from "next/head";
@@ -27,6 +28,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Navbar />
       <div>Apuca-te de Treaba Simona!!</div>
       <div>OKKK!!</div>
     </>

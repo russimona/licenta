@@ -23,5 +23,10 @@ RESET_PASSWORD:"Reset password",
 BACK_TO_LOGIN:"Back to login",
 PLEASE_ENTER_YOUR_EMAIL_ADDRESS_YOU_LIKE_YOUR_PASSWORD_INFORMATION_SEND_TO:"Please enter the email address you'd like your password resend information send to.",
 GENERIC_ERROR_MESSAGE:"Error",
-ENTER_VALID_EMAIL: "Please enter a valid email."
+ENTER_VALID_EMAIL: "Please enter a valid email.",
+ACCOUNT:"Account",
+PROFILE: "Profile",
+SETTINGS:"Settings",
+LOG_OUT:"Log out"
+
 }

@@ -15,13 +15,16 @@ const initialState = {
   },
 };
 
-export const getLoggedUserData = createAsyncThunk("getAllEvents", async () => {
-  try {
-    return getLoggedUserInfo();
-  } catch (e) {
-    throw new Error(e as string);
+export const getLoggedUserData = createAsyncThunk(
+  "getLoggedUserData",
+  async () => {
+    try {
+      return getLoggedUserInfo();
+    } catch (e) {
+      throw new Error(e as string);
+    }
   }
-});
+);
 
 const loggedUserData = createSlice({
   name: "loggedUserData",
