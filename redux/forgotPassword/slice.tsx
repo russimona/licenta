@@ -1,8 +1,7 @@
-import { ILoginData, IResetPasswordData } from "@/utils/interface";
+import { IResetPasswordData } from "@/utils/interface";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 import { STRINGS } from "@/utils/strings";
-import { logIn } from "@/services/logIn";
 import { resetPassword } from "@/services/forgotPassword";
 
 const initialState = {

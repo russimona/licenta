@@ -1,5 +1,5 @@
-import { getTest } from "@/redux/testSlice/slice";
-import { useAppDispatch } from "@/core/store";
+import { useAppDispatch, useAppSelector } from "@/core/store";
+import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
 import Head from "next/head";
 import { useEffect } from "react";
 
@@ -10,9 +10,14 @@ export default function Home() {
 
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   dispatch(getTest(data));
-  // }, []);
+  useEffect(() => {
+    dispatch(getLoggedUserData());
+  }, [dispatch]);
+  const user = useAppSelector((state) => state.loggedUser.user);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   return (
     <>

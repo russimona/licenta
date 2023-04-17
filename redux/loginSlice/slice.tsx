@@ -10,7 +10,7 @@ const initialState = {
 };
 
 export const logInUser = createAsyncThunk(
-  "getAllEvents",
+  "loginUser",
   async (props: ILoginData) => {
     try {
       logIn(props);

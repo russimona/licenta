@@ -1,5 +1,5 @@
 import { Alert, Box, Button, TextField, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { STRINGS } from "@/utils/strings";
 import { Colors } from "@/utils/colors";
@@ -7,8 +7,9 @@ import GoogleIcon from "@mui/icons-material/Google";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/utils/routes";
-import { useAppDispatch } from "@/core/store";
+import { useAppDispatch, useAppSelector } from "@/core/store";
 import { logInUser } from "@/redux/loginSlice/slice";
+import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
 
 export const LoginForm = () => {
   const { classes } = useStyles();
@@ -37,7 +38,10 @@ export const LoginForm = () => {
   const submitLogin = () => {
     if (checkEmail() && checkPassword()) {
       dispatch(logInUser({ email, password })).then(() => {
-        router.push(ROUTES.HOME);
+        if (sessionStorage.getItem("authToken")) {
+          dispatch(getLoggedUserData());
+          router.push(ROUTES.HOME);
+        } else setErrorLogin(true);
       });
     }
   };

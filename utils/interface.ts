@@ -1,6 +1,3 @@
-export interface ITestData {
-    email: string;
-};
 
 export interface ILoginData {
   email: string;
@@ -17,5 +14,13 @@ export interface ISignUpData {
 
 export interface IResetPasswordData {
   email : string
+}
+
+export interface ILoggedUserData {
+  uid: string;
+  email : string;
+  firstName: string;
+  lastName : string;
+  firstTimeEntering : boolean;
 }
   

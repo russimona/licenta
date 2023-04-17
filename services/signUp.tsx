@@ -1,7 +1,7 @@
 import { db } from "@/core/firebaseApp";
 import { ISignUpData } from "@/utils/interface";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 export const signUp = async (props: ISignUpData) => {
   const auth = getAuth();
   createUserWithEmailAndPassword(auth, props.email, props.password)
@@ -10,6 +10,7 @@ export const signUp = async (props: ISignUpData) => {
       setDoc(doc(db, "Users", userCredential.user.uid), {
         ...props,
         createdOn: new Date(),
+        firstTimeEntering: true,
       });
     })
     .catch((error) => {

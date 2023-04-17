@@ -1,5 +1,5 @@
 import { Alert, Box, Button, TextField, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { STRINGS } from "@/utils/strings";
 import { Colors } from "@/utils/colors";

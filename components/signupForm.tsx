@@ -1,12 +1,5 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Snackbar,
-  TextField,
-  Typography,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Alert, Box, Button, TextField, Typography } from "@mui/material";
+import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { STRINGS } from "@/utils/strings";
 import { Colors } from "@/utils/colors";
@@ -27,17 +20,6 @@ export const SignUpForm = () => {
   const [lastName, setLastName] = useState<string>("");
   const router = useRouter();
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    // console.log(
-    //   email,
-    //   password,
-    //   passwordRepeated,
-    //   firstName,
-    //   lastName,
-    //   errorSignUp
-    // );
-  }, [email, password, passwordRepeated, firstName, lastName, errorSignUp]);
 
   const checkEmail = () => {
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
