@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/Navbar";
+import { Navbar } from "@/components/Navbar/navbar";
 import { useAppDispatch, useAppSelector } from "@/core/store";
 import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
 import Head from "next/head";

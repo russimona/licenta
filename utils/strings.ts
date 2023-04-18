@@ -27,6 +27,11 @@ ENTER_VALID_EMAIL: "Please enter a valid email.",
 ACCOUNT:"Account",
 PROFILE: "Profile",
 SETTINGS:"Settings",
-LOG_OUT:"Log out"
+LOG_OUT:"Log out",
+FOR_TEAM:"For team",
+PROJECTS:"Projects",
+FREE_DAYS:"Free days",
+BOOK_DESK:"Book a desk",
+BOOK_PARKING:"Book parking lot",
 
 }
