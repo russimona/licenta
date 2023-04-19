@@ -5,7 +5,6 @@ import { doc, updateDoc } from "firebase/firestore";
 
 export const logIn = async (props: ILoginData) => {
   const auth = getAuth();
-
   return signInWithEmailAndPassword(auth, props.email, props.password)
     .then(async (userCredential) => {
       const loggedUserRef = doc(db, "Users", userCredential.user.uid);
@@ -13,6 +12,7 @@ export const logIn = async (props: ILoginData) => {
         firstTimeEntering: false,
       });
       const user = userCredential.user;
+
       sessionStorage.setItem("authToken", user.uid);
     })
     .catch((error) => {

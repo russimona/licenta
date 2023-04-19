@@ -1,5 +1,12 @@
-import { Alert, Box, Button, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import {
+  Alert,
+  Avatar,
+  Box,
+  Button,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { STRINGS } from "@/utils/strings";
 import { Colors } from "@/utils/colors";
@@ -7,9 +14,10 @@ import GoogleIcon from "@mui/icons-material/Google";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/utils/routes";
-import { useAppDispatch } from "@/core/store";
+import { useAppDispatch, useAppSelector } from "@/core/store";
 import { logInUser } from "@/redux/loginSlice/slice";
-import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
+import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
+import { auth } from "@/core/firebaseApp";
 
 export const LoginForm = () => {
   const { classes } = useStyles();
@@ -18,6 +26,7 @@ export const LoginForm = () => {
   const [password, setPassword] = useState<string>("");
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const routes = useRouter();
 
   const checkEmail = () => {
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
@@ -37,12 +46,7 @@ export const LoginForm = () => {
 
   const submitLogin = () => {
     if (checkEmail() && checkPassword()) {
-      dispatch(logInUser({ email, password })).then(() => {
-        if (sessionStorage.getItem("authToken")) {
-          dispatch(getLoggedUserData());
-          router.push(ROUTES.HOME);
-        } else setErrorLogin(true);
-      });
+      dispatch(logInUser({ email, password }));
     }
   };
 
@@ -56,7 +60,12 @@ export const LoginForm = () => {
 
   return (
     <Box className={classes.box}>
-      <Box className={classes.info}></Box>
+      <Box className={classes.info}>
+        <Avatar src="weLogo.png" className={classes.avatar} />
+        <Typography className={classes.description}>
+          {STRINGS.EFFORTLESSLY_MANAGE_YOUR_TASKS}
+        </Typography>
+      </Box>
       <Box className={classes.form}>
         <Typography className={classes.title}>{STRINGS.LOGIN}</Typography>
         <Typography>{STRINGS.EMAIL}</Typography>
@@ -190,5 +199,21 @@ const useStyles = makeStyles()((theme) => ({
     textDecoration: "underline",
     cursor: "pointer",
     fontWeight: "700",
+  },
+  avatar: {
+    height: "100px",
+    width: "200px",
+    marginBottom: "0px",
+    marginTop: "0px",
+  },
+  description: {
+    width: "40vw",
+    textAlign: "center",
+    color: theme.palette.common.white,
+    fontSize: "52px",
+    margin: "auto",
+    marginTop: "30vh",
+    textShadow: `5px 10px ${theme.palette.primary.dark}`,
+    fontWeight: "bolder",
   },
 }));

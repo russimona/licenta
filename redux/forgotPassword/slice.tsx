@@ -15,7 +15,6 @@ export const resetPasswordUser = createAsyncThunk(
     try {
       resetPassword(props);
     } catch (e) {
-      console.log(e);
       throw new Error(e as string);
     }
   }

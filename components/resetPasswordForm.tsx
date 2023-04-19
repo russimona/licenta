@@ -1,4 +1,11 @@
-import { Alert, Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Avatar,
+  Box,
+  Button,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { STRINGS } from "@/utils/strings";
@@ -37,6 +44,7 @@ export const ResetPassword = () => {
 
   return (
     <Box className={classes.box}>
+      <Avatar src="weLogo.png" className={classes.avatar} />
       <Box className={classes.form}>
         <Typography className={classes.title}>
           {STRINGS.FORGOT_YOUR_PASSWORD}
@@ -138,5 +146,12 @@ const useStyles = makeStyles()((theme) => ({
   backIcon: {
     height: "10px",
     width: "10px",
+  },
+  avatar: {
+    height: "100px",
+    width: "200px",
+    marginBottom: "0px",
+    marginTop: "0px",
+    position: "absolute",
   },
 }));

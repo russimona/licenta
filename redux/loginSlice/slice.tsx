@@ -28,8 +28,11 @@ const logInUserData = createSlice({
     builder.addCase(logInUser.pending, (state) => {
       state.status = ReduxThunkStatuses.PENDING;
     });
-    builder.addCase(logInUser.fulfilled, (state) => {
+    builder.addCase(logInUser.fulfilled, (state, action) => {
       state.status = ReduxThunkStatuses.FULFILLED;
+      window.sessionStorage.getItem("authToken")
+        ? (state.error = "")
+        : (state.error = "No user found");
     });
     builder.addCase(logInUser.rejected, (state, { error }) => {
       state.error = error.message || STRINGS.GENERIC_ERROR_MESSAGE;
@@ -38,5 +41,5 @@ const logInUserData = createSlice({
   },
 });
 
-export const predictionDataActions = logInUserData.actions;
-export const predictionDataReducer = logInUserData.reducer;
+export const logInUserDataActions = logInUserData.actions;
+export const logInUserDataReducer = logInUserData.reducer;

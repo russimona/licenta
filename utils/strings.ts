@@ -33,5 +33,6 @@ PROJECTS:"Projects",
 FREE_DAYS:"Free days",
 BOOK_DESK:"Book a desk",
 BOOK_PARKING:"Book parking lot",
+EFFORTLESSLY_MANAGE_YOUR_TASKS:"Streamline your work, simplify your life"
 
 }

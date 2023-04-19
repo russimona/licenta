@@ -1,4 +1,11 @@
-import { Alert, Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Avatar,
+  Box,
+  Button,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { STRINGS } from "@/utils/strings";
@@ -65,6 +72,7 @@ export const SignUpForm = () => {
 
   return (
     <Box className={classes.box}>
+      <Avatar src="weLogo.png" className={classes.avatar} />
       <Box className={classes.form}>
         <Typography className={classes.title}>{STRINGS.SIGN_UP}</Typography>
         <Typography className={classes.dontHaveAccount}>
@@ -172,7 +180,6 @@ const useStyles = makeStyles()((theme) => ({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    padding: "50px",
   },
   form: {
     background: theme.palette.common.white,
@@ -185,6 +192,8 @@ const useStyles = makeStyles()((theme) => ({
     rowGap: "20px",
     boxShadow: `2px 2px 10px 0px ${theme.palette.common.black}`,
     padding: "30px",
+    marginTop: "50px",
+    marginBottom: "50px",
   },
   title: {
     fontSize: "32px",
@@ -231,5 +240,12 @@ const useStyles = makeStyles()((theme) => ({
     textDecoration: "underline",
     cursor: "pointer",
     fontWeight: "700",
+  },
+  avatar: {
+    height: "100px",
+    width: "200px",
+    marginBottom: "0px",
+    marginTop: "0px",
+    position: "absolute",
   },
 }));

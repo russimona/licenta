@@ -1,11 +1,12 @@
 import { loggedUserDataReducer } from "@/redux/getLoggedUser/slice";
+import { logInUserDataReducer } from "@/redux/loginSlice/slice";
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 
 export const store = configureStore({
   reducer: {
-    loggedUser : loggedUserDataReducer
-    // logIn: loginReducer,
+    loggedUser : loggedUserDataReducer,
+    logIn: logInUserDataReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
   middleware: (getDefaultMiddleware) =>

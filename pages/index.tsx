@@ -1,24 +1,12 @@
 import { Navbar } from "@/components/Navbar/navbar";
-import { useAppDispatch, useAppSelector } from "@/core/store";
-import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
 import Head from "next/head";
-import { useEffect } from "react";
 
 export default function Home() {
-  const data = {
-    email: "string",
-  };
+  // const dispatch = useAppDispatch();
 
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getLoggedUserData());
-  }, [dispatch]);
-  const user = useAppSelector((state) => state.loggedUser.user);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+  // useEffect(() => {
+  //   dispatch(getLoggedUserData());
+  // }, [dispatch]);
 
   return (
     <>
