@@ -15,9 +15,12 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/utils/routes";
 import { useAppDispatch, useAppSelector } from "@/core/store";
-import { logInUser } from "@/redux/loginSlice/slice";
+import { auth, googleProvider } from "@/core/firebaseApp";
+import { signInWithPopup } from "firebase/auth";
+import { sendUserData } from "@/services/sendUserData";
+import { getLoggedUser } from "@/redux/signUp/slice";
+import { logIn } from "@/redux/loginSlice/slice";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
-import { auth } from "@/core/firebaseApp";
 
 export const LoginForm = () => {
   const { classes } = useStyles();
@@ -27,6 +30,7 @@ export const LoginForm = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const routes = useRouter();
+  const fetchError = useAppSelector((state) => state.logIn.status);
 
   const checkEmail = () => {
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
@@ -35,6 +39,16 @@ export const LoginForm = () => {
     }
     return true;
   };
+
+  useEffect(() => {
+    if (fetchError === ReduxThunkStatuses.REJECTED) {
+      setErrorLogin(true);
+    }
+    if (fetchError === ReduxThunkStatuses.FULFILLED) {
+      router.push(ROUTES.HOME);
+      setErrorLogin(false);
+    }
+  }, [fetchError, router]);
 
   const checkPassword = () => {
     if (password.length < 8) {
@@ -46,7 +60,7 @@ export const LoginForm = () => {
 
   const submitLogin = () => {
     if (checkEmail() && checkPassword()) {
-      dispatch(logInUser({ email, password }));
+      dispatch(logIn({ email, password }));
     }
   };
 
@@ -56,6 +70,31 @@ export const LoginForm = () => {
 
   const forgotPasswordHandler = () => {
     router.push(ROUTES.FORGOT_PASSWORD);
+  };
+
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const user = result.user;
+        sessionStorage.setItem("authToken", result.user.uid);
+        const userData = {
+          email: user.email || "",
+          firstName: user.displayName?.split(" ")[0] || "",
+          lastName: user.displayName?.split(" ")[1] || "",
+          uid: user.uid,
+        };
+        sendUserData(user.uid, {
+          firstName: userData.firstName ?? "",
+          lastName: userData.lastName ?? "",
+          email: userData.email,
+          password: "",
+        });
+        dispatch(getLoggedUser());
+        router.push(ROUTES.HOME);
+      })
+      .catch((error) => {
+        throw new Error(error as string);
+      });
   };
 
   return (
@@ -109,7 +148,10 @@ export const LoginForm = () => {
           <Typography>{STRINGS.OR}</Typography>
           <div className={classes.line} />
         </div>
-        <Button className={classes.googleLoginButton}>
+        <Button
+          className={classes.googleLoginButton}
+          onClick={signInWithGoogle}
+        >
           <GoogleIcon />
           {STRINGS.LOGIN_GOOGLE}
         </Button>

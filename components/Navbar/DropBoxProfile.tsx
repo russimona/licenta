@@ -7,16 +7,18 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { STRINGS } from "@/utils/strings";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import Link from "next/link";
 import { ROUTES } from "@/utils/routes";
-import { auth } from "@/core/firebaseApp";
 import { useRouter } from "next/router";
+import { useAppDispatch } from "@/core/store";
+import { logOut } from "@/redux/signUp/slice";
+import { logInActions, logInAnonymously } from "@/redux/loginSlice/slice";
 
 export const ProfileItemDropBox = () => {
   const { classes } = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,10 +26,11 @@ export const ProfileItemDropBox = () => {
     setAnchorEl(null);
   };
 
-  const logOut = () => {
+  const logOutHandler = () => {
+    dispatch(logOut());
+    dispatch(logInAnonymously());
+    dispatch(logInActions.reset());
     setAnchorEl(null);
-    auth.signOut();
-    window?.sessionStorage?.removeItem("authToken");
     router.push(ROUTES.LOGIN);
   };
 
@@ -51,7 +54,7 @@ export const ProfileItemDropBox = () => {
           {STRINGS.SETTINGS}
           <SettingsIcon className={classes.icons} />
         </MenuItem>
-        <MenuItem onClick={logOut}>
+        <MenuItem onClick={logOutHandler}>
           {STRINGS.LOG_OUT}
           <LogoutIcon className={classes.icons} />
         </MenuItem>
