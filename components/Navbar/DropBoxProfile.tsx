@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { useAppDispatch } from "@/core/store";
 import { logOut } from "@/redux/signUp/slice";
 import { logInActions, logInAnonymously } from "@/redux/loginSlice/slice";
+import Link from "next/link";
 
 export const ProfileItemDropBox = () => {
   const { classes } = useStyles();
@@ -46,14 +47,18 @@ export const ProfileItemDropBox = () => {
         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem onClick={handleClose}>
-          {STRINGS.PROFILE}
-          <AccountCircleSharpIcon className={classes.icons} />
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          {STRINGS.SETTINGS}
-          <SettingsIcon className={classes.icons} />
-        </MenuItem>
+        <Link href={ROUTES.PROFILE}>
+          <MenuItem onClick={handleClose}>
+            {STRINGS.PROFILE}
+            <AccountCircleSharpIcon className={classes.icons} />
+          </MenuItem>
+        </Link>
+        <Link href={ROUTES.SETTINGS}>
+          <MenuItem onClick={handleClose}>
+            {STRINGS.SETTINGS}
+            <SettingsIcon className={classes.icons} />
+          </MenuItem>
+        </Link>
         <MenuItem onClick={logOutHandler}>
           {STRINGS.LOG_OUT}
           <LogoutIcon className={classes.icons} />

@@ -53,6 +53,7 @@ export const theme: Theme = createTheme({
     secondary: {
       main: Colors.background,
       contrastText: Colors.darkYellow,
+      light: Colors.backfroundGray,
     },
     error: {
       main: Colors.lightRed,

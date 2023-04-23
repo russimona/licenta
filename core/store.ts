@@ -1,12 +1,12 @@
-import { loggedUserDataReducer } from "@/redux/getLoggedUser/slice";
+
 import { loginReducer } from "@/redux/loginSlice/slice";
-import { logOutReducer } from "@/redux/signUp/slice";
+import { getLoggedUserReducer, logOutReducer } from "@/redux/signUp/slice";
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 
 export const store = configureStore({
   reducer: {
-    loggedUser : loggedUserDataReducer,
+    loggedUser : getLoggedUserReducer,
     logIn: loginReducer,
     signOut: logOutReducer,
   },

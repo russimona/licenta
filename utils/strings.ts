@@ -35,6 +35,9 @@ BOOK_DESK:"Book a desk",
 BOOK_PARKING:"Book parking lot",
 EFFORTLESSLY_MANAGE_YOUR_TASKS:"Streamline your work, simplify your life",
 DOCUMENT_NOT_FOUND :"Document not found.",
-GENERIG_ERROR_MESSAGE:"Error."
+GENERIG_ERROR_MESSAGE:"Error.",
+EDIT_PROFILE: "Edit profile",
+SAVE:"Save",
+PROFILE_INFO:"Profile info"
 
 }

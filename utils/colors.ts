@@ -10,6 +10,7 @@ export const Colors ={
     lightGreen: "#21B26F",
     white: "#FFFFFF",
     black:"#000000",
-    googleRed:"#EA4335"
+    googleRed:"#EA4335",
+    backfroundGray: "#F7F8FA",
    
 }

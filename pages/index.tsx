@@ -1,7 +1,6 @@
 import { Navbar } from "@/components/Navbar/navbar";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Head from "next/head";
-import { useEffect } from "react";
 
 export default function Home() {
   return (

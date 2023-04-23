@@ -23,7 +23,7 @@ export const Navbar = () => {
 
 const useStyles = makeStyles()((theme) => ({
   box: {
-    height: "60px",
+    height: "70px",
     backgroundColor: theme.palette.primary.dark,
     width: "100vw",
     color: theme.palette.common.white,
@@ -38,7 +38,7 @@ const useStyles = makeStyles()((theme) => ({
   dropbox: {
     float: "right",
     marginRight: "50px",
-    marginTop: "-82px",
+    marginTop: "-76px",
     display: "flex",
     flexDirection: "row",
     columnGap: "50px",
@@ -47,6 +47,5 @@ const useStyles = makeStyles()((theme) => ({
     height: "70px",
     width: "110px",
     marginLeft: "10px",
-    // paddingTop: "10px",
   },
 }));
