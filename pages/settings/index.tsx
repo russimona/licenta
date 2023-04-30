@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/Navbar/navbar";
+import { OptionBar } from "@/components/OptionBar/OptionBar";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function Home() {
@@ -6,6 +7,7 @@ export default function Home() {
     <ProtectedRoute>
       <>
         <Navbar />
+        <OptionBar />
         <div>settings</div>
       </>
     </ProtectedRoute>

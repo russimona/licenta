@@ -21,6 +21,7 @@ export const theme: Theme = createTheme({
         margin: "normal",
       },
     },
+
     MuiButton: {
       defaultProps: {
         fullWidth: true,
@@ -107,3 +108,12 @@ export const theme: Theme = createTheme({
     },
   },
 });
+function sx(arg0: {
+  "input::-webkit-outer-spin-button, input::-webkit-inner-spin-button": {
+    WebkitAppearance: string;
+    margin: number;
+  };
+  "input[type=number]": { MozAppearance: string };
+}) {
+  throw new Error("Function not implemented.");
+}

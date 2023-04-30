@@ -24,6 +24,7 @@ export const Navbar = () => {
 const useStyles = makeStyles()((theme) => ({
   box: {
     height: "70px",
+    position: "fixed",
     backgroundColor: theme.palette.primary.dark,
     width: "100vw",
     color: theme.palette.common.white,

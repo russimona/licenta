@@ -1,8 +1,11 @@
+import { ModalCongrats } from "@/components/Modal/ModalCreateCompany/ModalCreateCompany";
 import { Navbar } from "@/components/Navbar/navbar";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Head from "next/head";
+import { useState } from "react";
 
 export default function Home() {
+  const [isOpen, setIsOpen] = useState<boolean>(true);
   return (
     <ProtectedRoute>
       <>
@@ -13,6 +16,7 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <Navbar />
+        <ModalCongrats isOpen={isOpen} setIsOpen={setIsOpen} />
         <div>Apuca-te de Treaba Simona!!</div>
         <div>OKKK!!</div>
       </>

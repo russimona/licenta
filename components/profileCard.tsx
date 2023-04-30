@@ -6,6 +6,7 @@ import { makeStyles } from "tss-react/mui";
 import { STRINGS } from "@/utils/strings";
 import CheckIcon from "@mui/icons-material/Check";
 import { Colors } from "@/utils/colors";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 export const ProfileCard = () => {
   const { classes } = useStyles();
@@ -74,28 +75,34 @@ export const ProfileCard = () => {
           />
         </div>
       )}
+      <div className={classes.buttons}>
+        {!enabledEdit ? (
+          <div
+            className={classes.editProfileBtn}
+            onClick={() => {
+              setEnableEdit((enabled) => !enabled);
+            }}
+          >
+            <Typography variant="h5">{STRINGS.EDIT_PROFILE}</Typography>
+            <BorderColorIcon className={classes.editProfileIcon} />
+          </div>
+        ) : (
+          <div
+            className={classes.saveProfileBtn}
+            onClick={() => {
+              setEnableEdit((enabled) => !enabled);
+            }}
+          >
+            <Typography variant="h5">{STRINGS.SAVE}</Typography>
+            <CheckIcon className={classes.editProfileIcon} />
+          </div>
+        )}
 
-      {!enabledEdit ? (
-        <div
-          className={classes.editProfileBtn}
-          onClick={() => {
-            setEnableEdit((enabled) => !enabled);
-          }}
-        >
-          <Typography variant="h5">{STRINGS.EDIT_PROFILE}</Typography>
-          <BorderColorIcon className={classes.editProfileIcon} />
+        <div className={classes.deleteProfileBtn}>
+          {STRINGS.DELETE_PROFILE}
+          <DeleteOutlineIcon className={classes.editProfileIcon} />
         </div>
-      ) : (
-        <div
-          className={classes.saveProfileBtn}
-          onClick={() => {
-            setEnableEdit((enabled) => !enabled);
-          }}
-        >
-          <Typography variant="h5">{STRINGS.SAVE}</Typography>
-          <CheckIcon className={classes.editProfileIcon} />
-        </div>
-      )}
+      </div>
     </div>
   );
 };
@@ -103,7 +110,7 @@ export const ProfileCard = () => {
 const useStyles = makeStyles()((theme) => ({
   background: {
     backgroundColor: theme.palette.common.white,
-    height: "50vh",
+    height: "fit-content",
     width: "70vw",
     padding: "10px",
     display: "flex",
@@ -113,7 +120,9 @@ const useStyles = makeStyles()((theme) => ({
     paddingTop: theme.spacing(7),
     paddingLeft: theme.spacing(4),
     borderRadius: "10px",
+    marginLeft: "15vw",
   },
+
   title: {
     fontWeight: "bolder",
     textAlign: "center",
@@ -167,9 +176,32 @@ const useStyles = makeStyles()((theme) => ({
     border: "0.5px solid",
     borderRadius: "10px",
     padding: theme.spacing(0.5),
+    height: "fiit-content",
+    width: "fit-content",
+  },
+
+  deleteProfileBtn: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    margin: "auto",
+    cursor: "pointer",
+    columnGap: "5px",
+    color: Colors.red,
+    height: "fiit-content",
+    width: "fit-content",
+    border: "0.5px solid",
+    borderRadius: "10px",
+    padding: theme.spacing(0.5),
   },
   editProfileIcon: {
     height: "18px",
     width: "18px",
+  },
+  buttons: {
+    marginTop: theme.spacing(5),
+    display: "flex",
+    flexDirection: "row",
+    marginBottom: theme.spacing(5),
   },
 }));

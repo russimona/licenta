@@ -53,12 +53,7 @@ export const ProfileItemDropBox = () => {
             <AccountCircleSharpIcon className={classes.icons} />
           </MenuItem>
         </Link>
-        <Link href={ROUTES.SETTINGS}>
-          <MenuItem onClick={handleClose}>
-            {STRINGS.SETTINGS}
-            <SettingsIcon className={classes.icons} />
-          </MenuItem>
-        </Link>
+
         <MenuItem onClick={logOutHandler}>
           {STRINGS.LOG_OUT}
           <LogoutIcon className={classes.icons} />
