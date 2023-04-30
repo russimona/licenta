@@ -58,9 +58,9 @@ export const ModalCongrats = memo((props: ModalLayoutProps) => {
 
 const useStyles = makeStyles()((theme) => ({
   box: {
-    height: "80vh",
+    height: "70vh",
     width: "70vw",
-    background: theme.palette.common.white,
+    background: theme.palette.secondary.light,
     radius: "5px",
     position: "absolute",
     left: "50%",
@@ -71,8 +71,11 @@ const useStyles = makeStyles()((theme) => ({
   },
   avatar: {
     float: "right",
-    margin: theme.spacing(1),
+    margin: theme.spacing(2),
     cursor: "pointer",
+    height: "24px",
+    width: "24px",
+    color: theme.palette.secondary.main,
   },
   items: {
     height: "75vh",
@@ -92,7 +95,7 @@ const useStyles = makeStyles()((theme) => ({
   },
   title: {
     textAlign: "center",
-    marginTop: "10vh",
+    marginTop: "7vh",
     marginBottom: "5vh",
     fontWeight: "bold",
     color: theme.palette.primary.dark,

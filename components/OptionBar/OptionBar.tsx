@@ -7,47 +7,70 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Person2Icon from "@mui/icons-material/Person2";
 import { STRINGS } from "@/utils/strings";
+import { ROUTES } from "@/utils/routes";
+import Link from "next/link";
+import { useAppDispatch } from "@/core/store";
+import { logOut } from "@/redux/signUp/slice";
+import { logInActions, logInAnonymously } from "@/redux/loginSlice/slice";
 
 export const OptionBar = () => {
   const { classes, cx } = useStyles();
   const routes = useRouter();
+  const dispatch = useAppDispatch();
+
+  const logOutHandler = () => {
+    dispatch(logOut());
+    dispatch(logInAnonymously());
+    dispatch(logInActions.reset());
+    routes.push(ROUTES.LOGIN);
+  };
 
   return (
     <Box className={classes.box}>
+      <Link href={ROUTES.PROFILE}>
+        <Box
+          className={cx(
+            classes.item,
+            routes.asPath.includes("profile")
+              ? classes.itemClicked
+              : classes.itemNotClicked
+          )}
+        >
+          <Person2Icon className={classes.icons} />
+          {STRINGS.PROFILE}
+        </Box>
+      </Link>
+      <Link href={ROUTES.SETTINGS}>
+        <Box
+          className={cx(
+            classes.item,
+            routes.asPath.includes("settings")
+              ? classes.itemClicked
+              : classes.itemNotClicked
+          )}
+        >
+          <SettingsIcon className={classes.icons} />
+          {STRINGS.SETTINGS}
+        </Box>
+      </Link>
+
+      <Link href={ROUTES.ADD_MEMBERS}>
+        <Box
+          className={cx(
+            classes.item,
+            routes.asPath.includes("add-members")
+              ? classes.itemClicked
+              : classes.itemNotClicked
+          )}
+        >
+          <PersonAddIcon className={classes.icons} />
+          {STRINGS.ADD_MEMBERS}
+        </Box>
+      </Link>
       <Box
-        className={cx(
-          classes.item,
-          routes.asPath.includes("profile")
-            ? classes.itemClicked
-            : classes.itemNotClicked
-        )}
+        className={cx(classes.item, classes.itemNotClicked)}
+        onClick={logOutHandler}
       >
-        <Person2Icon className={classes.icons} />
-        {STRINGS.PROFILE}
-      </Box>
-      <Box
-        className={cx(
-          classes.item,
-          routes.asPath.includes("settings")
-            ? classes.itemClicked
-            : classes.itemNotClicked
-        )}
-      >
-        <SettingsIcon className={classes.icons} />
-        {STRINGS.SETTINGS}
-      </Box>
-      <Box
-        className={cx(
-          classes.item,
-          routes.asPath.includes("add-members")
-            ? classes.itemClicked
-            : classes.itemNotClicked
-        )}
-      >
-        <PersonAddIcon className={classes.icons} />
-        {STRINGS.ADD_MEMBERS}
-      </Box>
-      <Box className={cx(classes.item, classes.itemNotClicked)}>
         <LogoutIcon className={classes.icons} />
         {STRINGS.LOG_OUT}
       </Box>
