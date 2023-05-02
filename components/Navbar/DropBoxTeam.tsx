@@ -7,6 +7,8 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import { STRINGS } from "@/utils/strings";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import Link from "next/link";
+import { ROUTES } from "@/utils/routes";
 
 export const TeamItemDropBox = () => {
   const { classes } = useStyles();
@@ -33,18 +35,24 @@ export const TeamItemDropBox = () => {
         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem onClick={handleClose}>
-          {STRINGS.FREE_DAYS}
-          <CalendarMonthIcon className={classes.icons} />
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          {STRINGS.BOOK_DESK}
-          <DeskIcon className={classes.icons} />
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          {STRINGS.BOOK_PARKING}
-          <DirectionsCarIcon className={classes.icons} />
-        </MenuItem>
+        <Link href={ROUTES.FREE_DAYS}>
+          <MenuItem onClick={handleClose}>
+            {STRINGS.FREE_DAYS}
+            <CalendarMonthIcon className={classes.icons} />
+          </MenuItem>
+        </Link>
+        <Link href={ROUTES.BOOK_DESK}>
+          <MenuItem onClick={handleClose}>
+            {STRINGS.BOOK_DESK}
+            <DeskIcon className={classes.icons} />
+          </MenuItem>
+        </Link>
+        <Link href={ROUTES.BOOK_PARKING_LOT}>
+          <MenuItem onClick={handleClose}>
+            {STRINGS.BOOK_PARKING}
+            <DirectionsCarIcon className={classes.icons} />
+          </MenuItem>
+        </Link>
       </Menu>
     </div>
   );

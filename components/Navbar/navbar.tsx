@@ -11,7 +11,7 @@ export const Navbar = () => {
 
   return (
     <div className={classes.box}>
-      <Avatar src="weLogo.png" className={classes.avatar} />
+      <Avatar src="../weLogo.png" className={classes.avatar} />
       <Box className={classes.dropbox}>
         <ProjectsItemDropBox />
         <TeamItemDropBox />

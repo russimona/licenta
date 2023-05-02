@@ -65,7 +65,7 @@ export const theme: Theme = createTheme({
     },
     success: {
       main: Colors.green,
-      light: Colors.lightGreen,
+      light: Colors.lightGreenWeekend,
     },
     info: {
       main: Colors.darkYellow,

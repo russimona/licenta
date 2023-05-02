@@ -43,4 +43,8 @@ export const STRINGS = {
   PROFILE_INFO: "Profile info",
   ADD_MEMBERS: "Add members",
   DELETE_PROFILE: "Delete profile",
+  SELECT_TYPE_OF_FREE_DAYS: "Select type of free days",
+  UNPAID: "Unpaid",
+  VACANTION: "Vacantion",
+  SICK: "Sick",
 };
