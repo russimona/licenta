@@ -10,7 +10,7 @@ import { STRINGS } from "@/utils/strings";
 import { ROUTES } from "@/utils/routes";
 import Link from "next/link";
 import { useAppDispatch } from "@/core/store";
-import { logOut } from "@/redux/signUp/slice";
+import { logOut } from "@/redux/logOut/slice";
 import { logInActions, logInAnonymously } from "@/redux/loginSlice/slice";
 
 export const OptionBar = () => {

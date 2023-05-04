@@ -18,9 +18,9 @@ import { useAppDispatch, useAppSelector } from "@/core/store";
 import { auth, googleProvider } from "@/core/firebaseApp";
 import { signInWithPopup } from "firebase/auth";
 import { sendUserData } from "@/services/sendUserData";
-import { getLoggedUser } from "@/redux/signUp/slice";
 import { logIn } from "@/redux/loginSlice/slice";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
+import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
 
 export const LoginForm = () => {
   const { classes } = useStyles();
@@ -89,7 +89,7 @@ export const LoginForm = () => {
           email: userData.email,
           password: "",
         });
-        dispatch(getLoggedUser());
+        dispatch(getLoggedUserData());
         router.push(ROUTES.HOME);
       })
       .catch((error) => {

@@ -49,4 +49,7 @@ export const STRINGS = {
   SICK: "Sick",
   SEND_FREE_DAYS_REQUEST: "Send free days request",
   CLEAR: "Clear",
+  ROLE: "Role",
+  WORKING_FOR: "Working for",
+  SINCE: "Since: ",
 };

@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/core/store";
+import { useAppDispatch, useAppSelector } from "@/core/store";
 import { Typography } from "@mui/material";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import React, { useState } from "react";
@@ -7,6 +7,10 @@ import { STRINGS } from "@/utils/strings";
 import CheckIcon from "@mui/icons-material/Check";
 import { Colors } from "@/utils/colors";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { useRouter } from "next/router";
+import { ROUTES } from "@/utils/routes";
+import { logOut } from "@/redux/logOut/slice";
+import { deleteAccount } from "@/redux/deleteAccount/slice";
 
 export const ProfileCard = () => {
   const { classes } = useStyles();
@@ -15,6 +19,15 @@ export const ProfileCard = () => {
   const [email, setEmail] = useState(user.email);
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const deleteAcountHandler = () => {
+    dispatch(logOut());
+    dispatch(deleteAccount());
+    router.push(ROUTES.LOGIN);
+  };
+
+  console.log(user);
 
   return (
     <div className={classes.background}>
@@ -47,6 +60,7 @@ export const ProfileCard = () => {
           }}
         />
       </div>
+
       <div className={classes.item}>
         <Typography variant="h2">{STRINGS.EMAIL} :</Typography>
         <input
@@ -62,7 +76,7 @@ export const ProfileCard = () => {
       </div>
       {user.password.length !== 0 && (
         <div className={classes.item}>
-          <Typography>{STRINGS.PASSWORD} :</Typography>
+          <Typography variant="h2">{STRINGS.PASSWORD} :</Typography>
           <input
             disabled={!enabledEdit}
             type={"password"}
@@ -98,7 +112,7 @@ export const ProfileCard = () => {
           </div>
         )}
 
-        <div className={classes.deleteProfileBtn}>
+        <div className={classes.deleteProfileBtn} onClick={deleteAcountHandler}>
           {STRINGS.DELETE_PROFILE}
           <DeleteOutlineIcon className={classes.editProfileIcon} />
         </div>
@@ -158,7 +172,7 @@ const useStyles = makeStyles()((theme) => ({
     cursor: "pointer",
     columnGap: "5px",
     color: Colors.green,
-    height: "fiit-content",
+    height: "fit-content",
     width: "fit-content",
     border: "0.5px solid",
     borderRadius: "10px",
@@ -176,10 +190,9 @@ const useStyles = makeStyles()((theme) => ({
     border: "0.5px solid",
     borderRadius: "10px",
     padding: theme.spacing(0.5),
-    height: "fiit-content",
+    height: "fit-content",
     width: "fit-content",
   },
-
   deleteProfileBtn: {
     display: "flex",
     flexDirection: "row",
@@ -188,7 +201,7 @@ const useStyles = makeStyles()((theme) => ({
     cursor: "pointer",
     columnGap: "5px",
     color: Colors.red,
-    height: "fiit-content",
+    height: "fit-content",
     width: "fit-content",
     border: "0.5px solid",
     borderRadius: "10px",

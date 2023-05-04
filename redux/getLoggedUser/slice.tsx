@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 import { STRINGS } from "@/utils/strings";
 import getUserData from "@/services/getLoggedUserInfo";
-// import { getLoggedUserInfo } from "@/services/getLoggedUserInfo";
 
 const initialState = {
   status: "idle",
@@ -13,6 +12,10 @@ const initialState = {
     firstName: "",
     lastName: "",
     firstTimeEntering: false,
+    companyId: "",
+    createdOn: new Date(),
+    role: "",
+    password: "",
   },
 };
 
@@ -21,7 +24,10 @@ export const getLoggedUserData = createAsyncThunk(
   async () => {
     try {
       const uid = sessionStorage.getItem("authToken") ?? "";
-      return getUserData(uid);
+      const result = getUserData(uid);
+      console.log(result);
+
+      return result;
     } catch (e) {
       throw new Error(e as string);
     }
@@ -39,9 +45,13 @@ const loggedUserData = createSlice({
     builder.addCase(getLoggedUserData.fulfilled, (state, action) => {
       state.status = ReduxThunkStatuses.FULFILLED;
       state.user.email = action.payload?.email;
-      state.user.firstName = action.payload?.firstName;
-      state.user.lastName = action.payload?.lastName;
+      state.user.firstName = action.payload.firstName;
+      state.user.lastName = action.payload.lastName;
       state.user.uid = sessionStorage.getItem("authToken") ?? "";
+      state.user.companyId = action.payload.companyId;
+      state.user.createdOn = new Date(action.payload.createdOn);
+      state.user.role = action.payload.role;
+      state.user.password = action.payload.password;
     });
     builder.addCase(getLoggedUserData.rejected, (state, { error }) => {
       state.error = error.message || STRINGS.GENERIC_ERROR_MESSAGE;

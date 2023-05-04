@@ -15,7 +15,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/utils/routes";
 import { useAppDispatch } from "@/core/store";
-import { signUpUser } from "@/redux/signUp/slice";
+import { signUp } from "@/redux/signUp/slice";
 
 export const SignUpForm = () => {
   const { classes } = useStyles();
@@ -58,11 +58,9 @@ export const SignUpForm = () => {
 
   const submitSignUp = () => {
     if ((checkEmail(), checkPassword(), checkName())) {
-      dispatch(signUpUser({ email, firstName, lastName, password })).then(
-        () => {
-          router.push(ROUTES.LOGIN);
-        }
-      );
+      dispatch(signUp({ email, firstName, lastName, password })).then(() => {
+        router.push(ROUTES.LOGIN);
+      });
     }
   };
 
