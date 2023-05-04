@@ -2,38 +2,44 @@ import { Navbar } from "@/components/Navbar/navbar";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { makeStyles } from "tss-react/mui";
 import "react-full-year-scheduler/dist/style.css";
-import { Button, FormControl, InputLabel, NativeSelect } from "@mui/material";
 import { Calendar } from "@/components/free-days/FreeDaysCalendar";
 import { FreeDaysCard } from "@/components/free-days/FreeDaysCard";
-import { STRINGS } from "@/utils/strings";
+import { ColorsMap } from "@/components/free-days/ColorsMap";
+import { SelectFreeDaysDropdown } from "@/components/free-days/SelectFreeDaysDropdown";
+import dayjs, { Dayjs } from "dayjs";
+import { SetStateAction, useEffect, useState } from "react";
+import { DAYS_OFF } from "@/utils/daysOffType";
 
 export default function Home() {
   const { classes } = useStyles();
+  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(""));
+  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs(""));
+  const [clearSelection, setClearSelection] = useState<boolean>(false);
+  const [sendFreeDaysReq, setSendFreeDaysReq] = useState<boolean>(false);
 
   return (
     <ProtectedRoute>
       <Navbar />
       <div className={classes.background}>
-        <FreeDaysCard />
-        <Calendar />
-        <div className={classes.box}>
-          <FormControl className={classes.selectFreeDay}>
-            <InputLabel variant="standard" htmlFor="uncontrolled-native">
-              {STRINGS.SELECT_TYPE_OF_FREE_DAYS}
-            </InputLabel>
-            <NativeSelect
-              defaultValue={10}
-              inputProps={{
-                name: "FREE DAYS",
-                id: "uncontrolled-native",
-              }}
-            >
-              <option value={10}>{STRINGS.VACANTION}</option>
-              <option value={20}>{STRINGS.UNPAID}</option>
-              <option value={30}>{STRINGS.SICK}</option>
-            </NativeSelect>
-          </FormControl>
-          <button className={classes.button}>Send free days request</button>
+        <SelectFreeDaysDropdown
+          startDate={startDate}
+          endDate={endDate}
+          setClearSelection={setClearSelection}
+          setSendFreeDaysReq={setSendFreeDaysReq}
+        />
+        <Calendar
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+          clearSelection={clearSelection}
+          sendFreeDaysReq={sendFreeDaysReq}
+          setClearSelection={setClearSelection}
+          setSendFreeDaysReq={setSendFreeDaysReq}
+          startDate={startDate}
+          endDate={endDate}
+        />
+        <div className={classes.boxCards}>
+          <FreeDaysCard />
+          <ColorsMap />
         </div>
       </div>
     </ProtectedRoute>
@@ -47,31 +53,13 @@ const useStyles = makeStyles()((theme) => ({
     width: "100vw",
     paddingTop: "70px",
     overflowX: "hidden",
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
   },
-  selectFreeDay: {
-    width: "30vw",
-  },
-  box: {
+  boxCards: {
     display: "flex",
     flexDirection: "row",
     marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
     columnGap: theme.spacing(5),
     justifyContent: "center",
-  },
-  button: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.secondary.light,
-    padding: `${theme.spacing(0.5)} ${theme.spacing(5)} ${theme.spacing(
-      0.5
-    )} ${theme.spacing(5)} `,
-    fontSize: "16px",
-    borderRadius: "5px",
-
-    ":hover": {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.secondary.light,
-    },
   },
 }));

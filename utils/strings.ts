@@ -47,4 +47,6 @@ export const STRINGS = {
   UNPAID: "Unpaid",
   VACANTION: "Vacantion",
   SICK: "Sick",
+  SEND_FREE_DAYS_REQUEST: "Send free days request",
+  CLEAR: "Clear",
 };

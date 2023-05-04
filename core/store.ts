@@ -1,4 +1,4 @@
-
+import { nationalDaysOffReducer } from "@/redux/getNationalDaysOff/slice";
 import { loginReducer } from "@/redux/loginSlice/slice";
 import { getLoggedUserReducer, logOutReducer } from "@/redux/signUp/slice";
 import { configureStore } from "@reduxjs/toolkit";
@@ -6,9 +6,10 @@ import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 
 export const store = configureStore({
   reducer: {
-    loggedUser : getLoggedUserReducer,
+    loggedUser: getLoggedUserReducer,
     logIn: loginReducer,
     signOut: logOutReducer,
+    nationalDaysOff: nationalDaysOffReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
   middleware: (getDefaultMiddleware) =>

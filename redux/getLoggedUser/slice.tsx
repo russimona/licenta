@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 import { STRINGS } from "@/utils/strings";
-import { getLoggedUserInfo } from "@/services/getLoggedUserInfo";
+import getUserData from "@/services/getLoggedUserInfo";
+// import { getLoggedUserInfo } from "@/services/getLoggedUserInfo";
 
 const initialState = {
   status: "idle",
@@ -19,7 +20,8 @@ export const getLoggedUserData = createAsyncThunk(
   "getLoggedUserData",
   async () => {
     try {
-      return getLoggedUserInfo();
+      const uid = sessionStorage.getItem("authToken") ?? "";
+      return getUserData(uid);
     } catch (e) {
       throw new Error(e as string);
     }

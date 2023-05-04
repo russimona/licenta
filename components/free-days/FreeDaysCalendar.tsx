@@ -1,40 +1,40 @@
 import { Colors } from "@/utils/colors";
-import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { ReactFullYearScheduler } from "react-full-year-scheduler";
 import { TEvent } from "react-full-year-scheduler/dist/lib/utils/types";
+import { useAppDispatch, useAppSelector } from "@/core/store";
+import { addNationalDaysOff } from "@/redux/addNationalDaysOff/slice";
+import { getNationalDaysOff } from "@/redux/getNationalDaysOff/slice";
+import { ICalendarProps } from "@/utils/interface";
+import { DAYS_OFF } from "@/utils/daysOffType";
 
-export const Calendar = () => {
-  const [events, setEvents] = useState<TEvent[]>([
-    {
-      eventName: "event 1",
-      startDate: dayjs("2023-01-02"),
-      endDate: dayjs("2023-03-02"),
-      eventBgColor: Colors.darkYellow,
-      eventTextColor: "white",
-    },
-    {
-      eventName: "event 2",
-      startDate: dayjs("2023-04-01"),
-      endDate: dayjs("2023-04-30"),
-      eventBgColor: Colors.grayGreenFreeDay,
-      eventTextColor: "white",
-    },
-    {
-      eventName: "event 3",
-      startDate: dayjs("2023-05-01"),
-      endDate: dayjs("2023-05-29"),
-      eventBgColor: Colors.redMedical,
-      eventTextColor: "white",
-    },
-    {
-      eventName: "event 4",
-      startDate: dayjs("2023-06-02"),
-      endDate: dayjs("2023-06-02"),
-      eventBgColor: Colors.redCalendar,
-      eventTextColor: "white",
-    },
-  ]);
+export const Calendar = (props: ICalendarProps) => {
+  const [events, setEvents] = useState<TEvent[]>([]);
+
+  const nationalDaysOff = useAppSelector(
+    (state) => state.nationalDaysOff.event
+  );
+  useEffect(() => {
+    setEvents((state) => [...state, ...nationalDaysOff]);
+  }, [nationalDaysOff]);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getNationalDaysOff());
+  }, [dispatch]);
+
+  useEffect(() => {
+    // setEvents((state) => [
+    //   ...state,
+    //   {
+    //     startDate: props.startDate,
+    //     endDate: props.endDate ? props.endDate : props.startDate,
+    //     eventName: "Selected free days",
+    //     eventBgColor: Colors.lavanderSelection,
+    //     eventTextColor: "white",
+    //   },
+    // ]);
+    console.log(props.startDate?.date(), props.endDate?.date());
+  }, [props.startDate, props.endDate]);
 
   return (
     <ReactFullYearScheduler
@@ -53,11 +53,11 @@ export const Calendar = () => {
       monthNameTextColor="white"
       selectionColor={Colors.lavanderSelection}
       selectionTextColor="white"
-      maxRangeSelection={25}
+      maxRangeSelection={100}
       minRangeSelection={1}
       firstDayOfWeek="Monday"
       maxYear={2023}
-      minYear={2020}
+      minYear={2022}
       readonlyCalendar={false}
       showWeekSeparator={true}
       showTodayButton={false}
@@ -66,21 +66,22 @@ export const Calendar = () => {
       minCellWidth={50}
       showSeparatorInHeader={false}
       enableEventOverwriting={true}
-      onDatePick={(eventDate, clearSelectedCell) => {
-        console.log(eventDate.toDate());
+      onDatePick={(eventDate, clearSelectedCel) => {
+        // console.log("start date", eventDate.date());
+        props.setStartDate(eventDate);
       }}
-      onEventSinglePickInterception={(date, eventName, clearSelectedCell) => {
-        console.table([eventName, date.toDate()]);
-      }}
+      onEventSinglePickInterception={(date, eventName, clearSelectedCell) => {}}
       onRangePick={(
         eventStartDate,
         eventEndDate,
         clearSecondSelectedCell,
         clearSelection
       ) => {
-        setTimeout(() => {
-          clearSelection();
-        }, 3000);
+        // console.log("start date", eventStartDate.date());
+        // console.log("end date", eventEndDate.date());
+        props.setStartDate(eventStartDate);
+        props.setEndDate(eventEndDate);
+        clearSelection();
       }}
       onEventRangePickInterception={(
         eventFirstDate,
@@ -90,9 +91,11 @@ export const Calendar = () => {
         clearSecondSelectedCell,
         clearSelection
       ) => {
-        setTimeout(() => {
-          clearSelection();
-        }, 3000);
+        // console.log("start date", eventFirstDate.date());
+        // console.log("end date", eventLastDate.date());
+        props.setStartDate(eventFirstDate);
+        props.setEndDate(eventLastDate);
+        clearSelection();
       }}
     />
   );
