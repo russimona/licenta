@@ -16,6 +16,7 @@ const initialState = {
     createdOn: new Date(),
     role: "",
     password: "",
+    freeDaysTotal: 0,
   },
 };
 
@@ -25,7 +26,6 @@ export const getLoggedUserData = createAsyncThunk(
     try {
       const uid = sessionStorage.getItem("authToken") ?? "";
       const result = getUserData(uid);
-      console.log(result);
 
       return result;
     } catch (e) {
@@ -52,6 +52,7 @@ const loggedUserData = createSlice({
       state.user.createdOn = new Date(action.payload.createdOn);
       state.user.role = action.payload.role;
       state.user.password = action.payload.password;
+      state.user.freeDaysTotal = action.payload.freeDaysTotal;
     });
     builder.addCase(getLoggedUserData.rejected, (state, { error }) => {
       state.error = error.message || STRINGS.GENERIC_ERROR_MESSAGE;

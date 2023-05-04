@@ -1,9 +1,12 @@
-import { useAppDispatch } from "@/core/store";
+import { useAppDispatch, useAppSelector } from "@/core/store";
 import { addFreeDays } from "@/redux/addFreeDays/slice";
+import { Colors } from "@/utils/colors";
 import { DAYS_OFF } from "@/utils/daysOffType";
+import { calculateWorkingDays } from "@/utils/functions";
 import { ISelectFreeDaysDropdownProps } from "@/utils/interface";
 import { STRINGS } from "@/utils/strings";
 import { FormControl, InputLabel, NativeSelect } from "@mui/material";
+import dayjs from "dayjs";
 import { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 
@@ -11,17 +14,44 @@ export const SelectFreeDaysDropdown = (props: ISelectFreeDaysDropdownProps) => {
   const { classes } = useStyles();
   const dispatch = useAppDispatch();
   const [freeDaysType, setFreeDaysType] = useState<string>(DAYS_OFF.VACANTION);
+  const totalDaysOff = useAppSelector(
+    (state) => state.loggedUser.user.freeDaysTotal
+  );
+  const nationalDaysOff = useAppSelector(
+    (state) => state.nationalDaysOff.event
+  );
 
   const sendFreeDaysReq = () => {
     props.setSendFreeDaysReq(true);
-    // dispatch(
-    //   addFreeDays({
-    //     startDate: props.startDate,
-    //     endDate: props.endDate,
-    //     eventName: freeDaysType,
-    //     uid: sessionStorage.getItem("authToken") ?? "",
-    //   })
-    // );
+    const startDate = sessionStorage.getItem("startDate") ?? "";
+    const endDate = sessionStorage.getItem("endDate") ?? "";
+    let eventBgColor;
+    console.log(freeDaysType);
+
+    switch (freeDaysType) {
+      case DAYS_OFF.VACANTION:
+        eventBgColor = Colors.grayGreenFreeDay;
+        break;
+      case DAYS_OFF.SICK:
+        eventBgColor = Colors.redCalendar;
+        break;
+      default:
+        eventBgColor = Colors.darkYellow;
+        break;
+    }
+    if (startDate.length && endDate.length)
+      dispatch(
+        addFreeDays({
+          startDate: startDate,
+          endDate: endDate,
+          eventName: freeDaysType,
+          uid: sessionStorage.getItem("authToken") ?? "",
+          eventBgColor: eventBgColor,
+          eventTextColor: "white",
+        })
+      );
+    sessionStorage.removeItem("startDate");
+    sessionStorage.removeItem("endDate");
   };
 
   const sendClearReq = () => {

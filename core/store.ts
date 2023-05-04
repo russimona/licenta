@@ -1,3 +1,5 @@
+import { addFreeDaysReducer } from "@/redux/addFreeDays/slice";
+import { daysOffReducer } from "@/redux/getFreeDays/slice";
 import { loggedUserDataReducer } from "@/redux/getLoggedUser/slice";
 import { nationalDaysOffReducer } from "@/redux/getNationalDaysOff/slice";
 import { loginReducer } from "@/redux/loginSlice/slice";
@@ -11,6 +13,8 @@ export const store = configureStore({
     logIn: loginReducer,
     signOut: logOutReducer,
     nationalDaysOff: nationalDaysOffReducer,
+    daysOff: daysOffReducer,
+    requestDaysOff: addFreeDaysReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
   middleware: (getDefaultMiddleware) =>

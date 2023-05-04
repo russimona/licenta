@@ -43,8 +43,10 @@ export interface ICalendarProps {
 }
 
 export interface IAddFreeDays {
-  startDate: Dayjs | null;
-  endDate: Dayjs | null;
+  startDate: string;
+  endDate: string;
   eventName: string;
   uid: string;
+  eventBgColor: string;
+  eventTextColor: string;
 }

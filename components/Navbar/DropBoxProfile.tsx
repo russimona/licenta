@@ -10,9 +10,10 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ROUTES } from "@/utils/routes";
 import { useRouter } from "next/router";
 import { useAppDispatch } from "@/core/store";
-import { logOut } from "@/redux/signUp/slice";
+
 import { logInActions, logInAnonymously } from "@/redux/loginSlice/slice";
 import Link from "next/link";
+import { logOut } from "@/redux/logOut/slice";
 
 export const ProfileItemDropBox = () => {
   const { classes } = useStyles();
@@ -26,7 +27,6 @@ export const ProfileItemDropBox = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const logOutHandler = () => {
     dispatch(logOut());
     dispatch(logInAnonymously());

@@ -27,8 +27,6 @@ export const ProfileCard = () => {
     router.push(ROUTES.LOGIN);
   };
 
-  console.log(user);
-
   return (
     <div className={classes.background}>
       <Typography variant="h1" className={classes.title}>
@@ -60,7 +58,6 @@ export const ProfileCard = () => {
           }}
         />
       </div>
-
       <div className={classes.item}>
         <Typography variant="h2">{STRINGS.EMAIL} :</Typography>
         <input

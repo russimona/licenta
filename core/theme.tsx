@@ -36,6 +36,7 @@ export const theme: Theme = createTheme({
           borderRadius: "5px",
           "&:hover": {
             backgroundColor: "primary.main",
+            color: "common.white",
           },
           "&:disabled": {
             backgroundColor: "#000000",

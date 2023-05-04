@@ -3,38 +3,79 @@ import React, { useEffect, useState } from "react";
 import { ReactFullYearScheduler } from "react-full-year-scheduler";
 import { TEvent } from "react-full-year-scheduler/dist/lib/utils/types";
 import { useAppDispatch, useAppSelector } from "@/core/store";
-import { addNationalDaysOff } from "@/redux/addNationalDaysOff/slice";
 import { getNationalDaysOff } from "@/redux/getNationalDaysOff/slice";
 import { ICalendarProps } from "@/utils/interface";
-import { DAYS_OFF } from "@/utils/daysOffType";
+import { getDaysOff } from "@/redux/getFreeDays/slice";
+import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 
 export const Calendar = (props: ICalendarProps) => {
-  const [events, setEvents] = useState<TEvent[]>([]);
-
+  const stateSendReqDaysOff = useAppSelector(
+    (state) => state.requestDaysOff.status
+  );
+  const dispatch = useAppDispatch();
   const nationalDaysOff = useAppSelector(
     (state) => state.nationalDaysOff.event
   );
-  useEffect(() => {
-    setEvents((state) => [...state, ...nationalDaysOff]);
-  }, [nationalDaysOff]);
-  const dispatch = useAppDispatch();
+  const daysOff = useAppSelector((state) => state.daysOff.event);
+  const daysOffStatus = useAppSelector((state) => state.daysOff.status);
+  const [events, setEvents] = useState<TEvent[]>([
+    ...nationalDaysOff,
+    ...daysOff,
+  ]);
+
   useEffect(() => {
     dispatch(getNationalDaysOff());
+    dispatch(getDaysOff());
   }, [dispatch]);
 
   useEffect(() => {
-    // setEvents((state) => [
-    //   ...state,
-    //   {
-    //     startDate: props.startDate,
-    //     endDate: props.endDate ? props.endDate : props.startDate,
-    //     eventName: "Selected free days",
-    //     eventBgColor: Colors.lavanderSelection,
-    //     eventTextColor: "white",
-    //   },
-    // ]);
-    console.log(props.startDate?.date(), props.endDate?.date());
-  }, [props.startDate, props.endDate]);
+    if (stateSendReqDaysOff === ReduxThunkStatuses.FULFILLED) {
+      console.log("here");
+      dispatch(getDaysOff());
+    }
+  }, [dispatch, stateSendReqDaysOff]);
+
+  useEffect(() => {
+    if (daysOff.length) {
+      const newEvent = [...nationalDaysOff, ...daysOff];
+      setEvents(newEvent);
+    }
+  }, [daysOff, daysOffStatus, nationalDaysOff]);
+
+  useEffect(() => {
+    if (props.startDate?.date() && props.endDate?.date()) {
+      const newEvents = [
+        ...events,
+        {
+          startDate: props.startDate,
+          endDate: props.endDate?.date() ? props.endDate : props.startDate,
+          eventName: "Selected free days",
+          eventBgColor: Colors.lavanderSelection,
+          eventTextColor: "white",
+        },
+      ];
+      setEvents(newEvents);
+      sessionStorage.setItem("startDate", props.startDate.toString());
+      sessionStorage.setItem("endDate", props.endDate.toString());
+      props.setStartDate(null);
+      props.setEndDate(null);
+    }
+    if (props.startDate?.date() && props.endDate?.date())
+      console.log(props.startDate?.date(), props.endDate?.date());
+  }, [props, events]);
+
+  useEffect(() => {
+    if (props.clearSelection) {
+      const eventToRemove = events.pop();
+      if (eventToRemove?.eventBgColor === Colors.lavanderSelection) {
+        const newEvents = events.filter((item) => item !== eventToRemove);
+        setEvents(newEvents);
+        props.setClearSelection(false);
+        sessionStorage.removeItem("startDate");
+        sessionStorage.removeItem("endDate");
+      }
+    }
+  }, [events, props, props.clearSelection]);
 
   return (
     <ReactFullYearScheduler
@@ -67,7 +108,6 @@ export const Calendar = (props: ICalendarProps) => {
       showSeparatorInHeader={false}
       enableEventOverwriting={true}
       onDatePick={(eventDate, clearSelectedCel) => {
-        // console.log("start date", eventDate.date());
         props.setStartDate(eventDate);
       }}
       onEventSinglePickInterception={(date, eventName, clearSelectedCell) => {}}
@@ -77,8 +117,6 @@ export const Calendar = (props: ICalendarProps) => {
         clearSecondSelectedCell,
         clearSelection
       ) => {
-        // console.log("start date", eventStartDate.date());
-        // console.log("end date", eventEndDate.date());
         props.setStartDate(eventStartDate);
         props.setEndDate(eventEndDate);
         clearSelection();
@@ -91,8 +129,6 @@ export const Calendar = (props: ICalendarProps) => {
         clearSecondSelectedCell,
         clearSelection
       ) => {
-        // console.log("start date", eventFirstDate.date());
-        // console.log("end date", eventLastDate.date());
         props.setStartDate(eventFirstDate);
         props.setEndDate(eventLastDate);
         clearSelection();
@@ -100,9 +136,3 @@ export const Calendar = (props: ICalendarProps) => {
     />
   );
 };
-
-/// grayGreenFreeDay :  days off
-/// redCalendar : national days off
-/// darkYellow : unpaid
-/// lightGreenWeekend : weekends
-/// redMEdical : medical
