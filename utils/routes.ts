@@ -9,4 +9,5 @@ export const ROUTES = {
   BOOK_DESK: "/team/book-desk",
   BOOK_PARKING_LOT: "/team/book-parking-lot",
   FREE_DAYS: "/team/free-days",
+  PROJECT: "/project",
 };

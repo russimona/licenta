@@ -19,6 +19,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Kanban/TopBar.js", "components/Kanban/SideBar.js", "components/Kanban/Layout.js"],
   "exclude": ["node_modules"]
 }

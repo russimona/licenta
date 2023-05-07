@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  reactStrictMode: true,
-  output: 'standalone',
+  reactStrictMode: false,
+  output: "standalone",
   publicRuntimeConfig: {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -13,6 +13,5 @@ const nextConfig = {
     measurementId: process.env.REACT_APP_MEASUREMENT_ID,
   },
 };
-
 
 module.exports = nextConfig;

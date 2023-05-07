@@ -4,6 +4,8 @@ import { makeStyles } from "tss-react/mui";
 import { STRINGS } from "@/utils/strings";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import Link from "next/link";
+import { ROUTES } from "@/utils/routes";
 
 export const ProjectsItemDropBox = () => {
   const { classes } = useStyles();
@@ -30,7 +32,9 @@ export const ProjectsItemDropBox = () => {
         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem onClick={handleClose}>{STRINGS.FREE_DAYS}</MenuItem>
+        <Link href={ROUTES.PROJECT}>
+          <MenuItem onClick={handleClose}>{STRINGS.PROJECTS}</MenuItem>
+        </Link>
       </Menu>
     </div>
   );

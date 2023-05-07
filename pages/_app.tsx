@@ -6,6 +6,7 @@ import { CacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "@/core/theme";
 import createCache from "@emotion/cache";
+
 import "./app.css";
 
 export const muiCache = createCache({
