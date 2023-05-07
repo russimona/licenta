@@ -114,59 +114,72 @@ function App() {
   return (
     <div className={classes.background}>
       <Navbar />
-      <Typography>Licenta V1.0</Typography>
-      <div className={classes.box}>
-        <DragDropContext
-          onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <Typography
+          variant="h1"
+          style={{ marginTop: "100px", textAlign: "center", width: "100vw" }}
         >
-          {Object.entries(columns).map(([columnId, column], index) => {
-            return (
-              <div className={classes.columns} key={columnId}>
-                <h2>{column.name}</h2>
-
-                <Droppable droppableId={columnId} key={columnId}>
-                  {(provided, snapshot) => {
-                    return (
-                      <div
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        style={{
-                          background: snapshot.isDraggingOver
-                            ? "lightblue"
-                            : "lightgrey",
-                        }}
-                        className={classes.columnsContent}
-                      >
-                        {column.items.map((item, index) => {
-                          return (
-                            <Draggable
-                              key={item.id}
-                              draggableId={item.id}
-                              index={index}
-                            >
-                              {(provided, snapshot) => {
-                                return (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                  >
-                                    <CardItem data={item} index={index} />
-                                  </div>
-                                );
-                              }}
-                            </Draggable>
-                          );
-                        })}
-                        {provided.placeholder}
-                      </div>
-                    );
-                  }}
-                </Droppable>
-              </div>
-            );
-          })}
-        </DragDropContext>
+          Licenta V1.0
+        </Typography>
+        <div className={classes.box}>
+          <DragDropContext
+            onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+          >
+            {Object.entries(columns).map(([columnId, column], index) => {
+              return (
+                <div key={columnId}>
+                  <h2 className={classes.columns}>{column.name}</h2>
+                  <Droppable droppableId={columnId} key={columnId}>
+                    {(provided, snapshot) => {
+                      return (
+                        <div
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                          style={{
+                            background: snapshot.isDraggingOver
+                              ? "lightblue"
+                              : "lightgrey",
+                          }}
+                          className={classes.columnsContent}
+                        >
+                          {column.items.map((item, index) => {
+                            return (
+                              <Draggable
+                                key={item.id}
+                                draggableId={item.id}
+                                index={index}
+                              >
+                                {(provided, snapshot) => {
+                                  return (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                    >
+                                      <CardItem data={item} index={index} />
+                                    </div>
+                                  );
+                                }}
+                              </Draggable>
+                            );
+                          })}
+                          {provided.placeholder}
+                        </div>
+                      );
+                    }}
+                  </Droppable>
+                </div>
+              );
+            })}
+          </DragDropContext>
+        </div>
       </div>
     </div>
   );
@@ -186,9 +199,11 @@ const useStyles = makeStyles()((theme) => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    columnGap: theme.spacing(1),
-    height: "80vh",
-    marginTop: "100px",
+    alignContent: "center",
+    margin: "auto",
+    columnGap: theme.spacing(1.5),
+    // height: "80vh",
+    // marginTop: "100px",
     width: "fit-content",
   },
   flexColumn: {
@@ -201,6 +216,9 @@ const useStyles = makeStyles()((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    boxShadow: `2px 2px 2px 0px ${theme.palette.primary.main}`,
+    color: theme.palette.primary.main,
+    border: `${theme.spacing(0.1)} solid ${theme.palette.secondary.light}`,
   },
   columnsContent: {
     width: "320px",
