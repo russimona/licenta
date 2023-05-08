@@ -5,32 +5,55 @@ import { makeStyles } from "tss-react/mui";
 import { ITicketInfo, ITicketItem } from "@/utils/interface";
 import { Colors } from "@/utils/colors";
 import { Typography } from "@mui/material";
-import { PRIORYYTY_COLORS } from "@/utils/priorityColors";
-import LabelImportantIcon from "@mui/icons-material/LabelImportant";
+import { PRIORITY_CODE, PRIORYYTY_COLORS } from "@/utils/priorityColors";
+import BugReportIcon from "@mui/icons-material/BugReport";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 
-export const CardItem = (props: { data: ITicketInfo; index: number }) => {
-  const { classes } = useStyles({ ticketType: props.index });
+export const CardItem = (props: {
+  data: ITicketInfo;
+  index: number;
+  numberColumns: number;
+}) => {
+  const { classes, cx } = useStyles({
+    ticketType: props.data.priority,
+    numberColumns: props.numberColumns,
+  });
 
   return (
     <div className={classes.box}>
       <div className={classes.flexRow}>
-        <div className={classes.priority}>High priority</div>
-        <div className={classes.assigne}>AM</div>
+        <Typography variant="body2" className={classes.priority}>
+          {props.data.priority === PRIORITY_CODE.HIGH_PRIORITY &&
+            "High priority"}
+          {props.data.priority === PRIORITY_CODE.MEDIUM_PRIORITY &&
+            "Medium priority"}
+          {props.data.priority === PRIORITY_CODE.LOW_PRIORITY && "Low priority"}
+        </Typography>
       </div>
       <Typography variant="h5" className={classes.title}>
         {props.data.title}
       </Typography>
 
-      <div className={classes.boxStoryPoints}>
-        <LabelImportantIcon className={classes.icon} />
-        <div className={classes.storyPoints}>9</div>
+      <div className={classes.boxBottom}>
+        <Typography variant="h5" className={classes.storyPoints}>
+          {props.data.storyPoints}
+        </Typography>
+        <div className={classes.flexRow}>
+          {/* <BugReportIcon className={cx(classes.icons, classes.bugIcon)} /> */}
+          <BookmarkIcon className={cx(classes.icons, classes.featureIcon)} />
+
+          <Typography variant="body1" className={classes.ticketName}>
+            BUG-{props.data.id}
+          </Typography>
+        </div>
+        <div className={classes.assigne}>{props.data.asignee}</div>
       </div>
     </div>
   );
 };
 
-const useStyles = makeStyles<{ ticketType: number }>()(
-  (theme, { ticketType }) => ({
+const useStyles = makeStyles<{ ticketType: number; numberColumns: number }>()(
+  (theme, { ticketType, numberColumns }) => ({
     box: {
       display: "flex",
       flexDirection: "column",
@@ -38,10 +61,9 @@ const useStyles = makeStyles<{ ticketType: number }>()(
       background: Colors.white,
       marginBottom: theme.spacing(1),
       padding: theme.spacing(1),
-      width: "300px",
+      width: `${90 / numberColumns}vw`,
       height: "fit-content",
       border: `${theme.spacing(0.1)} solid ${theme.palette.secondary.light}`,
-      borderRadius: theme.spacing(1),
       boxShadow: `2px 2px 5px 0px ${theme.palette.common.black}`,
     },
     title: {
@@ -50,55 +72,59 @@ const useStyles = makeStyles<{ ticketType: number }>()(
     assigne: {
       height: "fit-content",
       width: "fit-content",
-      background: Colors.lightGreenWeekend,
+      background: Colors.darkYellow,
       borderRadius: theme.spacing(10),
       padding: "4px",
       textAlign: "center",
       paddingTop: "3px",
-      boxShadow: `2px 2px 5px 0px ${theme.palette.common.black}`,
+      float: "right",
+      marginTop: theme.spacing(-4.6),
     },
     storyPoints: {
-      height: "20px",
-      width: "20px",
-      borderRadius: `${theme.spacing(1)} ${theme.spacing(5)} ${theme.spacing(
-        5
-      )} ${theme.spacing(5)}`,
+      height: "30px",
+      width: "30px",
+      borderRadius: theme.spacing(5),
       textAlign: "center",
+      marginTop: theme.spacing(1),
+      background: Colors.gray,
+      color: theme.palette.common.black,
+      display: "flex",
+      justifyContent: "center",
+      paddingTop: "5px",
     },
     priority: {
-      background: `linear-gradient(to right,${
-        PRIORYYTY_COLORS[ticketType % 3]
-      })`,
+      background: `linear-gradient(to right,${PRIORYYTY_COLORS[ticketType]})`,
       height: "fit-content",
       width: "fit-content",
       padding: `${theme.spacing(0.5)} ${theme.spacing(1)} ${theme.spacing(
         0.5
       )} ${theme.spacing(1)}`,
       color: theme.palette.common.white,
-      fontWeight: "bold",
       borderRadius: theme.spacing(1),
       marginBottom: theme.spacing(1),
     },
     flexRow: {
       display: "flex",
       justifyContent: "row",
-      columnGap: theme.spacing(17),
-      marginBottom: theme.spacing(2),
+      marginBottom: theme.spacing(1),
     },
-    boxStoryPoints: {
-      display: "flex",
-      flexDirection: "row",
-      background: theme.palette.secondary.light,
-      width: "fit-content",
-      borderRadius: theme.spacing(2),
-      boxShadow: `2px 2px 5px 0px ${theme.palette.common.black}`,
-      marginTop: theme.spacing(4),
+    boxBottom: {
+      width: "100%",
     },
-    icon: {
+    icons: {
       height: "20px",
-      width: "30px",
-      marginTop: "3px",
-      marginRight: "-7px",
+      width: "20px",
+      justifyContent: "center",
+      marginTop: theme.spacing(1.5),
+    },
+    bugIcon: {
+      color: Colors.redCalendar,
+    },
+    featureIcon: {
+      color: Colors.lightGreen,
+    },
+    ticketName: {
+      marginTop: theme.spacing(1.6),
     },
   })
 );

@@ -82,6 +82,7 @@ export interface ITicketInfo {
   asignee: string;
   storyPoints: number;
   title: string;
+  priority: number;
 }
 
 export interface IColumnsDrag {

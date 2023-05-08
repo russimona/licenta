@@ -2,43 +2,50 @@ const tasks = [
   {
     id: "1",
     content: "First task",
-    asignee: "RS",
-    storyPoints: 9,
+    storyPoints: 2,
     title: "Task1",
+    asignee: "RM",
+    priority: PRIORITY_CODE.HIGH_PRIORITY,
   },
   {
     id: "2",
     content: "Second task",
-    asignee: "RS",
     storyPoints: 9,
     title: "Task2",
+    asignee: "SC",
+    priority: PRIORITY_CODE.MEDIUM_PRIORITY,
   },
   {
     id: "3",
     content: "Third task",
-    asignee: "RS",
-    storyPoints: 9,
+    storyPoints: 7,
     title: "Task3",
+    asignee: "DC",
+    priority: PRIORITY_CODE.LOW_PRIORITY,
   },
   {
     id: "4",
     content: "Fourth task",
-    asignee: "RS",
-    storyPoints: 9,
+    storyPoints: 3,
     title: "Task4",
+    asignee: "RM",
+    priority: PRIORITY_CODE.LOW_PRIORITY,
   },
   {
     id: "5",
     content: "Fifth task",
-    asignee: "RS",
-    storyPoints: 9,
+    storyPoints: 1,
     title: "Task5",
+    asignee: "SM",
+    priority: PRIORITY_CODE.HIGH_PRIORITY,
   },
 ];
 
 import { CardItem } from "@/components/Kanban/CardItem";
 import { Navbar } from "@/components/Navbar/navbar";
+import { Colors } from "@/utils/colors";
 import { IColumnsDrag } from "@/utils/interface";
+import { PRIORITY_CODE } from "@/utils/priorityColors";
 import { Typography } from "@mui/material";
 import React, { useState } from "react";
 import {
@@ -50,8 +57,8 @@ import {
 import { makeStyles } from "tss-react/mui";
 
 const taskStatus = {
-  requested: {
-    name: "Requested",
+  backlog: {
+    name: "Backlog",
     items: tasks,
   },
   toDo: {
@@ -60,6 +67,10 @@ const taskStatus = {
   },
   inProgress: {
     name: "In Progress",
+    items: [],
+  },
+  QA: {
+    name: "QA",
     items: [],
   },
   done: {
@@ -110,7 +121,10 @@ const onDragEnd = (
 
 function App() {
   const [columns, setColumns] = useState(taskStatus);
-  const { classes } = useStyles();
+  const { classes } = useStyles({
+    numberColumns: Object.keys(taskStatus).length,
+  });
+
   return (
     <div className={classes.background}>
       <Navbar />
@@ -135,7 +149,9 @@ function App() {
             {Object.entries(columns).map(([columnId, column], index) => {
               return (
                 <div key={columnId}>
-                  <h2 className={classes.columns}>{column.name}</h2>
+                  <Typography variant="h4" className={classes.columnsName}>
+                    {column.name}
+                  </Typography>
                   <Droppable droppableId={columnId} key={columnId}>
                     {(provided, snapshot) => {
                       return (
@@ -144,8 +160,8 @@ function App() {
                           ref={provided.innerRef}
                           style={{
                             background: snapshot.isDraggingOver
-                              ? "lightblue"
-                              : "lightgrey",
+                              ? "#163a4d"
+                              : "#3c5d6e",
                           }}
                           className={classes.columnsContent}
                         >
@@ -163,7 +179,13 @@ function App() {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                     >
-                                      <CardItem data={item} index={index} />
+                                      <CardItem
+                                        data={item}
+                                        index={index}
+                                        numberColumns={
+                                          Object.keys(taskStatus).length
+                                        }
+                                      />
                                     </div>
                                   );
                                 }}
@@ -187,49 +209,58 @@ function App() {
 
 export default App;
 
-const useStyles = makeStyles()((theme) => ({
-  background: {
-    display: "flex",
-    justifyContent: "center",
-    backgroundColor: theme.palette.common.white,
-    height: "100vh",
-    width: "100vw",
-  },
-  box: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignContent: "center",
-    margin: "auto",
-    columnGap: theme.spacing(1.5),
-    // height: "80vh",
-    // marginTop: "100px",
-    width: "fit-content",
-  },
-  flexColumn: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  columns: {
-    borderRadius: theme.spacing(1),
-    paddingTop: theme.spacing(0.5),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    boxShadow: `2px 2px 2px 0px ${theme.palette.primary.main}`,
-    color: theme.palette.primary.main,
-    border: `${theme.spacing(0.1)} solid ${theme.palette.secondary.light}`,
-  },
-  columnsContent: {
-    width: "320px",
-    minHeight: "70vh",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    paddingTop: "10px",
-    border: `${theme.spacing(0.1)} solid ${theme.palette.secondary.light}`,
-    boxShadow: `2px 2px 5px 0px ${theme.palette.common.black}`,
-    overflowX: "auto",
-    maxHeight: "70vh",
-  },
-}));
+const useStyles = makeStyles<{ numberColumns: number }>()(
+  (theme, { numberColumns }) => ({
+    background: {
+      display: "flex",
+      justifyContent: "center",
+      backgroundColor: theme.palette.common.white,
+      height: "100vh",
+      width: "100vw",
+    },
+    box: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "center",
+      alignContent: "center",
+      margin: "auto",
+      columnGap: theme.spacing(1),
+      width: "fit-content",
+    },
+    flexColumn: {
+      display: "flex",
+      flexDirection: "column",
+    },
+    columns: {
+      paddingTop: theme.spacing(0.5),
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      color: theme.palette.primary.main,
+    },
+    columnsContent: {
+      width: `${95 / numberColumns}vw`,
+      minHeight: "75vh",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      paddingTop: "10px",
+      border: `${theme.spacing(0.1)} solid ${theme.palette.secondary.light}`,
+      boxShadow: `2px 2px 5px 0px ${theme.palette.common.black}`,
+      overflowX: "auto",
+      maxHeight: "75vh",
+    },
+    columnsName: {
+      paddingTop: theme.spacing(0.5),
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      // boxShadow: `0px 1px 1px 1px ${theme.palette.primary.main}`,
+      border: `${theme.spacing(0.1)} inset ${theme.palette.primary.main}`,
+      color: theme.palette.secondary.light,
+      backgroundColor: Colors.background,
+      height: "40px",
+      justifyContent: "center",
+    },
+  })
+);
