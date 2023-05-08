@@ -2,10 +2,10 @@ import { Navbar } from "@/components/Navbar/navbar";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { makeStyles } from "tss-react/mui";
 import "react-full-year-scheduler/dist/style.css";
-import { Calendar } from "@/components/Free-days/FreeDaysCalendar";
-import { FreeDaysCard } from "@/components/Free-days/FreeDaysCard";
-import { ColorsMap } from "@/components/Free-days/ColorsMap";
-import { SelectFreeDaysDropdown } from "@/components/Free-days/SelectFreeDaysDropdown";
+import { Calendar } from "@/components/free-days/FreeDaysCalendar";
+import { FreeDaysCard } from "@/components/free-days/FreeDaysCard";
+import { ColorsMap } from "@/components/free-days/ColorsMap";
+import { SelectFreeDaysDropdown } from "@/components/free-days/SelectFreeDaysDropdown";
 import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 
