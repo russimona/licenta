@@ -8,7 +8,15 @@ import { TEvent } from "react-full-year-scheduler/dist/lib/utils/types";
 const initialState = {
   status: "idle",
   error: "",
-  event: [],
+  event: [
+    {
+      startDate: dayjs(new Date()),
+      endDate: dayjs(new Date()),
+      eventName: "",
+      eventBgColor: "",
+      eventTextColor: "",
+    },
+  ],
 };
 
 export const getNationalDaysOff = createAsyncThunk(
@@ -26,7 +34,7 @@ export const getNationalDaysOff = createAsyncThunk(
         };
       });
 
-      return events;
+      return events as TEvent[];
     } catch (e) {
       throw new Error(e as string);
     }
@@ -42,7 +50,7 @@ const nationalDaysOffData = createSlice({
       state.status = ReduxThunkStatuses.PENDING;
     });
     builder.addCase(getNationalDaysOff.fulfilled, (state, action) => {
-      state.event = action?.payload;
+      state.event = action?.payload ?? ([] as TEvent[]);
     });
     builder.addCase(getNationalDaysOff.rejected, (state, { error }) => {
       state.error = error.message || STRINGS.GENERIC_ERROR_MESSAGE;
