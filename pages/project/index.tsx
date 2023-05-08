@@ -1,46 +1,3 @@
-const tasks = [
-  {
-    id: "1",
-    content: "First task",
-    storyPoints: 2,
-    title: "Task1",
-    asignee: "RM",
-    priority: PRIORITY_CODE.HIGH_PRIORITY,
-  },
-  {
-    id: "2",
-    content: "Second task",
-    storyPoints: 9,
-    title: "Task2",
-    asignee: "SC",
-    priority: PRIORITY_CODE.MEDIUM_PRIORITY,
-  },
-  {
-    id: "3",
-    content: "Third task",
-    storyPoints: 7,
-    title: "Task3",
-    asignee: "DC",
-    priority: PRIORITY_CODE.LOW_PRIORITY,
-  },
-  {
-    id: "4",
-    content: "Fourth task",
-    storyPoints: 3,
-    title: "Task4",
-    asignee: "RM",
-    priority: PRIORITY_CODE.LOW_PRIORITY,
-  },
-  {
-    id: "5",
-    content: "Fifth task",
-    storyPoints: 1,
-    title: "Task5",
-    asignee: "SM",
-    priority: PRIORITY_CODE.HIGH_PRIORITY,
-  },
-];
-
 import { CardItem } from "@/components/Kanban/CardItem";
 import { Navbar } from "@/components/Navbar/navbar";
 import { Colors } from "@/utils/colors";
@@ -56,74 +13,122 @@ import {
 } from "react-beautiful-dnd";
 import { makeStyles } from "tss-react/mui";
 
-const taskStatus = {
-  backlog: {
+const tasks = [
+  {
+    id: "1",
+    content: "First task",
+    storyPoints: 2,
+    title: "Task1",
+    asignee: "RM",
+    priority: PRIORITY_CODE.HIGH_PRIORITY,
+    type: "BUG",
+  },
+  {
+    id: "2",
+    content: "Second task",
+    storyPoints: 9,
+    title: "Task2",
+    asignee: "SC",
+    priority: PRIORITY_CODE.MEDIUM_PRIORITY,
+    type: "BUG",
+  },
+  {
+    id: "3",
+    content: "Third task",
+    storyPoints: 7,
+    title: "Task3",
+    asignee: "DC",
+    priority: PRIORITY_CODE.LOW_PRIORITY,
+    type: "FEAT",
+  },
+  {
+    id: "4",
+    content: "Fourth task",
+    storyPoints: 3,
+    title: "Task4",
+    asignee: "RM",
+    priority: PRIORITY_CODE.LOW_PRIORITY,
+    type: "FEAT",
+  },
+  {
+    id: "5",
+    content: "Fifth task",
+    storyPoints: 1,
+    title: "Task5",
+    asignee: "SM",
+    priority: PRIORITY_CODE.HIGH_PRIORITY,
+    type: "FEAT",
+  },
+];
+
+const taskStatus = [
+  {
     name: "Backlog",
     items: tasks,
   },
-  toDo: {
+  {
     name: "To do",
     items: [],
   },
-  inProgress: {
+  {
     name: "In Progress",
     items: [],
   },
-  QA: {
+  {
     name: "QA",
     items: [],
   },
-  done: {
+  {
     name: "Done",
     items: [],
   },
-};
-
-const onDragEnd = (
-  result: DropResult,
-  columns: IColumnsDrag,
-  setColumns: React.Dispatch<React.SetStateAction<IColumnsDrag>>
-) => {
-  if (!result.destination) return;
-  const { source, destination } = result;
-  if (source.droppableId !== destination.droppableId) {
-    const sourceColumn = columns[source.droppableId];
-    const destColumn = columns[destination.droppableId];
-    const sourceItems = [...sourceColumn.items];
-    const destItems = [...destColumn.items];
-    const [removed] = sourceItems.splice(source.index, 1);
-    destItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...sourceColumn,
-        items: sourceItems,
-      },
-      [destination.droppableId]: {
-        ...destColumn,
-        items: destItems,
-      },
-    });
-  } else {
-    const column = columns[source.droppableId];
-    const copiedItems = [...column.items];
-    const [removed] = copiedItems.splice(source.index, 1);
-    copiedItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...column,
-        items: copiedItems,
-      },
-    });
-  }
-};
+];
 
 function App() {
   const [columns, setColumns] = useState(taskStatus);
   const { classes } = useStyles({
     numberColumns: Object.keys(taskStatus).length,
   });
+
+  const onDragEnd = (
+    result: DropResult,
+    columns: IColumnsDrag[],
+    setColumns: React.Dispatch<React.SetStateAction<IColumnsDrag[]>>
+  ) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+    if (source.droppableId !== destination.droppableId) {
+      const sourceColumn = columns[parseInt(source.droppableId)];
+      const destColumn = columns[parseInt(destination.droppableId)];
+      const sourceItems = [...sourceColumn.items];
+      const destItems = [...destColumn.items];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems,
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems,
+        },
+      });
+    } else {
+      const column = columns[parseInt(source.droppableId)];
+      const copiedItems = [...column.items];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copiedItems,
+        },
+      });
+    }
+  };
 
   return (
     <div className={classes.background}>
@@ -255,7 +260,6 @@ const useStyles = makeStyles<{ numberColumns: number }>()(
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      // boxShadow: `0px 1px 1px 1px ${theme.palette.primary.main}`,
       border: `${theme.spacing(0.1)} inset ${theme.palette.primary.main}`,
       color: theme.palette.secondary.light,
       backgroundColor: Colors.background,

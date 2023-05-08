@@ -39,11 +39,15 @@ export const CardItem = (props: {
           {props.data.storyPoints}
         </Typography>
         <div className={classes.flexRow}>
-          {/* <BugReportIcon className={cx(classes.icons, classes.bugIcon)} /> */}
-          <BookmarkIcon className={cx(classes.icons, classes.featureIcon)} />
+          {props.data.type === "BUG" && (
+            <BugReportIcon className={cx(classes.icons, classes.bugIcon)} />
+          )}
+          {props.data.type === "FEAT" && (
+            <BookmarkIcon className={cx(classes.icons, classes.featureIcon)} />
+          )}
 
           <Typography variant="body1" className={classes.ticketName}>
-            BUG-{props.data.id}
+            {props.data.type}-{props.data.id}
           </Typography>
         </div>
         <div className={classes.assigne}>{props.data.asignee}</div>

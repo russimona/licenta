@@ -83,24 +83,10 @@ export interface ITicketInfo {
   storyPoints: number;
   title: string;
   priority: number;
+  type: string;
 }
 
 export interface IColumnsDrag {
-  droppableId: string;
-  requested: {
-    name: string;
-    items: ITicketInfo[];
-  };
-  toDo: {
-    name: string;
-    items: ITicketInfo[];
-  };
-  inProgress: {
-    name: string;
-    items: ITicketInfo[];
-  };
-  done: {
-    name: string;
-    items: ITicketInfo[];
-  };
+  name: string;
+  items: ITicketInfo[];
 }
