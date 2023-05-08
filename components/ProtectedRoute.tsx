@@ -2,6 +2,7 @@ import { useAppDispatch } from "@/core/store";
 import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
 import { logInAnonymously } from "@/redux/loginSlice/slice";
 import { ROUTES } from "@/utils/routes";
+import { NoSsr } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
@@ -17,7 +18,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       dispatch(getLoggedUserData());
     }
   }, [dispatch, routes, userId]);
-  return <>{userId ? children : <></>}</>;
+  return (
+    <NoSsr>
+      <>{userId && children}</>
+    </NoSsr>
+  );
 };
 
 export default ProtectedRoute;
