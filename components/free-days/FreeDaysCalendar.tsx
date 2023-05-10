@@ -95,7 +95,7 @@ export const Calendar = (props: ICalendarProps) => {
       selectionColor={Colors.lavanderSelection}
       selectionTextColor="white"
       maxRangeSelection={100}
-      minRangeSelection={1}
+      minRangeSelection={0}
       firstDayOfWeek="Monday"
       maxYear={2023}
       minYear={2022}
