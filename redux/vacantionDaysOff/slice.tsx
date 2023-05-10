@@ -50,7 +50,17 @@ const nationalDaysOffData = createSlice({
       state.status = ReduxThunkStatuses.PENDING;
     });
     builder.addCase(getNationalDaysOff.fulfilled, (state, action) => {
-      state.event = action?.payload ?? ([] as TEvent[]);
+      const result = [] as TEvent[];
+      action?.payload.forEach((item) => {
+        result.push({
+          startDate: item.startDate,
+          endDate: item.endDate,
+          eventName: item.eventName,
+          eventBgColor: item.eventBgColor,
+          eventTextColor: item.eventTextColor,
+        });
+      });
+      state.event = result;
     });
     builder.addCase(getNationalDaysOff.rejected, (state, { error }) => {
       state.error = error.message || STRINGS.GENERIC_ERROR_MESSAGE;
