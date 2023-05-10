@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/core/store";
-import { TEvent } from "react-full-year-scheduler/dist/lib/utils/types";
+import { TEvent } from "@/utils/interface";
 
 export const calculateWorkingDays = (
   startDate: Date,

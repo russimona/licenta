@@ -1,7 +1,7 @@
 import { db } from "@/core/firebaseApp";
 import dayjs from "dayjs";
 import { addDoc, collection } from "firebase/firestore";
-import { TEvent } from "react-full-year-scheduler/dist/lib/utils/types";
+import { TEvent } from "@/utils/interface";
 
 export const addNationalDays = async (props: TEvent) => {
   await addDoc(collection(db, "NationalDaysOff"), {

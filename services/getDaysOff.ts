@@ -9,8 +9,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { TEvent } from "react-full-year-scheduler/dist/lib/utils/types";
-
+import { TEvent } from "@/utils/interface";
 const getDaysOff = async () => {
   const uid = sessionStorage.getItem("authToken") ?? "";
   const q = query(collection(db, "FreeDays"), where("uid", "==", uid));

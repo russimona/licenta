@@ -1,7 +1,7 @@
 import { Colors } from "@/utils/colors";
 import React, { useEffect, useState } from "react";
 import { ReactFullYearScheduler } from "react-full-year-scheduler";
-import { TEvent } from "react-full-year-scheduler/dist/lib/utils/types";
+import { TEvent } from "@/utils/interface";
 import { useAppDispatch, useAppSelector } from "@/core/store";
 import { getNationalDaysOff } from "@/redux/getNationalDaysOff/slice";
 import { ICalendarProps } from "@/utils/interface";

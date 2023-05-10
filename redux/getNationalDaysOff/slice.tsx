@@ -3,7 +3,7 @@ import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 import { STRINGS } from "@/utils/strings";
 import dayjs from "dayjs";
 import getNationalDaysService from "@/services/getNationalDaysOff";
-import { TEvent } from "react-full-year-scheduler/dist/lib/utils/types";
+import { TEvent } from "@/utils/interface";
 
 const initialState = {
   status: "idle",

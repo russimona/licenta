@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 import { STRINGS } from "@/utils/strings";
-import { TEvent } from "react-full-year-scheduler/dist/lib/utils/types";
+import { TEvent } from "@/utils/interface";
 import { addNationalDays } from "@/services/addNationalDaysOff";
 
 const initialState = {

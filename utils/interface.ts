@@ -90,3 +90,11 @@ export interface IColumnsDrag {
   name: string;
   items: ITicketInfo[];
 }
+
+export type TEvent = {
+  startDate: Dayjs;
+  endDate: Dayjs;
+  eventName: string;
+  eventBgColor: string;
+  eventTextColor: string;
+};
