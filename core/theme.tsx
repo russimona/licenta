@@ -78,7 +78,7 @@ export const theme: Theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Public Sans",
+    fontFamily: "Roboto",
     h1: {
       fontSize: "22px",
     },

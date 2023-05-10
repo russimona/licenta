@@ -26,16 +26,18 @@ export default function Home() {
           setClearSelection={setClearSelection}
           setSendFreeDaysReq={setSendFreeDaysReq}
         />
-        <Calendar
-          setStartDate={setStartDate}
-          setEndDate={setEndDate}
-          clearSelection={clearSelection}
-          sendFreeDaysReq={sendFreeDaysReq}
-          setClearSelection={setClearSelection}
-          setSendFreeDaysReq={setSendFreeDaysReq}
-          startDate={startDate}
-          endDate={endDate}
-        />
+        <div className={classes.calendar}>
+          <Calendar
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+            clearSelection={clearSelection}
+            sendFreeDaysReq={sendFreeDaysReq}
+            setClearSelection={setClearSelection}
+            setSendFreeDaysReq={setSendFreeDaysReq}
+            startDate={startDate}
+            endDate={endDate}
+          />
+        </div>
         <div className={classes.boxCards}>
           <FreeDaysCard />
           <ColorsMap />
@@ -60,5 +62,8 @@ const useStyles = makeStyles()((theme) => ({
     marginBottom: theme.spacing(2),
     columnGap: theme.spacing(5),
     justifyContent: "center",
+  },
+  calendar: {
+    fontFamily: "Roboto",
   },
 }));

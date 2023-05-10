@@ -5,7 +5,7 @@ import { DAYS_OFF } from "@/utils/daysOffType";
 import { calculateWorkingDays } from "@/utils/functions";
 import { ISelectFreeDaysDropdownProps } from "@/utils/interface";
 import { STRINGS } from "@/utils/strings";
-import { FormControl, InputLabel, NativeSelect } from "@mui/material";
+import { Button, FormControl, InputLabel, NativeSelect } from "@mui/material";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { makeStyles } from "tss-react/mui";
@@ -79,12 +79,12 @@ export const SelectFreeDaysDropdown = (props: ISelectFreeDaysDropdownProps) => {
           <option value={DAYS_OFF.SICK}>{STRINGS.SICK}</option>
         </NativeSelect>
       </FormControl>
-      <button className={classes.button} onClick={sendFreeDaysReq}>
+      <Button className={classes.button} onClick={sendFreeDaysReq}>
         {STRINGS.SEND_FREE_DAYS_REQUEST}
-      </button>
-      <button className={classes.button} onClick={sendClearReq}>
+      </Button>
+      <Button className={classes.button} onClick={sendClearReq}>
         {STRINGS.CLEAR}
-      </button>
+      </Button>
     </div>
   );
 };
@@ -92,6 +92,7 @@ export const SelectFreeDaysDropdown = (props: ISelectFreeDaysDropdownProps) => {
 const useStyles = makeStyles()((theme) => ({
   selectFreeDay: {
     width: "30vw",
+    marginTop: theme.spacing(1),
   },
   box: {
     display: "flex",
@@ -102,6 +103,7 @@ const useStyles = makeStyles()((theme) => ({
     justifyContent: "center",
   },
   button: {
+    width: "fit-content",
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.secondary.light,
     padding: `${theme.spacing(0.5)} ${theme.spacing(5)} ${theme.spacing(
@@ -109,7 +111,6 @@ const useStyles = makeStyles()((theme) => ({
     )} ${theme.spacing(5)} `,
     fontSize: "16px",
     borderRadius: "5px",
-
     ":hover": {
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.secondary.light,
