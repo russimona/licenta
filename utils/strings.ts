@@ -52,4 +52,10 @@ export const STRINGS = {
   ROLE: "Role",
   WORKING_FOR: "Working for",
   SINCE: "Since: ",
+  ERROR_ADD_NEW_COMPANY: "Please check if all the fields have been completed.",
+  CREATE_YOUR_COMPANY_PROFILE: " Create your company profile",
+  ADD_YOUR_OWN_COMPANY: "ADD YOUR OWN COMPANY",
+  NAME: "Name",
+  ADDRESS: "Address",
+  PHONE_NUMBER: "Phone number",
 };

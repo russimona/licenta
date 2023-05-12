@@ -29,7 +29,6 @@ export const LoginForm = () => {
   const [password, setPassword] = useState<string>("");
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const routes = useRouter();
   const fetchError = useAppSelector((state) => state.logIn.status);
 
   const checkEmail = () => {
@@ -142,7 +141,9 @@ export const LoginForm = () => {
         >
           {STRINGS.FORGOT_PASSWORD_QUESTION}
         </Typography>
-        <Button onClick={submitLogin}>{STRINGS.LOGIN}</Button>
+        <Button onClick={submitLogin} className={classes.googleLoginButton}>
+          {STRINGS.LOGIN}
+        </Button>
         <div className={classes.orBox}>
           <div className={classes.line} />
           <Typography>{STRINGS.OR}</Typography>
@@ -217,6 +218,7 @@ const useStyles = makeStyles()((theme) => ({
     display: "flex",
     flexDirection: "row",
     columnGap: "10px",
+    backgroundColor: `${theme.palette.primary.main}!important`,
   },
   error: {
     color: theme.palette.error.main,

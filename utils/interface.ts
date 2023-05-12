@@ -98,3 +98,10 @@ export type TEvent = {
   eventBgColor: string;
   eventTextColor: string;
 };
+
+export interface INewCompany {
+  name: string;
+  address: string;
+  phoneNumber: string;
+  email: string;
+}

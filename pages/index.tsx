@@ -1,11 +1,18 @@
-import { ModalCongrats } from "@/components/Modal/ModalCreateCompany/ModalCreateCompany";
+import { ModalAddNewCompany } from "@/components/Modal/ModalCreateCompany/ModalCreateCompany";
 import { Navbar } from "@/components/Navbar/navbar";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAppSelector } from "@/core/store";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const companyId = useAppSelector((state) => state.loggedUser.user.companyId);
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsOpen(companyId ? false : true);
+  }, [companyId]);
   return (
     <ProtectedRoute>
       <>
@@ -16,12 +23,9 @@ export default function Home() {
             content="Streamline your work, simplify your life"
           />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          {/* <link rel="icon" href="/weLogo.png" /> */}
         </Head>
         <Navbar />
-        <ModalCongrats isOpen={isOpen} setIsOpen={setIsOpen} />
-        <div>Apuca-te de Treaba Simona!!</div>
-        <div>OKKK!!</div>
+        <ModalAddNewCompany isOpen={isOpen} setIsOpen={setIsOpen} />
       </>
     </ProtectedRoute>
   );

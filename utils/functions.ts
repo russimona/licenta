@@ -6,31 +6,50 @@ export const calculateWorkingDays = (
   endDate: Date,
   nationalDaysOff: TEvent[]
 ) => {
+  const Difference_In_Time = endDate.getTime() - startDate.getTime();
+  const totalDays = Difference_In_Time / (1000 * 3600 * 24) + 1;
+  const daysMatchesNationalDaysOff = calculateNationalDaysOff(
+    startDate,
+    endDate,
+    nationalDaysOff
+  );
+  const weekendDayCount = calculateWekendDays(startDate, endDate);
+  return totalDays - daysMatchesNationalDaysOff - weekendDayCount;
+};
+
+const calculateWekendDays = (startDate: Date, endDate: Date) => {
   let weekendDayCount = 0;
+  console.log(startDate, endDate);
   while (startDate < endDate) {
     startDate.setDate(startDate.getDate() + 1);
     if (startDate.getDay() === 0 || startDate.getDay() == 6) {
       ++weekendDayCount;
     }
   }
-  console.log("weekendDayCount", weekendDayCount);
-  // const totalDays = new Date(endDate).getTime() - new Date(startDate).getTime();
+  return weekendDayCount;
+};
 
-  var Difference_In_Time = endDate.getTime() - startDate.getTime();
-
-  // To calculate the no. of days between two dates
-  const totalDays = Difference_In_Time / (1000 * 3600 * 24);
-  console.log("totalDays", endDate, "asdfgh", startDate);
-
+const calculateNationalDaysOff = (
+  startDate: Date,
+  endDate: Date,
+  nationalDaysOff: TEvent[]
+) => {
   let daysMatchesNationalDaysOff = 0;
   nationalDaysOff.forEach((event) => {
     if (
-      event.endDate.toDate() >= endDate &&
-      event.startDate.toDate() <= startDate
+      event.endDate.toDate() <= endDate &&
+      event.startDate.toDate() >= startDate
     ) {
-      daysMatchesNationalDaysOff =
-        event.endDate.toDate().getTime() - event.startDate.toDate().getTime();
+      for (
+        let index = event.startDate.toDate();
+        index <= event.endDate.toDate();
+        index.setDate(index.getDate() + 1)
+      ) {
+        if (index.getDay() !== 0 && index.getDay() !== 6)
+          daysMatchesNationalDaysOff = daysMatchesNationalDaysOff + 1;
+      }
     }
   });
-  return totalDays - daysMatchesNationalDaysOff - weekendDayCount;
+
+  return daysMatchesNationalDaysOff;
 };

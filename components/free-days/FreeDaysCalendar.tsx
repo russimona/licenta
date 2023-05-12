@@ -60,8 +60,6 @@ export const Calendar = (props: ICalendarProps) => {
       props.setStartDate(null);
       props.setEndDate(null);
     }
-    if (props.startDate?.date() && props.endDate?.date())
-      console.log(props.startDate?.date(), props.endDate?.date());
   }, [props, events]);
 
   useEffect(() => {
@@ -101,11 +99,11 @@ export const Calendar = (props: ICalendarProps) => {
       minYear={2022}
       readonlyCalendar={false}
       showWeekSeparator={true}
-      showTodayButton={false}
+      showTodayButton={true}
       enableYearToYearSelection={false}
       enableWeekendSelection={false}
       minCellWidth={50}
-      showSeparatorInHeader={false}
+      showSeparatorInHeader={true}
       enableEventOverwriting={true}
       onDatePick={(eventDate, clearSelectedCel) => {
         props.setStartDate(eventDate);

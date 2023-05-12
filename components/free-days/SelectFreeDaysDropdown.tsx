@@ -26,7 +26,6 @@ export const SelectFreeDaysDropdown = (props: ISelectFreeDaysDropdownProps) => {
     const startDate = sessionStorage.getItem("startDate") ?? "";
     const endDate = sessionStorage.getItem("endDate") ?? "";
     let eventBgColor;
-    console.log(freeDaysType);
 
     switch (freeDaysType) {
       case DAYS_OFF.VACANTION:
@@ -39,17 +38,23 @@ export const SelectFreeDaysDropdown = (props: ISelectFreeDaysDropdownProps) => {
         eventBgColor = Colors.darkYellow;
         break;
     }
-    if (startDate.length && endDate.length)
-      dispatch(
-        addFreeDays({
-          startDate: startDate,
-          endDate: endDate,
-          eventName: freeDaysType,
-          uid: sessionStorage.getItem("authToken") ?? "",
-          eventBgColor: eventBgColor,
-          eventTextColor: "white",
-        })
+    if (startDate.length && endDate.length) {
+      const freeDaysTaken = calculateWorkingDays(
+        new Date(startDate),
+        new Date(endDate),
+        nationalDaysOff
       );
+      // dispatch(
+      //   addFreeDays({
+      //     startDate: startDate,
+      //     endDate: endDate,
+      //     eventName: freeDaysType,
+      //     uid: sessionStorage.getItem("authToken") ?? "",
+      //     eventBgColor: eventBgColor,
+      //     eventTextColor: "white",
+      //   })
+      // );
+    }
     sessionStorage.removeItem("startDate");
     sessionStorage.removeItem("endDate");
   };
@@ -104,7 +109,8 @@ const useStyles = makeStyles()((theme) => ({
   },
   button: {
     width: "fit-content",
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: `${theme.palette.primary.main}!important`,
+    // background: `${theme.palette.primary.main}!important`,
     color: theme.palette.secondary.light,
     padding: `${theme.spacing(0.5)} ${theme.spacing(5)} ${theme.spacing(
       0.5

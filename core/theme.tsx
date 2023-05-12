@@ -21,7 +21,6 @@ export const theme: Theme = createTheme({
         margin: "normal",
       },
     },
-
     MuiButton: {
       defaultProps: {
         fullWidth: true,
@@ -29,6 +28,7 @@ export const theme: Theme = createTheme({
         sx: {
           fontSize: "16px",
           backgroundColor: "primary.main",
+          background: "primary.main",
           margin: "20px 0px 8px 0px",
           color: "common.white",
           border: "none",
@@ -36,6 +36,7 @@ export const theme: Theme = createTheme({
           borderRadius: "5px",
           "&:hover": {
             backgroundColor: "primary.main",
+            background: "primary.main",
             color: "common.white",
           },
           "&:disabled": {
