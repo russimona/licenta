@@ -58,4 +58,6 @@ export const STRINGS = {
   NAME: "Name",
   ADDRESS: "Address",
   PHONE_NUMBER: "Phone number",
+  ERROR_FREE_DAYS:
+    "The maximum number of free days you can select for vacantion type is ",
 };

@@ -30,7 +30,6 @@ export const Calendar = (props: ICalendarProps) => {
 
   useEffect(() => {
     if (stateSendReqDaysOff === ReduxThunkStatuses.FULFILLED) {
-      console.log("here");
       dispatch(getDaysOff());
     }
   }, [dispatch, stateSendReqDaysOff]);

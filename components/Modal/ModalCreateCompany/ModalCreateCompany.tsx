@@ -202,7 +202,6 @@ const useStyles = makeStyles()((theme) => ({
     padding: theme.spacing(1),
     borderRadius: theme.spacing(3),
     marginTop: theme.spacing(1),
-    // background:Colors.
     border: `1px solid ${Colors.redMedical}`,
   },
 

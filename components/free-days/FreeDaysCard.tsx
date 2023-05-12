@@ -1,22 +1,34 @@
 import { useAppSelector } from "@/core/store";
+import { remainingDaysOff } from "@/utils/functions";
 import { Box, Typography } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
 
 export const FreeDaysCard = () => {
   const { classes } = useStyles();
-  const totalDaysOff = useAppSelector(
-    (state) => state.loggedUser.user.freeDaysTotal
+  const userInfo = useAppSelector((state) => state.loggedUser.user);
+  const userDaysOff = useAppSelector((state) => state.daysOff.event);
+  const nationalDaysOff = useAppSelector(
+    (state) => state.nationalDaysOff.event
   );
+
+  const freeDaysRemaining =
+    userInfo.freeDaysTotal - remainingDaysOff(userDaysOff, nationalDaysOff);
+
   return (
     <Box className={classes.box}>
       <Typography variant="h3">
-        First day : <span className={classes.span}>12.12.2000</span>
+        First day :{" "}
+        <span className={classes.span}>
+          {userInfo.createdOn.toDateString()}
+        </span>
       </Typography>
       <Typography variant="h3">
-        Total days off : <span className={classes.span}>{totalDaysOff}</span>
+        Total days off :{" "}
+        <span className={classes.span}>{userInfo.freeDaysTotal}</span>
       </Typography>
       <Typography variant="h3">
-        Remaining days off : <span className={classes.span}>{10}</span>
+        Remaining days off :{" "}
+        <span className={classes.span}>{freeDaysRemaining}</span>
       </Typography>
     </Box>
   );

@@ -19,7 +19,6 @@ export const calculateWorkingDays = (
 
 const calculateWekendDays = (startDate: Date, endDate: Date) => {
   let weekendDayCount = 0;
-  console.log(startDate, endDate);
   while (startDate < endDate) {
     startDate.setDate(startDate.getDate() + 1);
     if (startDate.getDay() === 0 || startDate.getDay() == 6) {
@@ -52,4 +51,22 @@ const calculateNationalDaysOff = (
   });
 
   return daysMatchesNationalDaysOff;
+};
+
+export const remainingDaysOff = (
+  daysOff: TEvent[],
+  nationalDaysOff: TEvent[]
+) => {
+  let takenDaysOff = 0;
+  daysOff.forEach((item) => {
+    takenDaysOff =
+      takenDaysOff +
+      calculateWorkingDays(
+        item.startDate.toDate(),
+        item.endDate.toDate(),
+        nationalDaysOff
+      );
+  });
+
+  return takenDaysOff;
 };
