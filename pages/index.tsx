@@ -2,17 +2,19 @@ import { ModalAddNewCompany } from "@/components/Modal/ModalCreateCompany/ModalC
 import { Navbar } from "@/components/Navbar/navbar";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAppSelector } from "@/core/store";
+import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const companyId = useAppSelector((state) => state.loggedUser.user.companyId);
-
+  const companyIdState = useAppSelector((state) => state.loggedUser.status);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsOpen(companyId ? false : true);
-  }, [companyId]);
+    if (companyIdState === ReduxThunkStatuses.FULFILLED)
+      setIsOpen(companyId ? false : true);
+  }, [companyId, companyIdState]);
   return (
     <ProtectedRoute>
       <>
