@@ -67,4 +67,10 @@ export const STRINGS = {
   ADD_NEW_BOARD_STATS: "Add new board status",
   NEW_PROJECT_SPECIFICATIONS: " New project specifications",
   NEW_MEMBERS: "New members",
+  PROJECT_LEADER: "Project leader",
+  PROJECT_ASIGNEE: "Project asignee",
+  BOARD_STATUSES: "Board statuses for tickets",
+  NEW_HR_EMAIL: "New human resources employee email",
+  NEW_PM_EMAIL: "New project manager employee email",
+  NEW_DEV_EMAIL: "New developer employee email",
 };

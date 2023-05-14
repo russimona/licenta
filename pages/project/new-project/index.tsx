@@ -53,16 +53,18 @@ function App() {
           </div>
         </div>
         <div>
-          <Typography>Project leader</Typography>
+          <Typography>{STRINGS.PROJECT_LEADER}</Typography>
           <CustomizedHook />
         </div>
         <div>
-          <Typography>Project asignee</Typography>
+          <Typography>{STRINGS.PROJECT_ASIGNEE}</Typography>
           <CustomizedHook />
         </div>
 
         <div className={classes.taskStatus}>
-          <Typography style={{ marginBottom: "18px" }}>Board stats</Typography>
+          <Typography style={{ marginBottom: "18px" }}>
+            {STRINGS.BOARD_STATUSES}
+          </Typography>
           {taskStatus &&
             taskStatus.map((item) => (
               <Typography

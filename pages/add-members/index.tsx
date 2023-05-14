@@ -5,6 +5,8 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { ITaskStatus } from "@/utils/interface";
+import { OptionBar } from "@/components/OptionBar/OptionBar";
+import { Colors } from "@/utils/colors";
 
 function App() {
   const { classes } = useStyles();
@@ -38,32 +40,40 @@ function App() {
   return (
     <div className={classes.background}>
       <Navbar />
+      <OptionBar />
       <div className={classes.header}>
         <Typography variant="h1" className={classes.title}>
           {STRINGS.NEW_MEMBERS.toLocaleUpperCase()}
         </Typography>
         <ArrowRightIcon className={classes.rightIcon} />
-        <Button className={classes.button}>{STRINGS.ADD_MEMBERS}</Button>
+        <Button className={(classes.button, classes.button)}>
+          {STRINGS.ADD_MEMBERS}
+        </Button>
       </div>
       <div className={classes.line} />
-      <Grid container direction="column" className={classes.grid}>
+      <Grid container direction="row" className={classes.grid}>
         <Grid item>
           <Typography className={classes.employeeType}>
             Human resources
           </Typography>
           {emailHR &&
             emailHR.map((item) => (
-              <Typography variant="h5" key={item}>
+              <Typography
+                variant="h5"
+                key={item}
+                className={classes.addesEmails}
+              >
                 {item}
               </Typography>
             ))}
           <TextField
-            label={STRINGS.ADD_NEW_BOARD_STATS}
+            label={STRINGS.NEW_HR_EMAIL}
             onKeyDown={saveHREmailHandler}
             value={currentEmailHR}
             onChange={(event) => {
               setCurrentEmailHR(event.target.value);
             }}
+            className={classes.fieldAddEmail}
           />
         </Grid>
         <Grid item>
@@ -72,34 +82,44 @@ function App() {
           </Typography>
           {emailPM &&
             emailPM.map((item) => (
-              <Typography variant="h5" key={item}>
+              <Typography
+                variant="h5"
+                key={item}
+                className={classes.addesEmails}
+              >
                 {item}
               </Typography>
             ))}
           <TextField
-            label={STRINGS.ADD_NEW_BOARD_STATS}
+            label={STRINGS.NEW_PM_EMAIL}
             onKeyDown={savePMEmailHandler}
             value={currentEmailPM}
             onChange={(event) => {
               setCurrentEmailPM(event.target.value);
             }}
+            className={classes.fieldAddEmail}
           />
         </Grid>
         <Grid item>
           <Typography className={classes.employeeType}>Developer</Typography>
           {emailDev &&
             emailDev.map((item) => (
-              <Typography variant="h5" key={item}>
+              <Typography
+                variant="h5"
+                key={item}
+                className={classes.addesEmails}
+              >
                 {item}
               </Typography>
             ))}
           <TextField
-            label={STRINGS.ADD_NEW_BOARD_STATS}
+            label={STRINGS.NEW_DEV_EMAIL}
             onKeyDown={saveDevEmailHandler}
             value={currentEmailDev}
             onChange={(event) => {
               setCurrentEmailDev(event.target.value);
             }}
+            className={classes.fieldAddEmail}
           />
         </Grid>
       </Grid>
@@ -122,6 +142,7 @@ const useStyles = makeStyles()((theme) => ({
     justifyContent: "center",
     paddingTop: "100px",
     alignContent: "center",
+    marginLeft: "15vw",
   },
   button: {
     background: theme.palette.primary.dark,
@@ -129,6 +150,7 @@ const useStyles = makeStyles()((theme) => ({
     alignSelf: "center",
     height: "fit-content",
     marginTop: "7px",
+
     ":hover": {
       background: theme.palette.primary.dark,
     },
@@ -136,8 +158,8 @@ const useStyles = makeStyles()((theme) => ({
   line: {
     height: "1px",
     background: theme.palette.primary.main,
-    width: "90vw",
-    marginLeft: "5vw",
+    width: "70vw",
+    marginLeft: "20vw",
     marginTop: theme.spacing(2),
   },
   rightIcon: {
@@ -148,10 +170,32 @@ const useStyles = makeStyles()((theme) => ({
     alignSelf: "center",
   },
   employeeType: {
-    // marginTop: "15px",
+    background: theme.palette.primary.dark,
+    color: theme.palette.secondary.light,
+    textAlign: "center",
+    height: "30px",
+    borderRadius: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   },
   grid: {
     display: "flex",
     alignContent: "center",
+    paddingLeft: "15vw",
+    justifyContent: "center",
+    columnGap: theme.spacing(1),
+    marginTop: theme.spacing(2),
+  },
+  addesEmails: {
+    width: "20vw",
+    background: theme.palette.primary.main,
+    color: theme.palette.secondary.light,
+    height: "50px",
+    marginBottom: theme.spacing(1),
+    textAlign: "center",
+    borderRadius: theme.spacing(1),
+    paddingTop: "10px",
+  },
+  fieldAddEmail: {
+    width: "20vw",
   },
 }));
