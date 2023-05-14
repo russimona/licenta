@@ -66,4 +66,5 @@ export const STRINGS = {
   PROJECT_NAME: "Project name",
   ADD_NEW_BOARD_STATS: "Add new board status",
   NEW_PROJECT_SPECIFICATIONS: " New project specifications",
+  NEW_MEMBERS: "New members",
 };
