@@ -1,8 +1,6 @@
 import React from "react";
-import Image from "next/dist/client/image";
-// import { Draggable } from "react-beautiful-dnd";
 import { makeStyles } from "tss-react/mui";
-import { ITicketInfo, ITicketItem } from "@/utils/interface";
+import { ITicketInfo } from "@/utils/interface";
 import { Colors } from "@/utils/colors";
 import { Typography } from "@mui/material";
 import { PRIORITY_CODE, PRIORYYTY_COLORS } from "@/utils/priorityColors";

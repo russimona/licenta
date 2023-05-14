@@ -105,3 +105,8 @@ export interface INewCompany {
   phoneNumber: string;
   email: string;
 }
+
+export interface ITaskStatus {
+  name: string;
+  items: ITicketInfo[];
+}

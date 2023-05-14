@@ -1,4 +1,4 @@
-import { CardItem } from "@/components/Kanban/CardItem";
+import { CardItem } from "@/components/Board/CardItem";
 import { Navbar } from "@/components/Navbar/navbar";
 import { Colors } from "@/utils/colors";
 import { IColumnsDrag } from "@/utils/interface";

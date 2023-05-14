@@ -60,4 +60,10 @@ export const STRINGS = {
   PHONE_NUMBER: "Phone number",
   ERROR_FREE_DAYS:
     "The maximum number of free days you can select for vacantion type is ",
+  ADD_NEW_PROJECT: "Add new project",
+  PROJECT_DESCRIPTION: "Project description",
+  DESCRIPTION: "Description",
+  PROJECT_NAME: "Project name",
+  ADD_NEW_BOARD_STATS: "Add new board status",
+  NEW_PROJECT_SPECIFICATIONS: " New project specifications",
 };

@@ -35,6 +35,9 @@ export const ProjectsItemDropBox = () => {
         <Link href={ROUTES.PROJECT}>
           <MenuItem onClick={handleClose}>{STRINGS.PROJECTS}</MenuItem>
         </Link>
+        <Link href={ROUTES.ADD_NEW_PROJECT}>
+          <MenuItem onClick={handleClose}>{STRINGS.ADD_NEW_PROJECT}</MenuItem>
+        </Link>
       </Menu>
     </div>
   );

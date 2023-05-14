@@ -18,4 +18,5 @@ export const Colors = {
   redCalendar: "#ff3300",
   grayGreenFreeDay: "#85adad",
   lavanderSelection: "#d1d1e0",
+  lightBlue: "#ccd8de",
 };
