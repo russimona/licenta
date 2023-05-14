@@ -17,7 +17,6 @@ function App() {
   const [currentEmailHR, setCurrentEmailHR] = useState<string>("");
   const [currentEmailPM, setCurrentEmailPM] = useState<string>("");
   const [currentEmailDev, setCurrentEmailDev] = useState<string>("");
-  const [taskStatus, setTaskStatus] = useState<ITaskStatus[]>([]);
   const saveHREmailHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
       setEmailHR((prev) => [...prev, currentEmailHR]);
