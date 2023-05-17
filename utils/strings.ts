@@ -61,6 +61,7 @@ export const STRINGS = {
   ERROR_FREE_DAYS:
     "The maximum number of free days you can select for vacantion type is ",
   ADD_NEW_PROJECT: "Add new project",
+  ADD_NEW_TICKET: "Add new ticket",
   PROJECT_DESCRIPTION: "Project description",
   DESCRIPTION: "Description",
   PROJECT_NAME: "Project name",
@@ -73,4 +74,5 @@ export const STRINGS = {
   NEW_HR_EMAIL: "New human resources employee email",
   NEW_PM_EMAIL: "New project manager employee email",
   NEW_DEV_EMAIL: "New developer employee email",
+  TITLE: "Title",
 };

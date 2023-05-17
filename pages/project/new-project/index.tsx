@@ -1,15 +1,17 @@
 import { Navbar } from "@/components/Navbar/navbar";
 import { STRINGS } from "@/utils/strings";
-import { Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Tab, Tabs, TextField, Typography } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { ITaskStatus } from "@/utils/interface";
-import { CustomizedHook } from "@/components/Project/add-project/AddPersonDropdown";
+import { AddPersonDropdown } from "@/components/Project/add-project/AddPersonDropdown";
 import { Colors } from "@/utils/colors";
+import { AddAsignee } from "@/components/Project/add-ticket/AddAsigneeTicket";
+import { TabContext, TabList, TabPanel } from "@material-ui/lab";
 
 function App() {
-  const { classes } = useStyles();
+  const { classes, cx } = useStyles();
 
   const [taskStatus, setTaskStatus] = useState<ITaskStatus[]>([]);
   const onKeyPressTextField = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -23,67 +25,88 @@ function App() {
   };
 
   const [currentTaskStatus, setCurrentTaskStatus] = useState<string>("");
+  const [value, setValue] = useState<number>(1);
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   return (
     <div className={classes.background}>
       <Navbar />
-      <div className={classes.header}>
-        <Typography variant="h1" className={classes.title}>
-          {STRINGS.NEW_PROJECT_SPECIFICATIONS.toLocaleUpperCase()}
-        </Typography>
-        <ArrowRightIcon className={classes.rightIcon} />
-        <Button className={classes.button}>{STRINGS.ADD_NEW_PROJECT}</Button>
-      </div>
-      <div className={classes.line} />
-      <div className={classes.page}>
-        <div className={classes.infoProject}>
-          <div>
-            <Typography>{STRINGS.PROJECT_NAME}</Typography>
-            <TextField label={STRINGS.NAME} />
-          </div>
-          <div>
-            <Typography>{STRINGS.PROJECT_DESCRIPTION}</Typography>
-            <TextField
-              label={STRINGS.DESCRIPTION}
-              multiline
-              id="outlined-multiline-flexible"
-              minRows={5}
-              maxRows={5}
-            />
-          </div>
-        </div>
-        <div>
-          <Typography>{STRINGS.PROJECT_LEADER}</Typography>
-          <CustomizedHook />
-        </div>
-        <div>
-          <Typography>{STRINGS.PROJECT_ASIGNEE}</Typography>
-          <CustomizedHook />
-        </div>
-
-        <div className={classes.taskStatus}>
-          <Typography style={{ marginBottom: "18px" }}>
-            {STRINGS.BOARD_STATUSES}
+      <div style={{ paddingLeft: "50px", paddingRight: "50px" }}>
+        <div className={classes.header}>
+          <Typography variant="h1" className={classes.title}>
+            {STRINGS.NEW_PROJECT_SPECIFICATIONS.toLocaleUpperCase()}
           </Typography>
-          {taskStatus &&
-            taskStatus.map((item) => (
-              <Typography
-                variant="h5"
-                className={classes.boartStatsTypo}
-                key={item.name}
-              >
-                {item.name}
-              </Typography>
-            ))}
+          <ArrowRightIcon className={classes.rightIcon} />
+          <Button className={cx(classes.button, classes.button)}>
+            {STRINGS.ADD_NEW_PROJECT}
+          </Button>
+        </div>
+        <div>
+          <Typography>{STRINGS.PROJECT_NAME}</Typography>
+          <TextField label={STRINGS.NAME} />
+        </div>
+        <div>
+          <Typography>{STRINGS.PROJECT_DESCRIPTION}</Typography>
           <TextField
-            label={STRINGS.ADD_NEW_BOARD_STATS}
-            className={classes.textFieldBoardStats}
-            onKeyDown={onKeyPressTextField}
-            value={currentTaskStatus}
-            onChange={(event) => {
-              setCurrentTaskStatus(event.target.value);
-            }}
+            label={STRINGS.DESCRIPTION}
+            multiline
+            id="outlined-multiline-flexible"
+            minRows={5}
+            maxRows={5}
           />
+        </div>
+        <div className={classes.page}>
+          <Box sx={{ width: "100%", typography: "body1" }}>
+            <TabContext value={value}>
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <TabList onChange={handleChange}>
+                  <Tab label="Add project leader" value="1" />
+                  <Tab label="Add project assignees" value="2" />
+                  <Tab label="Add tickets statuses" value="3" />
+                </TabList>
+              </Box>
+              <TabPanel value="1">
+                {" "}
+                <Typography>{STRINGS.PROJECT_LEADER}</Typography>
+                <AddAsignee />
+              </TabPanel>
+              <TabPanel value="2">
+                {" "}
+                <div>
+                  <Typography>{STRINGS.PROJECT_ASIGNEE}</Typography>
+                  <AddAsignee />
+                </div>
+              </TabPanel>
+              <TabPanel value="3">
+                <div className={classes.taskStatus}>
+                  <Typography style={{ marginBottom: "18px" }}>
+                    {STRINGS.BOARD_STATUSES}
+                  </Typography>
+                  {taskStatus &&
+                    taskStatus.map((item) => (
+                      <Typography
+                        variant="h5"
+                        className={classes.boartStatsTypo}
+                        key={item.name}
+                      >
+                        {item.name}
+                      </Typography>
+                    ))}
+                  <TextField
+                    label={STRINGS.ADD_NEW_BOARD_STATS}
+                    className={classes.textFieldBoardStats}
+                    onKeyDown={onKeyPressTextField}
+                    value={currentTaskStatus}
+                    onChange={(event) => {
+                      setCurrentTaskStatus(event.target.value);
+                    }}
+                  />
+                </div>
+              </TabPanel>
+            </TabContext>
+          </Box>
         </div>
       </div>
     </div>
@@ -100,13 +123,12 @@ const useStyles = makeStyles()((theme) => ({
     justifyContent: "center",
   },
   page: {
-    paddingTop: theme.spacing(5),
+    paddingTop: theme.spacing(3),
     display: "flex",
     flexDirection: "row",
     columnGap: theme.spacing(2),
     justifyContent: "center",
     margin: "auto",
-    marginTop: "0px",
   },
   header: {
     display: "flex",
@@ -123,7 +145,7 @@ const useStyles = makeStyles()((theme) => ({
     paddingTop: "100px",
   },
   button: {
-    background: theme.palette.primary.dark,
+    background: `${theme.palette.primary.dark}!important`,
     width: "fit-content",
     alignSelf: "center",
     height: "fit-content",

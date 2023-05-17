@@ -3,7 +3,8 @@ import { Navbar } from "@/components/Navbar/navbar";
 import { Colors } from "@/utils/colors";
 import { IColumnsDrag } from "@/utils/interface";
 import { PRIORITY_CODE } from "@/utils/priorityColors";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import React, { useState } from "react";
 import {
   DragDropContext,
@@ -12,6 +13,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { makeStyles } from "tss-react/mui";
+import { ModalAddTicket } from "@/components/Modal/ModalAddTicket/ModalAddTicket";
 
 const tasks = [
   {
@@ -89,6 +91,7 @@ function App() {
   const { classes } = useStyles({
     numberColumns: Object.keys(taskStatus).length,
   });
+  const [isOpen, setIsOpen] = useState<boolean>(true);
 
   const onDragEnd = (
     result: DropResult,
@@ -141,6 +144,7 @@ function App() {
           alignContent: "center",
         }}
       >
+        <ModalAddTicket isOpen={isOpen} setIsOpen={setIsOpen} />
         <Typography
           variant="h1"
           style={{ marginTop: "100px", textAlign: "center", width: "100vw" }}
@@ -197,6 +201,9 @@ function App() {
                               </Draggable>
                             );
                           })}
+                          <Button className={classes.addNewTicket}>
+                            <AddIcon />
+                          </Button>
                           {provided.placeholder}
                         </div>
                       );
@@ -265,6 +272,16 @@ const useStyles = makeStyles<{ numberColumns: number }>()(
       backgroundColor: Colors.background,
       height: "40px",
       justifyContent: "center",
+    },
+    addNewTicket: {
+      background: "transparent",
+      color: "transparent",
+      marginTop: "0px",
+      width: "95%",
+      ":hover": {
+        background: "#163a4d",
+        borderRadius: theme.spacing(1),
+      },
     },
   })
 );

@@ -21,7 +21,7 @@ const Tag = (props: TagProps) => {
   );
 };
 
-export const CustomizedHook = () => {
+export const AddPersonDropdown = () => {
   const top100Films = [
     { email: "The Shawshank Redemption" },
     { email: "The " },
