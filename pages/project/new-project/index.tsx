@@ -1,11 +1,10 @@
 import { Navbar } from "@/components/Navbar/navbar";
 import { STRINGS } from "@/utils/strings";
-import { Box, Button, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Box, Button, Tab, TextField, Typography } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { ITaskStatus } from "@/utils/interface";
-import { AddPersonDropdown } from "@/components/Project/add-project/AddPersonDropdown";
 import { Colors } from "@/utils/colors";
 import { AddAsignee } from "@/components/Project/add-ticket/AddAsigneeTicket";
 import { TabContext, TabList, TabPanel } from "@material-ui/lab";
@@ -68,12 +67,10 @@ function App() {
                 </TabList>
               </Box>
               <TabPanel value="1">
-                {" "}
                 <Typography>{STRINGS.PROJECT_LEADER}</Typography>
                 <AddAsignee />
               </TabPanel>
               <TabPanel value="2">
-                {" "}
                 <div>
                   <Typography>{STRINGS.PROJECT_ASIGNEE}</Typography>
                   <AddAsignee />

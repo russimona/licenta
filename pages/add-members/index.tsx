@@ -4,9 +4,7 @@ import { Button, Grid, TextField, Typography } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
-import { ITaskStatus } from "@/utils/interface";
 import { OptionBar } from "@/components/OptionBar/OptionBar";
-import { Colors } from "@/utils/colors";
 
 function App() {
   const { classes } = useStyles();

@@ -16,7 +16,6 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { STRINGS } from "@/utils/strings";
 import { TICKET_PRIORITY, TICKET_TYPE } from "@/utils/ticketsInfo";
-import { AddPersonDropdown } from "@/components/Project/add-project/AddPersonDropdown";
 import { AddAsignee } from "@/components/Project/add-ticket/AddAsigneeTicket";
 
 interface ModalLayoutProps {
