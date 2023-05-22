@@ -155,7 +155,9 @@ export const SignUpForm = () => {
         {errorSignUp && (
           <Alert severity="error">{STRINGS.SIGN_UP_FAILED}</Alert>
         )}
-        <Button onClick={submitSignUp}>{STRINGS.SIGN_UP}</Button>
+        <Button onClick={submitSignUp} className={classes.button}>
+          {STRINGS.SIGN_UP}
+        </Button>
         <div className={classes.orBox}>
           <div className={classes.line} />
           <Typography>{STRINGS.OR}</Typography>
@@ -214,6 +216,7 @@ const useStyles = makeStyles()((theme) => ({
     display: "flex",
     flexDirection: "row",
     columnGap: "10px",
+    backgroundColor: `${theme.palette.primary.main}!important`,
   },
   error: {
     color: theme.palette.error.main,
@@ -245,5 +248,8 @@ const useStyles = makeStyles()((theme) => ({
     marginBottom: "0px",
     marginTop: "0px",
     position: "absolute",
+  },
+  button: {
+    backgroundColor: `${theme.palette.primary.main}!important`,
   },
 }));

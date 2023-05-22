@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useAppDispatch } from "@/core/store";
 import { logOut } from "@/redux/logOut/slice";
 import { logInActions, logInAnonymously } from "@/redux/loginSlice/slice";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 
 export const OptionBar = () => {
   const { classes, cx } = useStyles();
@@ -65,6 +66,19 @@ export const OptionBar = () => {
         >
           <PersonAddIcon className={classes.icons} />
           {STRINGS.ADD_MEMBERS}
+        </Box>
+      </Link>
+      <Link href={ROUTES.ADD_MEMBERS}>
+        <Box
+          className={cx(
+            classes.item,
+            routes.asPath.includes("all-members")
+              ? classes.itemClicked
+              : classes.itemNotClicked
+          )}
+        >
+          <PeopleAltIcon className={classes.icons} />
+          {STRINGS.ALL_MEMBERS}
         </Box>
       </Link>
       <Box

@@ -1,13 +1,13 @@
 import { Navbar } from "@/components/Navbar/navbar";
 import { STRINGS } from "@/utils/strings";
-import { Box, Button, Tab, TextField, Typography } from "@mui/material";
+import { Box, Button, Tab, Tabs, TextField, Typography } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { ITaskStatus } from "@/utils/interface";
 import { Colors } from "@/utils/colors";
 import { AddAsignee } from "@/components/Project/add-ticket/AddAsigneeTicket";
-import { TabContext, TabList, TabPanel } from "@material-ui/lab";
+import { TabContext, TabPanel } from "@material-ui/lab";
 
 function App() {
   const { classes, cx } = useStyles();
@@ -24,9 +24,9 @@ function App() {
   };
 
   const [currentTaskStatus, setCurrentTaskStatus] = useState<string>("");
-  const [value, setValue] = useState<number>(1);
+  const [value, setValue] = useState<string>("1");
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setValue(newValue.toString());
   };
 
   return (
@@ -60,11 +60,11 @@ function App() {
           <Box sx={{ width: "100%", typography: "body1" }}>
             <TabContext value={value}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <TabList onChange={handleChange}>
+                <Tabs onChange={handleChange}>
                   <Tab label="Add project leader" value="1" />
                   <Tab label="Add project assignees" value="2" />
                   <Tab label="Add tickets statuses" value="3" />
-                </TabList>
+                </Tabs>
               </Box>
               <TabPanel value="1">
                 <Typography>{STRINGS.PROJECT_LEADER}</Typography>

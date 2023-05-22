@@ -138,7 +138,10 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
               <Typography>Asignee</Typography>
               <AddAsignee />
               <Typography>
-                Created : <span>data</span>
+                Created on : <span>data</span>
+              </Typography>
+              <Typography>
+                Created by : <span>user email</span>
               </Typography>
             </div>
           </div>

@@ -69,7 +69,9 @@ export const ResetPassword = () => {
         {errorLogin && (
           <Alert severity="error">{STRINGS.ENTER_VALID_EMAIL}</Alert>
         )}
-        <Button onClick={submitLogin}>{STRINGS.RESET_PASSWORD}</Button>
+        <Button onClick={submitLogin} className={classes.button}>
+          {STRINGS.RESET_PASSWORD}
+        </Button>
         <Typography className={classes.login} onClick={loginHandler}>
           <ArrowBackIosIcon className={classes.backIcon} />
           {STRINGS.BACK_TO_LOGIN}
@@ -153,5 +155,8 @@ const useStyles = makeStyles()((theme) => ({
     marginBottom: "0px",
     marginTop: "0px",
     position: "absolute",
+  },
+  button: {
+    backgroundColor: `${theme.palette.primary.main}!important`,
   },
 }));

@@ -38,6 +38,7 @@ export default function Home() {
             endDate={endDate}
           />
         </div>
+
         <div className={classes.boxCards}>
           <FreeDaysCard />
           <ColorsMap />
@@ -53,7 +54,7 @@ const useStyles = makeStyles()((theme) => ({
     height: "100vh",
     width: "100vw",
     paddingTop: "70px",
-    overflowX: "hidden",
+    overflow: "auto",
   },
   boxCards: {
     display: "flex",

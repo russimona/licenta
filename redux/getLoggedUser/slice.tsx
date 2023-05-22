@@ -53,6 +53,7 @@ const loggedUserData = createSlice({
       state.user.role = action.payload.role;
       state.user.password = action.payload.password;
       state.user.freeDaysTotal = action.payload.freeDaysTotal;
+      state.user.companyId = action.payload.companyId ?? "";
     });
     builder.addCase(getLoggedUserData.rejected, (state, { error }) => {
       state.error = error.message || STRINGS.GENERIC_ERROR_MESSAGE;

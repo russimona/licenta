@@ -10,5 +10,7 @@ export interface UserData {
 export const sendUserData = (uid: string, data: UserData) => {
   setDoc(doc(db, "Users", uid), {
     ...data,
+    createdOn: new Date(),
+    firstTimeEntering: true,
   });
 };

@@ -33,7 +33,7 @@ export const SelectFreeDaysDropdown = (props: ISelectFreeDaysDropdownProps) => {
   const freeDaysRemaining =
     totalDaysOff - remainingDaysOff(userDaysOff, nationalDaysOff);
 
-  const [error, setError] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
 
   const sendFreeDaysReq = () => {
     props.setSendFreeDaysReq(true);
@@ -165,7 +165,6 @@ const useStyles = makeStyles()((theme) => ({
     margin: "auto",
     marginBottom: theme.spacing(2),
   },
-
   textError: {
     color: Colors.redCalendar,
     textAlign: "center",

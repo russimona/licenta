@@ -12,8 +12,9 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (companyIdState === ReduxThunkStatuses.FULFILLED)
+    if (companyIdState === ReduxThunkStatuses.FULFILLED) {
       setIsOpen(companyId ? false : true);
+    }
   }, [companyId, companyIdState]);
   return (
     <ProtectedRoute>
@@ -22,6 +23,7 @@ export default function Home() {
           <title>WorkEase</title>
           <meta
             name="description"
+            title="WorkEase"
             content="Streamline your work, simplify your life"
           />
           <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -75,4 +75,5 @@ export const STRINGS = {
   NEW_PM_EMAIL: "New project manager employee email",
   NEW_DEV_EMAIL: "New developer employee email",
   TITLE: "Title",
+  ALL_MEMBERS: "All members",
 };
