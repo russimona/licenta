@@ -76,6 +76,7 @@ export const LoginForm = () => {
       .then((result) => {
         const user = result.user;
         sessionStorage.setItem("authToken", result.user.uid);
+        sessionStorage.setItem("email", result.user.email ?? "");
         const userData = {
           email: user.email || "",
           firstName: user.displayName?.split(" ")[0] || "",

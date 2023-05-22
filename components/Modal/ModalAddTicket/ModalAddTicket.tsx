@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import {
   Modal,
@@ -17,6 +17,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { STRINGS } from "@/utils/strings";
 import { TICKET_PRIORITY, TICKET_TYPE } from "@/utils/ticketsInfo";
 import { AddAsignee } from "@/components/Project/add-ticket/AddAsigneeTicket";
+import { useAppDispatch } from "@/core/store";
+import { addNewProject } from "@/redux/addNewProject/slice";
 
 interface ModalLayoutProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,10 +27,16 @@ interface ModalLayoutProps {
 
 export const ModalAddTicket = memo((props: ModalLayoutProps) => {
   const { classes } = useStyles();
+
   const [ticketType, setTicketType] = useState<string>(TICKET_TYPE.FEAT);
   const [ticketPriority, setTicketPriority] = useState<string>(
     TICKET_PRIORITY.LOW_PRIORITY
   );
+  const [title, setTitle] = useState<string>("");
+  const [storyPoints, setStoryPoints] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [asigne, setAsigne] = useState<string[]>([]);
+
   const handleChangeTicketType = (event: SelectChangeEvent) => {
     setTicketType(event.target.value as string);
   };
@@ -39,18 +47,6 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
   const onCloseHandler = () => {
     props.setIsOpen(false);
   };
-  const names = [
-    "Oliver Hansen",
-    "Van Henry",
-    "April Tucker",
-    "Ralph Hubbard",
-    "Omar Alexander",
-    "Carlos Abbott",
-    "Miriam Wagner",
-    "Bradley Wilkerson",
-    "Virginia Andrews",
-    "Kelly Snyder",
-  ];
 
   return (
     <Modal open={props.isOpen}>
@@ -63,18 +59,21 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
           <div className={classes.divRow}>
             <div className={classes.divColumn}>
               <div className={classes.divRow}>
-                <Typography className={classes.itemName}>
+                <Typography variant="h4" className={classes.itemName}>
                   {STRINGS.TITLE}
                 </Typography>
                 <TextField
                   id="outlined-basic"
                   variant="outlined"
                   multiline={false}
+                  onChange={(event) => {
+                    setTitle(event.target.value);
+                  }}
                 />
               </div>
               <div className={classes.divRow}>
-                <Typography className={classes.itemName}>
-                  Ticket type
+                <Typography variant="h4" className={classes.itemName}>
+                  {STRINGS.TICKET_TYPE}
                 </Typography>
                 <Box>
                   <FormControl>
@@ -101,7 +100,9 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
               </div>
 
               <div className={classes.divRow}>
-                <Typography className={classes.itemName}>Priority</Typography>
+                <Typography variant="h4" className={classes.itemName}>
+                  {STRINGS.PRIORITY}
+                </Typography>
                 <FormControl>
                   <InputLabel id="demo-simple-select-label" />
                   <Select
@@ -126,27 +127,32 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
             </div>
             <div className={classes.divColumn}>
               <div className={classes.divRow}>
-                <Typography className={classes.itemName}>
-                  Story points
+                <Typography variant="h4" className={classes.itemName}>
+                  {STRINGS.STORY_POINTS}
                 </Typography>
                 <TextField
                   className={classes.storyPointsInput}
                   id="outlined-basic"
                   variant="outlined"
+                  onChange={(event) => {
+                    setStoryPoints(event.target.value);
+                  }}
                 />
               </div>
-              <Typography>Asignee</Typography>
-              <AddAsignee />
-              <Typography>
-                Created on : <span>data</span>
+              <div className={classes.divRow}>
+                <Typography variant="h4">{STRINGS.ASIGNEE}</Typography>
+                <AddAsignee personName={asigne} setPersonName={setAsigne} />
+              </div>
+              <Typography variant="h4">
+                {STRINGS.CREATED_ON} <span>data</span>
               </Typography>
-              <Typography>
-                Created by : <span>user email</span>
+              <Typography variant="h4">
+                {STRINGS.CREATED_BY} <span>user email</span>
               </Typography>
             </div>
           </div>
           <Box className={classes.descriptionBox}>
-            <Typography>Description</Typography>
+            <Typography variant="h4">{STRINGS.DESCRIPTION}</Typography>
             <TextField
               className={classes.description}
               id="outlined-basic"
@@ -154,6 +160,9 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
               multiline={true}
               minRows={3}
               maxRows={3}
+              onChange={(event) => {
+                setDescription(event.target.value);
+              }}
             />
           </Box>
           <Button className={classes.button}>
@@ -206,11 +215,11 @@ const useStyles = makeStyles()((theme) => ({
       1
     )} ${theme.spacing(5)}`,
     marginTop: "7vh",
-    background: theme.palette.secondary.light,
-    color: theme.palette.primary.dark,
+    background: theme.palette.primary.main,
+    color: theme.palette.secondary.light,
     ":hover": {
-      background: theme.palette.secondary.light,
-      color: theme.palette.primary.dark,
+      background: theme.palette.primary.main,
+      color: theme.palette.secondary.light,
     },
     alignSelf: "center",
   },
@@ -218,6 +227,7 @@ const useStyles = makeStyles()((theme) => ({
     display: "flex",
     flexDirection: "row",
     columnGap: theme.spacing(3),
+    alignItems: "center",
   },
   divColumn: {
     display: "flex",
@@ -226,7 +236,7 @@ const useStyles = makeStyles()((theme) => ({
     rowGap: theme.spacing(1),
   },
   itemName: {
-    width: "70px",
+    width: "fit-content",
   },
   form: {
     height: "30px",
@@ -238,8 +248,7 @@ const useStyles = makeStyles()((theme) => ({
     marginTop: theme.spacing(4),
   },
   storyPointsInput: {
-    height: "30px",
-    width: "50px",
+    width: "60px",
   },
 }));
 

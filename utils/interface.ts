@@ -22,6 +22,10 @@ export interface ILoggedUserData {
   firstName: string;
   lastName: string;
   firstTimeEntering: boolean;
+  companyId: string;
+  createdOn: Date;
+  freeDaysTotal: number;
+  role: string;
 }
 
 export interface ISelectFreeDaysDropdownProps {
@@ -109,4 +113,26 @@ export interface INewCompany {
 export interface ITaskStatus {
   name: string;
   items: ITicketInfo[];
+}
+
+export interface IAsigneeDropdown {
+  setPersonName: React.Dispatch<React.SetStateAction<string[]>>;
+  personName: string[];
+}
+
+export interface INewProject {
+  asigne: string[];
+  projectDescription: string;
+  projectLeader: string[];
+  projectName: string;
+  taskStatus: ITaskStatus[];
+}
+
+export interface IProject {
+  asigne: string[];
+  projectDescription: string;
+  projectLeader: string[];
+  projectName: string;
+  taskStatus: ITaskStatus[];
+  createdAt: Date;
 }

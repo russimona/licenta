@@ -76,4 +76,10 @@ export const STRINGS = {
   NEW_DEV_EMAIL: "New developer employee email",
   TITLE: "Title",
   ALL_MEMBERS: "All members",
+  TICKET_TYPE: "Ticket type",
+  STORY_POINTS: "Story points",
+  ASIGNEE: "Asignee",
+  CREATED_ON: "Created on :",
+  CREATED_BY: "Created by :",
+  PRIORITY: " Priority",
 };

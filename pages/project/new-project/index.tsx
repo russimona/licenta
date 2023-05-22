@@ -2,16 +2,25 @@ import { Navbar } from "@/components/Navbar/navbar";
 import { STRINGS } from "@/utils/strings";
 import { Box, Button, Tab, Tabs, TextField, Typography } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { ITaskStatus } from "@/utils/interface";
 import { Colors } from "@/utils/colors";
 import { AddAsignee } from "@/components/Project/add-ticket/AddAsigneeTicket";
 import { TabContext, TabPanel } from "@material-ui/lab";
+import { addNewProject } from "@/redux/addNewProject/slice";
+import { useAppDispatch } from "@/core/store";
+import { getAllProjectData } from "@/redux/getAllProjects/slice";
 
 function App() {
   const { classes, cx } = useStyles();
+  const [projectLeader, setProjectLeader] = useState<string[]>([]);
+  const [asigne, setAsigne] = useState<string[]>([]);
+  const [projectName, setProjectName] = useState<string>("");
+  const [projectDescription, setProjectDescription] = useState<string>("");
+  const [currentTaskStatus, setCurrentTaskStatus] = useState<string>("");
 
+  const dispatch = useAppDispatch();
   const [taskStatus, setTaskStatus] = useState<ITaskStatus[]>([]);
   const onKeyPressTextField = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
@@ -23,7 +32,20 @@ function App() {
     }
   };
 
-  const [currentTaskStatus, setCurrentTaskStatus] = useState<string>("");
+  const addNewProjectHandler = () => {
+    dispatch(
+      addNewProject({
+        taskStatus,
+        asigne,
+        projectLeader,
+        projectName,
+        projectDescription,
+      })
+    ).then(() => {
+      dispatch(getAllProjectData());
+    });
+  };
+
   const [value, setValue] = useState<string>("1");
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue.toString());
@@ -38,13 +60,21 @@ function App() {
             {STRINGS.NEW_PROJECT_SPECIFICATIONS.toLocaleUpperCase()}
           </Typography>
           <ArrowRightIcon className={classes.rightIcon} />
-          <Button className={cx(classes.button, classes.button)}>
+          <Button
+            className={cx(classes.button, classes.button)}
+            onClick={addNewProjectHandler}
+          >
             {STRINGS.ADD_NEW_PROJECT}
           </Button>
         </div>
         <div>
           <Typography>{STRINGS.PROJECT_NAME}</Typography>
-          <TextField label={STRINGS.NAME} />
+          <TextField
+            label={STRINGS.NAME}
+            onChange={(event) => {
+              setProjectName(event.target.value);
+            }}
+          />
         </div>
         <div>
           <Typography>{STRINGS.PROJECT_DESCRIPTION}</Typography>
@@ -54,6 +84,9 @@ function App() {
             id="outlined-multiline-flexible"
             minRows={5}
             maxRows={5}
+            onChange={(event) => {
+              setProjectDescription(event.target.value);
+            }}
           />
         </div>
         <div className={classes.page}>
@@ -61,19 +94,22 @@ function App() {
             <TabContext value={value}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs onChange={handleChange}>
-                  <Tab label="Add project leader" value="1" />
-                  <Tab label="Add project assignees" value="2" />
-                  <Tab label="Add tickets statuses" value="3" />
+                  <Tab label="Add project leader" value={1} />
+                  <Tab label="Add project assignees" value={2} />
+                  <Tab label="Add tickets statuses" value={3} />
                 </Tabs>
               </Box>
               <TabPanel value="1">
                 <Typography>{STRINGS.PROJECT_LEADER}</Typography>
-                <AddAsignee />
+                <AddAsignee
+                  personName={projectLeader}
+                  setPersonName={setProjectLeader}
+                />
               </TabPanel>
               <TabPanel value="2">
                 <div>
                   <Typography>{STRINGS.PROJECT_ASIGNEE}</Typography>
-                  <AddAsignee />
+                  <AddAsignee personName={asigne} setPersonName={setAsigne} />
                 </div>
               </TabPanel>
               <TabPanel value="3">

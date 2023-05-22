@@ -32,6 +32,7 @@ export const logIn = createAsyncThunk(
       password
     );
     window.sessionStorage.setItem("authToken", result.user.uid);
+    window.sessionStorage.setItem("email", email);
     return result;
   }
 );
