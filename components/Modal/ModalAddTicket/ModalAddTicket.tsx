@@ -24,6 +24,7 @@ import { addNewTicket } from "@/redux/addNewTicket/slice";
 import { PRIORITY_CODE } from "@/utils/priorityColors";
 import { INewTicket } from "@/utils/interface";
 import { numberTasks } from "@/utils/functions";
+import { getAllUserData } from "@/redux/getAllUsers/slice";
 
 interface ModalLayoutProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -38,6 +39,9 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
   const project = useAppSelector((state) => state.projects.project).filter(
     (item) => item.id === projectId
   )[0];
+  const users = useAppSelector((state) => state.allUsers.user);
+
+  const [asigne, setAsigne] = useState<string>();
 
   const [ticketType, setTicketType] = useState<string>(TICKET_TYPE.FEAT);
   const [ticketPriority, setTicketPriority] = useState<string>(
@@ -46,7 +50,6 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
   const [title, setTitle] = useState<string>("");
   const [storyPoints, setStoryPoints] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [asigne, setAsigne] = useState<string[]>([]);
 
   const handleChangeTicketType = (event: SelectChangeEvent) => {
     setTicketType(event.target.value as string);
@@ -76,6 +79,7 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
 
   useEffect(() => {
     dispatch(getAllProjectData());
+    dispatch(getAllUserData());
   }, [dispatch]);
 
   return (
@@ -171,7 +175,22 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
               </div>
               <div className={classes.divRow}>
                 <Typography variant="h4">{STRINGS.ASIGNEE}</Typography>
-                <AddAsignee personName={asigne} setPersonName={setAsigne} />
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <Select
+                    value={asigne}
+                    onChange={(event) => {
+                      setAsigne(event.target.value);
+                    }}
+                  >
+                    {users.map((user, index) => {
+                      return (
+                        <MenuItem key={user.uid} value={user.uid}>
+                          {user.email}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
               </div>
               <Typography variant="h4">
                 {STRINGS.CREATED_ON} <span>data</span>

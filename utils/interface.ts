@@ -145,6 +145,6 @@ export interface INewTicket {
   ticketType: string;
   priority: string;
   description: string;
-  asigne: string[];
+  asigne: string;
   storyPoints: string;
 }

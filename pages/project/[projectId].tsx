@@ -1,7 +1,7 @@
 import { CardItem } from "@/components/Board/CardItem";
 import { Navbar } from "@/components/Navbar/navbar";
 import { Colors } from "@/utils/colors";
-import { IColumnsDrag, INewTicket } from "@/utils/interface";
+import { IColumnsDrag, INewTicket, ITaskStatus } from "@/utils/interface";
 import { PRIORITY_CODE } from "@/utils/priorityColors";
 import { Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from "@/core/store";
 import { getAllProjectData } from "@/redux/getAllProjects/slice";
 import { onDragEnd } from "@/utils/functions";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
+import { updateTicketStatus } from "@/redux/updateTicketsStatus/slice";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -31,11 +32,19 @@ function App() {
   )[0];
   const projectStatus = useAppSelector((state) => state.projects.status);
 
-  const taskStatus = project.taskStatus;
+  // const taskStatus = project?.taskStatus;
+
+  const [taskStatus, setTaskStatus] = useState<ITaskStatus[]>([]);
+
+  useEffect(() => {
+    if (project) {
+      setTaskStatus(project?.taskStatus ?? []);
+    }
+  }, [project]);
 
   const [columns, setColumns] = useState(taskStatus);
   const { classes } = useStyles({
-    numberColumns: Object.keys(taskStatus).length,
+    numberColumns: Object.keys(taskStatus ?? ([] as ITaskStatus[])).length,
   });
 
   useEffect(() => {
@@ -45,6 +54,10 @@ function App() {
   useEffect(() => {
     projectStatus === ReduxThunkStatuses.FULFILLED && setColumns(taskStatus);
   }, [taskStatus, projectStatus]);
+
+  useEffect(() => {
+    dispatch(getAllProjectData());
+  }, [dispatch]);
 
   return (
     <div className={classes.background}>
@@ -62,7 +75,7 @@ function App() {
           variant="h1"
           style={{ marginTop: "100px", textAlign: "center", width: "100vw" }}
         >
-          {project.projectName}
+          {project?.projectName}
         </Typography>
         <div className={classes.box}>
           <DragDropContext

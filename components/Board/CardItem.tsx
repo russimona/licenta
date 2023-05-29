@@ -75,9 +75,7 @@ export const CardItem = (props: {
           </Typography>
         </div>
         <div className={classes.assigne}>
-          {props.data.asigne.map((item) => {
-            return <Typography key={item}>{item}</Typography>;
-          })}
+          <Typography>{props.data.asigne}</Typography>
         </div>
       </div>
     </div>
