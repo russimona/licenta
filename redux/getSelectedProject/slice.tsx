@@ -20,8 +20,6 @@ export const getSelectedProject = createAsyncThunk(
 
       return result;
     } catch (e) {
-      console.log(e);
-
       throw new Error(e as string);
     }
   }
