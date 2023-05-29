@@ -116,9 +116,11 @@ export const numberTasks = (taskStatus: ITaskStatus[]) => {
   let number = 0;
 
   taskStatus.forEach((status) => {
-    status.items.forEach((ticket) => {
-      number += 1;
-    });
+    status.items
+      ? status.items.forEach((ticket) => {
+          number += 1;
+        })
+      : (number = 0);
   });
 
   return number;

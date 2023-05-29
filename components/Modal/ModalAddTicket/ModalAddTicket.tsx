@@ -25,6 +25,7 @@ import { PRIORITY_CODE } from "@/utils/priorityColors";
 import { INewTicket } from "@/utils/interface";
 import { numberTasks } from "@/utils/functions";
 import { getAllUserData } from "@/redux/getAllUsers/slice";
+import { getSelectedProject } from "@/redux/getSelectedProject/slice";
 
 interface ModalLayoutProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -76,7 +77,9 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
     dispatch(
       addNewTicket({ projectId: projectId?.toString() ?? "", task: task })
     );
-    dispatch(getAllProjectData());
+    dispatch(
+      getSelectedProject({ projectId: projectId ? projectId.toString() : "" })
+    );
     props.setIsOpen(false);
   };
 

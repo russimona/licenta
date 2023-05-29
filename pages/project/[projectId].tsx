@@ -44,7 +44,7 @@ function App() {
     dispatch(
       getSelectedProject({ projectId: projectId ? projectId.toString() : "" })
     );
-  }, [dispatch, projectId]);
+  }, [dispatch, projectId, isOpen]);
 
   useEffect(() => {
     projectStatus === ReduxThunkStatuses.FULFILLED && setColumns(taskStatus);
