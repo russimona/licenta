@@ -16,9 +16,10 @@ const getAllProjects = async () => {
     doc.data().projectLeader.forEach((item: string) => {
       projectLeader.push(item);
     });
-    doc.data().taskStatus.forEach((item: ITaskStatus) => {
-      taskStatus.push(item);
-    });
+    if (doc.data().taskStatus)
+      doc.data().taskStatus.forEach((item: ITaskStatus) => {
+        taskStatus.push(item);
+      });
 
     result.push({
       id: doc.id,

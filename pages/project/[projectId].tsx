@@ -1,17 +1,11 @@
 import { CardItem } from "@/components/Board/CardItem";
 import { Navbar } from "@/components/Navbar/navbar";
 import { Colors } from "@/utils/colors";
-import { IColumnsDrag, INewTicket } from "@/utils/interface";
-import { PRIORITY_CODE } from "@/utils/priorityColors";
+import { ITaskStatus } from "@/utils/interface";
 import { Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import React, { useEffect, useState } from "react";
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { makeStyles } from "tss-react/mui";
 import { ModalAddTicket } from "@/components/Modal/ModalAddTicket/ModalAddTicket";
 import { useRouter } from "next/router";
@@ -31,11 +25,13 @@ function App() {
   )[0];
   const projectStatus = useAppSelector((state) => state.projects.status);
 
-  const taskStatus = project.taskStatus;
+  const taskStatus = project?.taskStatus
+    ? project?.taskStatus
+    : ([] as ITaskStatus[]);
 
   const [columns, setColumns] = useState(taskStatus);
   const { classes } = useStyles({
-    numberColumns: Object.keys(taskStatus).length,
+    numberColumns: taskStatus ? Object.keys(taskStatus).length : 0,
   });
 
   useEffect(() => {
@@ -44,7 +40,7 @@ function App() {
 
   useEffect(() => {
     projectStatus === ReduxThunkStatuses.FULFILLED && setColumns(taskStatus);
-  }, [taskStatus, projectStatus]);
+  }, [projectStatus]);
 
   return (
     <div className={classes.background}>
@@ -62,74 +58,77 @@ function App() {
           variant="h1"
           style={{ marginTop: "100px", textAlign: "center", width: "100vw" }}
         >
-          {project.projectName}
+          {project?.projectName ?? ""}
         </Typography>
         <div className={classes.box}>
           <DragDropContext
             onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
           >
-            {Object.entries(columns).map(([columnId, column], index) => {
-              return (
-                <div key={columnId}>
-                  <Typography variant="h4" className={classes.columnsName}>
-                    {column.name}
-                  </Typography>
-                  <Droppable droppableId={columnId} key={columnId}>
-                    {(provided, snapshot) => {
-                      return (
-                        <div
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
-                          style={{
-                            background: snapshot.isDraggingOver
-                              ? "#163a4d"
-                              : "#3c5d6e",
-                          }}
-                          className={classes.columnsContent}
-                        >
-                          {column.items.map((item, index) => {
-                            return (
-                              <Draggable
-                                key={item.id}
-                                draggableId={item.id}
-                                index={index}
-                              >
-                                {(provided, snapshot) => {
-                                  return (
-                                    <div
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                    >
-                                      <CardItem
-                                        data={item}
-                                        index={index}
-                                        numberColumns={
-                                          Object.keys(taskStatus).length
-                                        }
-                                      />
-                                    </div>
-                                  );
-                                }}
-                              </Draggable>
-                            );
-                          })}
-                          <Button
-                            className={classes.addNewTicket}
-                            onClick={() => {
-                              setIsOpen(true);
+            {columns &&
+              Object.entries(columns).map(([columnId, column], index) => {
+                return (
+                  <div key={columnId}>
+                    <Typography variant="h4" className={classes.columnsName}>
+                      {column.name}
+                    </Typography>
+                    <Droppable droppableId={columnId} key={columnId}>
+                      {(provided, snapshot) => {
+                        return (
+                          <div
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                            style={{
+                              background: snapshot.isDraggingOver
+                                ? "#163a4d"
+                                : "#3c5d6e",
                             }}
+                            className={classes.columnsContent}
                           >
-                            <AddIcon />
-                          </Button>
-                          {provided.placeholder}
-                        </div>
-                      );
-                    }}
-                  </Droppable>
-                </div>
-              );
-            })}
+                            {column.items.map((item, index) => {
+                              return (
+                                <Draggable
+                                  key={item.id}
+                                  draggableId={item.id}
+                                  index={index}
+                                >
+                                  {(provided, snapshot) => {
+                                    return (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                      >
+                                        <CardItem
+                                          data={item}
+                                          index={index}
+                                          numberColumns={
+                                            taskStatus
+                                              ? Object.keys(taskStatus).length
+                                              : 0
+                                          }
+                                        />
+                                      </div>
+                                    );
+                                  }}
+                                </Draggable>
+                              );
+                            })}
+                            <Button
+                              className={classes.addNewTicket}
+                              onClick={() => {
+                                setIsOpen(true);
+                              }}
+                            >
+                              <AddIcon />
+                            </Button>
+                            {provided.placeholder}
+                          </div>
+                        );
+                      }}
+                    </Droppable>
+                  </div>
+                );
+              })}
           </DragDropContext>
         </div>
       </div>
