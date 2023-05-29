@@ -11,6 +11,8 @@ export const addNewTicketService = async (props: {
   const taskStatus = [...data?.data()?.taskStatus];
   taskStatus[0].items = [...taskStatus[0].items, props.task];
 
+  console.log(taskStatus);
+
   return await updateDoc(projRef, {
     taskStatus: taskStatus,
   });
