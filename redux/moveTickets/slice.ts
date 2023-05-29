@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 import { STRINGS } from "@/utils/strings";
-import { INewTicket, ITaskStatus } from "@/utils/interface";
+import { ITaskStatus } from "@/utils/interface";
 import { setTicketsStatusService } from "@/services/setTicketsStatusService";
 
 const initialState = {

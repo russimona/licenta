@@ -6,24 +6,21 @@ const getAllProjects = async () => {
   const result: IProject[] = [];
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
-    const asigne: string[] = [];
     const projectLeader: string[] = [];
     const taskStatus: ITaskStatus[] = [];
 
-    doc.data().asigne.forEach((item: string) => {
-      asigne.push(item);
-    });
     doc.data().projectLeader.forEach((item: string) => {
       projectLeader.push(item);
     });
-    if (doc.data().taskStatus)
+    if (doc.data().taskStatus) {
       doc.data().taskStatus.forEach((item: ITaskStatus) => {
         taskStatus.push(item);
       });
+    }
 
     result.push({
       id: doc.id,
-      asigne: asigne,
+      asigne: doc.data().asigne,
       projectDescription: doc.data().projectDescription,
       projectLeader: projectLeader,
       projectName: doc.data().projectName,

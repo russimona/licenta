@@ -8,6 +8,8 @@ import BugReportIcon from "@mui/icons-material/BugReport";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { TICKET_PRIORITY, TICKET_TYPE } from "@/utils/ticketsInfo";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
+import { useAppDispatch, useAppSelector } from "@/core/store";
+import { getAllUserData } from "@/redux/getAllUsers/slice";
 
 export const CardItem = (props: {
   data: INewTicket;
@@ -17,9 +19,14 @@ export const CardItem = (props: {
   const [ticketType, setTicketType] = useState<number>(
     PRIORITY_CODE.LOW_PRIORITY
   );
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.allUsers.user).filter((user) =>
+    user.uid.match(props.data.asigne)
+  )[0];
 
   useEffect(() => {
-    switch (props.data.ticketType) {
+    dispatch(getAllUserData());
+    switch (props.data.priority) {
       case TICKET_PRIORITY.LOW_PRIORITY:
         setTicketType(PRIORITY_CODE.LOW_PRIORITY);
         break;
@@ -30,7 +37,7 @@ export const CardItem = (props: {
         setTicketType(PRIORITY_CODE.HIGH_PRIORITY);
         break;
     }
-  }, [props.data.ticketType]);
+  }, [props.data.priority, dispatch]);
 
   const { classes, cx } = useStyles({
     ticketType: ticketType,
@@ -75,9 +82,10 @@ export const CardItem = (props: {
           </Typography>
         </div>
         <div className={classes.assigne}>
-          {props.data.asigne.map((item) => {
-            return <Typography key={item}>{item}</Typography>;
-          })}
+          <Typography>
+            {user.firstName.charAt(0)}
+            {user.lastName.charAt(0)}
+          </Typography>
         </div>
       </div>
     </div>
