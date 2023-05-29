@@ -17,8 +17,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import { STRINGS } from "@/utils/strings";
 import { TICKET_PRIORITY, TICKET_TYPE } from "@/utils/ticketsInfo";
 import { AddAsignee } from "@/components/Project/add-ticket/AddAsigneeTicket";
-import { useAppDispatch } from "@/core/store";
-import { addNewProject } from "@/redux/addNewProject/slice";
+import { useAppDispatch, useAppSelector } from "@/core/store";
+import { useRouter } from "next/router";
+import { getAllProjectData } from "@/redux/getAllProjects/slice";
+import { addNewTicket } from "@/redux/addNewTicket/slice";
+import { PRIORITY_CODE } from "@/utils/priorityColors";
+import { INewTicket } from "@/utils/interface";
+import { numberTasks } from "@/utils/functions";
 
 interface ModalLayoutProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,6 +32,12 @@ interface ModalLayoutProps {
 
 export const ModalAddTicket = memo((props: ModalLayoutProps) => {
   const { classes } = useStyles();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { projectId } = router.query;
+  const project = useAppSelector((state) => state.projects.project).filter(
+    (item) => item.id === projectId
+  )[0];
 
   const [ticketType, setTicketType] = useState<string>(TICKET_TYPE.FEAT);
   const [ticketPriority, setTicketPriority] = useState<string>(
@@ -47,6 +58,25 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
   const onCloseHandler = () => {
     props.setIsOpen(false);
   };
+
+  const addTicketHandler = () => {
+    const task = {
+      id: (numberTasks(project.taskStatus) + 1).toString(),
+      title: title,
+      ticketType: ticketType,
+      priority: ticketPriority,
+      description: description,
+      asigne: asigne,
+      storyPoints: storyPoints,
+    } as INewTicket;
+    dispatch(addNewTicket({ projectId: project.id, task: task }));
+    dispatch(getAllProjectData());
+    props.setIsOpen(false);
+  };
+
+  useEffect(() => {
+    dispatch(getAllProjectData());
+  }, [dispatch]);
 
   return (
     <Modal open={props.isOpen}>
@@ -165,8 +195,8 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
               }}
             />
           </Box>
-          <Button className={classes.button}>
-            {STRINGS.CREATE_YOUR_COMPANY_PROFILE}
+          <Button className={classes.button} onClick={addTicketHandler}>
+            {STRINGS.ADD_NEW_TICKET}
           </Button>
         </Box>
       </Box>

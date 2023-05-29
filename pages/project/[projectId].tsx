@@ -1,11 +1,11 @@
 import { CardItem } from "@/components/Board/CardItem";
 import { Navbar } from "@/components/Navbar/navbar";
 import { Colors } from "@/utils/colors";
-import { IColumnsDrag } from "@/utils/interface";
+import { IColumnsDrag, INewTicket } from "@/utils/interface";
 import { PRIORITY_CODE } from "@/utils/priorityColors";
 import { Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DragDropContext,
   Draggable,
@@ -14,124 +14,37 @@ import {
 } from "react-beautiful-dnd";
 import { makeStyles } from "tss-react/mui";
 import { ModalAddTicket } from "@/components/Modal/ModalAddTicket/ModalAddTicket";
-
-const tasks = [
-  {
-    id: "1",
-    content: "First task",
-    storyPoints: 2,
-    title: "Task1",
-    asignee: "RM",
-    priority: PRIORITY_CODE.HIGH_PRIORITY,
-    type: "BUG",
-  },
-  {
-    id: "2",
-    content: "Second task",
-    storyPoints: 9,
-    title: "Task2",
-    asignee: "SC",
-    priority: PRIORITY_CODE.MEDIUM_PRIORITY,
-    type: "BUG",
-  },
-  {
-    id: "3",
-    content: "Third task",
-    storyPoints: 7,
-    title: "Task3",
-    asignee: "DC",
-    priority: PRIORITY_CODE.LOW_PRIORITY,
-    type: "FEAT",
-  },
-  {
-    id: "4",
-    content: "Fourth task",
-    storyPoints: 3,
-    title: "Task4",
-    asignee: "RM",
-    priority: PRIORITY_CODE.LOW_PRIORITY,
-    type: "FEAT",
-  },
-  {
-    id: "5",
-    content: "Fifth task",
-    storyPoints: 1,
-    title: "Task5",
-    asignee: "SM",
-    priority: PRIORITY_CODE.HIGH_PRIORITY,
-    type: "FEAT",
-  },
-];
-
-const taskStatus = [
-  {
-    name: "Backlog",
-    items: tasks,
-  },
-  {
-    name: "To do",
-    items: [],
-  },
-  {
-    name: "In Progress",
-    items: [],
-  },
-  {
-    name: "QA",
-    items: [],
-  },
-  {
-    name: "Done",
-    items: [],
-  },
-];
+import { useRouter } from "next/router";
+import { useAppDispatch, useAppSelector } from "@/core/store";
+import { getAllProjectData } from "@/redux/getAllProjects/slice";
+import { onDragEnd } from "@/utils/functions";
+import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const router = useRouter();
+  const { projectId } = router.query;
+  const project = useAppSelector((state) => state.projects.project).filter(
+    (item) => item.id === projectId
+  )[0];
+  const projectStatus = useAppSelector((state) => state.projects.status);
+
+  const taskStatus = project.taskStatus;
+
   const [columns, setColumns] = useState(taskStatus);
   const { classes } = useStyles({
     numberColumns: Object.keys(taskStatus).length,
   });
-  const [isOpen, setIsOpen] = useState<boolean>(true);
 
-  const onDragEnd = (
-    result: DropResult,
-    columns: IColumnsDrag[],
-    setColumns: React.Dispatch<React.SetStateAction<IColumnsDrag[]>>
-  ) => {
-    if (!result.destination) return;
-    const { source, destination } = result;
-    if (source.droppableId !== destination.droppableId) {
-      const sourceColumn = columns[parseInt(source.droppableId)];
-      const destColumn = columns[parseInt(destination.droppableId)];
-      const sourceItems = [...sourceColumn.items];
-      const destItems = [...destColumn.items];
-      const [removed] = sourceItems.splice(source.index, 1);
-      destItems.splice(destination.index, 0, removed);
-      setColumns({
-        ...columns,
-        [source.droppableId]: {
-          ...sourceColumn,
-          items: sourceItems,
-        },
-        [destination.droppableId]: {
-          ...destColumn,
-          items: destItems,
-        },
-      });
-    } else {
-      const column = columns[parseInt(source.droppableId)];
-      const copiedItems = [...column.items];
-      const [removed] = copiedItems.splice(source.index, 1);
-      copiedItems.splice(destination.index, 0, removed);
-      setColumns({
-        ...columns,
-        [source.droppableId]: {
-          ...column,
-          items: copiedItems,
-        },
-      });
-    }
-  };
+  useEffect(() => {
+    dispatch(getAllProjectData());
+  }, [dispatch]);
+
+  useEffect(() => {
+    projectStatus === ReduxThunkStatuses.FULFILLED && setColumns(taskStatus);
+  }, [taskStatus, projectStatus]);
 
   return (
     <div className={classes.background}>
@@ -149,7 +62,7 @@ function App() {
           variant="h1"
           style={{ marginTop: "100px", textAlign: "center", width: "100vw" }}
         >
-          Licenta V1.0
+          {project.projectName}
         </Typography>
         <div className={classes.box}>
           <DragDropContext
@@ -201,7 +114,12 @@ function App() {
                               </Draggable>
                             );
                           })}
-                          <Button className={classes.addNewTicket}>
+                          <Button
+                            className={classes.addNewTicket}
+                            onClick={() => {
+                              setIsOpen(true);
+                            }}
+                          >
                             <AddIcon />
                           </Button>
                           {provided.placeholder}

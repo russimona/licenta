@@ -43,7 +43,7 @@ export const ProjectsItemDropBox = () => {
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {projectsStatus === ReduxThunkStatuses.FULFILLED ? (
           projects.map((project, index) => (
-            <Link href={ROUTES.PROJECT} key={index}>
+            <Link href={`${ROUTES.PROJECT}/${project.id}`} key={index}>
               <MenuItem onClick={handleClose}>{project.projectName}</MenuItem>
             </Link>
           ))

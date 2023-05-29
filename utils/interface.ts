@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs";
+import { TICKET_PRIORITY, TICKET_TYPE } from "./ticketsInfo";
 
 export interface ILoginData {
   email: string;
@@ -80,19 +81,19 @@ export interface ITicketItem {
   }[];
 }
 
-export interface ITicketInfo {
-  id: string;
-  content: string;
-  asignee: string;
-  storyPoints: number;
-  title: string;
-  priority: number;
-  type: string;
-}
+// export interface ITicketInfo {
+//   id: string;
+//   content: string;
+//   asignee: string;
+//   storyPoints: number;
+//   title: string;
+//   priority: number;
+//   type: string;
+// }
 
 export interface IColumnsDrag {
   name: string;
-  items: ITicketInfo[];
+  items: INewTicket[];
 }
 
 export type TEvent = {
@@ -112,7 +113,7 @@ export interface INewCompany {
 
 export interface ITaskStatus {
   name: string;
-  items: ITicketInfo[];
+  items: INewTicket[];
 }
 
 export interface IAsigneeDropdown {
@@ -129,10 +130,21 @@ export interface INewProject {
 }
 
 export interface IProject {
+  id: string;
   asigne: string[];
   projectDescription: string;
   projectLeader: string[];
   projectName: string;
   taskStatus: ITaskStatus[];
   createdAt: Date;
+}
+
+export interface INewTicket {
+  id: string;
+  title: string;
+  ticketType: string;
+  priority: string;
+  description: string;
+  asigne: string[];
+  storyPoints: string;
 }

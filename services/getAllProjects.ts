@@ -21,6 +21,7 @@ const getAllProjects = async () => {
     });
 
     result.push({
+      id: doc.id,
       asigne: asigne,
       projectDescription: doc.data().projectDescription,
       projectLeader: projectLeader,

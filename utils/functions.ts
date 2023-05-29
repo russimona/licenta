@@ -1,5 +1,6 @@
 import { useAppSelector } from "@/core/store";
-import { TEvent } from "@/utils/interface";
+import { IColumnsDrag, ITaskStatus, TEvent } from "@/utils/interface";
+import { DropResult } from "react-beautiful-dnd";
 
 export const calculateWorkingDays = (
   startDate: Date,
@@ -69,4 +70,56 @@ export const remainingDaysOff = (
   });
 
   return takenDaysOff;
+};
+
+export const onDragEnd = (
+  result: DropResult,
+  columns: IColumnsDrag[],
+  setColumns: React.Dispatch<React.SetStateAction<IColumnsDrag[]>>
+) => {
+  if (!result.destination) return;
+  const { source, destination } = result;
+  if (source.droppableId !== destination.droppableId) {
+    const sourceColumn = columns[parseInt(source.droppableId)];
+    const destColumn = columns[parseInt(destination.droppableId)];
+    const sourceItems = [...sourceColumn.items];
+    const destItems = [...destColumn.items];
+    const [removed] = sourceItems.splice(source.index, 1);
+    destItems.splice(destination.index, 0, removed);
+    setColumns({
+      ...columns,
+      [source.droppableId]: {
+        ...sourceColumn,
+        items: sourceItems,
+      },
+      [destination.droppableId]: {
+        ...destColumn,
+        items: destItems,
+      },
+    });
+  } else {
+    const column = columns[parseInt(source.droppableId)];
+    const copiedItems = [...column.items];
+    const [removed] = copiedItems.splice(source.index, 1);
+    copiedItems.splice(destination.index, 0, removed);
+    setColumns({
+      ...columns,
+      [source.droppableId]: {
+        ...column,
+        items: copiedItems,
+      },
+    });
+  }
+};
+
+export const numberTasks = (taskStatus: ITaskStatus[]) => {
+  let number = 0;
+
+  taskStatus.forEach((status) => {
+    status.items.forEach((ticket) => {
+      number += 1;
+    });
+  });
+
+  return number;
 };

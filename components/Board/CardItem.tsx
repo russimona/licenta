@@ -1,19 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "tss-react/mui";
-import { ITicketInfo } from "@/utils/interface";
+import { INewTicket } from "@/utils/interface";
 import { Colors } from "@/utils/colors";
 import { Typography } from "@mui/material";
 import { PRIORITY_CODE, PRIORYYTY_COLORS } from "@/utils/priorityColors";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { TICKET_PRIORITY, TICKET_TYPE } from "@/utils/ticketsInfo";
+import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 
 export const CardItem = (props: {
-  data: ITicketInfo;
+  data: INewTicket;
   index: number;
   numberColumns: number;
 }) => {
+  const [ticketType, setTicketType] = useState<number>(
+    PRIORITY_CODE.LOW_PRIORITY
+  );
+
+  useEffect(() => {
+    switch (props.data.ticketType) {
+      case TICKET_PRIORITY.LOW_PRIORITY:
+        setTicketType(PRIORITY_CODE.LOW_PRIORITY);
+        break;
+      case TICKET_PRIORITY.MEDIUM_PRIORITY:
+        setTicketType(PRIORITY_CODE.MEDIUM_PRIORITY);
+        break;
+      default:
+        setTicketType(PRIORITY_CODE.HIGH_PRIORITY);
+        break;
+    }
+  }, [props.data.ticketType]);
+
   const { classes, cx } = useStyles({
-    ticketType: props.data.priority,
+    ticketType: ticketType,
     numberColumns: props.numberColumns,
   });
 
@@ -21,11 +41,12 @@ export const CardItem = (props: {
     <div className={classes.box}>
       <div className={classes.flexRow}>
         <Typography variant="body2" className={classes.priority}>
-          {props.data.priority === PRIORITY_CODE.HIGH_PRIORITY &&
+          {props.data.priority === TICKET_PRIORITY.HIGH_PRIORITY &&
             "High priority"}
-          {props.data.priority === PRIORITY_CODE.MEDIUM_PRIORITY &&
+          {props.data.priority === TICKET_PRIORITY.MEDIUM_PRIORITY &&
             "Medium priority"}
-          {props.data.priority === PRIORITY_CODE.LOW_PRIORITY && "Low priority"}
+          {props.data.priority === TICKET_PRIORITY.LOW_PRIORITY &&
+            "Low priority"}
         </Typography>
       </div>
       <Typography variant="h5" className={classes.title}>
@@ -37,18 +58,27 @@ export const CardItem = (props: {
           {props.data.storyPoints}
         </Typography>
         <div className={classes.flexRow}>
-          {props.data.type === "BUG" && (
+          {props.data.ticketType === TICKET_TYPE.BUG && (
             <BugReportIcon className={cx(classes.icons, classes.bugIcon)} />
           )}
-          {props.data.type === "FEAT" && (
+          {props.data.ticketType === TICKET_TYPE.FEAT && (
             <BookmarkIcon className={cx(classes.icons, classes.featureIcon)} />
+          )}
+          {props.data.ticketType === TICKET_TYPE.REFACTOR && (
+            <SettingsSuggestIcon
+              className={cx(classes.icons, classes.featureIcon)}
+            />
           )}
 
           <Typography variant="body1" className={classes.ticketName}>
-            {props.data.type}-{props.data.id}
+            {props.data.ticketType}-{props.data.id}
           </Typography>
         </div>
-        <div className={classes.assigne}>{props.data.asignee}</div>
+        <div className={classes.assigne}>
+          {props.data.asigne.map((item) => {
+            return <Typography key={item}>{item}</Typography>;
+          })}
+        </div>
       </div>
     </div>
   );
@@ -81,6 +111,7 @@ const useStyles = makeStyles<{ ticketType: number; numberColumns: number }>()(
       paddingTop: "3px",
       float: "right",
       marginTop: theme.spacing(-4.6),
+      fontSize: theme.typography.body2.fontSize,
     },
     storyPoints: {
       height: "30px",
