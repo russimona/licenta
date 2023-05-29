@@ -5,6 +5,7 @@ import { allUserDataReducer } from "@/redux/getAllUsers/slice";
 import { daysOffReducer } from "@/redux/getFreeDays/slice";
 import { loggedUserDataReducer } from "@/redux/getLoggedUser/slice";
 import { nationalDaysOffReducer } from "@/redux/getNationalDaysOff/slice";
+import { selectedProjectDataReducer } from "@/redux/getSelectedProject/slice";
 import { loginReducer } from "@/redux/loginSlice/slice";
 import { logOutReducer } from "@/redux/logOut/slice";
 import { configureStore } from "@reduxjs/toolkit";
@@ -21,6 +22,7 @@ export const store = configureStore({
     allUsers: allUserDataReducer,
     newProject: addNewProjectReducer,
     projects: allProjectDataReducer,
+    selectedProject: selectedProjectDataReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
   middleware: (getDefaultMiddleware) =>

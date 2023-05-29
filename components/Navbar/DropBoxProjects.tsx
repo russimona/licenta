@@ -25,6 +25,7 @@ export const ProjectsItemDropBox = () => {
   useEffect(() => {
     dispatch(getAllProjectData());
   }, [dispatch]);
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -40,20 +41,22 @@ export const ProjectsItemDropBox = () => {
         {STRINGS.PROJECTS}
         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </Button>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {projectsStatus === ReduxThunkStatuses.FULFILLED ? (
-          projects.map((project, index) => (
-            <Link href={`${ROUTES.PROJECT}/${project.id}`} key={index}>
-              <MenuItem onClick={handleClose}>{project.projectName}</MenuItem>
-            </Link>
-          ))
-        ) : (
-          <></>
-        )}
-        <Link href={ROUTES.ADD_NEW_PROJECT}>
-          <MenuItem onClick={handleClose}>{STRINGS.ADD_NEW_PROJECT}</MenuItem>
-        </Link>
-      </Menu>
+      {projectsStatus !== ReduxThunkStatuses.PENDING && (
+        <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+          {projectsStatus !== ReduxThunkStatuses.PENDING ? (
+            projects.map((project, index) => (
+              <Link href={`${ROUTES.PROJECT}/${project.id}`} key={index}>
+                <MenuItem onClick={handleClose}>{project.projectName}</MenuItem>
+              </Link>
+            ))
+          ) : (
+            <></>
+          )}
+          <Link href={ROUTES.ADD_NEW_PROJECT}>
+            <MenuItem onClick={handleClose}>{STRINGS.ADD_NEW_PROJECT}</MenuItem>
+          </Link>
+        </Menu>
+      )}
     </div>
   );
 };

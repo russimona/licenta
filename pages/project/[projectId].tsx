@@ -10,24 +10,30 @@ import { makeStyles } from "tss-react/mui";
 import { ModalAddTicket } from "@/components/Modal/ModalAddTicket/ModalAddTicket";
 import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "@/core/store";
-import { getAllProjectData } from "@/redux/getAllProjects/slice";
 import { onDragEnd } from "@/utils/functions";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
+import { setTicketsStatus } from "@/redux/moveTickets/slice";
+import { getSelectedProject } from "@/redux/getSelectedProject/slice";
 
 function App() {
   const dispatch = useAppDispatch();
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const router = useRouter();
   const { projectId } = router.query;
-  const project = useAppSelector((state) => state.projects.project).filter(
-    (item) => item.id === projectId
-  )[0];
-  const projectStatus = useAppSelector((state) => state.projects.status);
+  const project = useAppSelector((state) => state.selectedProject.project);
+  const [taskStatus, setTaskStatus] = useState<ITaskStatus[]>([]);
 
-  const taskStatus = project?.taskStatus
-    ? project?.taskStatus
-    : ([] as ITaskStatus[]);
+  useEffect(() => {
+    if (project) {
+      setTaskStatus(project?.taskStatus ?? []);
+    }
+  }, [project]);
+
+  useEffect(() => {
+    setColumns(taskStatus);
+  }, [taskStatus]);
+
+  const projectStatus = useAppSelector((state) => state.selectedProject.status);
 
   const [columns, setColumns] = useState(taskStatus);
   const { classes } = useStyles({
@@ -35,12 +41,24 @@ function App() {
   });
 
   useEffect(() => {
-    dispatch(getAllProjectData());
-  }, [dispatch]);
+    dispatch(
+      getSelectedProject({ projectId: projectId ? projectId.toString() : "" })
+    );
+  }, [dispatch, projectId]);
 
   useEffect(() => {
     projectStatus === ReduxThunkStatuses.FULFILLED && setColumns(taskStatus);
-  }, [projectStatus]);
+  }, [projectStatus, project, taskStatus]);
+
+  useEffect(() => {
+    if (projectId)
+      dispatch(
+        setTicketsStatus({
+          projectId: projectId.toString(),
+          tasks: columns,
+        })
+      );
+  }, [columns, dispatch, projectId]);
 
   return (
     <div className={classes.background}>
