@@ -192,12 +192,6 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
                   </Select>
                 </FormControl>
               </div>
-              <Typography variant="h4">
-                {STRINGS.CREATED_ON} <span>data</span>
-              </Typography>
-              <Typography variant="h4">
-                {STRINGS.CREATED_BY} <span>user email</span>
-              </Typography>
             </div>
           </div>
           <Box className={classes.descriptionBox}>

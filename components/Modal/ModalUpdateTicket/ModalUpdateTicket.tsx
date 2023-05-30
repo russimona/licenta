@@ -13,6 +13,7 @@ import {
   TextField,
   InputLabel,
 } from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CloseIcon from "@mui/icons-material/Close";
 import { STRINGS } from "@/utils/strings";
 import { TICKET_PRIORITY, TICKET_TYPE } from "@/utils/ticketsInfo";
@@ -22,36 +23,35 @@ import { useRouter } from "next/router";
 import { getAllProjectData } from "@/redux/getAllProjects/slice";
 import { addNewTicket } from "@/redux/addNewTicket/slice";
 import { PRIORITY_CODE } from "@/utils/priorityColors";
-import { INewTicket, ITaskStatus } from "@/utils/interface";
+import { INewTicket } from "@/utils/interface";
 import { numberTasks } from "@/utils/functions";
 import { getAllUserData } from "@/redux/getAllUsers/slice";
+import { Colors } from "@/utils/colors";
 
 interface ModalLayoutProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isOpen: boolean;
-  ticketData: INewTicket;
-  task: ITaskStatus[];
+  data: INewTicket;
 }
 
-export const ModalEditTicket = memo((props: ModalLayoutProps) => {
+export const ModalUpdateTicket = (props: ModalLayoutProps) => {
   const { classes } = useStyles();
-  const router = useRouter();
   const dispatch = useAppDispatch();
-  const { projectId } = router.query;
-  const project = useAppSelector((state) => state.projects.project).filter(
-    (item) => item.id === projectId
-  )[0];
   const users = useAppSelector((state) => state.allUsers.user);
-
-  const [asigne, setAsigne] = useState<string>();
-
-  const [ticketType, setTicketType] = useState<string>(TICKET_TYPE.FEAT);
-  const [ticketPriority, setTicketPriority] = useState<string>(
-    TICKET_PRIORITY.LOW_PRIORITY
+  const [asigne, setAsigne] = useState<string>(
+    users.filter((item) => item.uid.match(props.data.asigne))[0].email
   );
-  const [title, setTitle] = useState<string>("");
-  const [storyPoints, setStoryPoints] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [ticketType, setTicketType] = useState<string>(props.data.ticketType);
+  const [ticketPriority, setTicketPriority] = useState<string>(
+    props.data.priority
+  );
+  const [title, setTitle] = useState<string>(props.data.title);
+  const [storyPoints, setStoryPoints] = useState<string>(
+    props.data.storyPoints
+  );
+  const [description, setDescription] = useState<string>(
+    props.data.description
+  );
 
   const handleChangeTicketType = (event: SelectChangeEvent) => {
     setTicketType(event.target.value as string);
@@ -61,22 +61,24 @@ export const ModalEditTicket = memo((props: ModalLayoutProps) => {
   };
 
   const onCloseHandler = () => {
+    console.log("here");
     props.setIsOpen(false);
   };
 
   const addTicketHandler = () => {
-    const task = {
-      id: (numberTasks(project.taskStatus) + 1).toString(),
-      title: title,
-      ticketType: ticketType,
-      priority: ticketPriority,
-      description: description,
-      asigne: asigne,
-      storyPoints: storyPoints,
-    } as INewTicket;
-    dispatch(addNewTicket({ projectId: project.id, task: task }));
-    dispatch(getAllProjectData());
     props.setIsOpen(false);
+    // const task = {
+    //   id: (numberTasks(project.taskStatus) + 1).toString(),
+    //   title: title,
+    //   ticketType: ticketType,
+    //   priority: ticketPriority,
+    //   description: description,
+    //   asigne: asigne,
+    //   storyPoints: storyPoints,
+    // } as INewTicket;
+    // dispatch(addNewTicket({ projectId: project.id, task: task }));
+    // dispatch(getAllProjectData());
+    // props.setIsOpen(false);
   };
 
   useEffect(() => {
@@ -101,6 +103,7 @@ export const ModalEditTicket = memo((props: ModalLayoutProps) => {
                 <TextField
                   id="outlined-basic"
                   variant="outlined"
+                  value={title}
                   multiline={false}
                   onChange={(event) => {
                     setTitle(event.target.value);
@@ -170,6 +173,7 @@ export const ModalEditTicket = memo((props: ModalLayoutProps) => {
                   className={classes.storyPointsInput}
                   id="outlined-basic"
                   variant="outlined"
+                  value={storyPoints}
                   onChange={(event) => {
                     setStoryPoints(event.target.value);
                   }}
@@ -194,12 +198,6 @@ export const ModalEditTicket = memo((props: ModalLayoutProps) => {
                   </Select>
                 </FormControl>
               </div>
-              <Typography variant="h4">
-                {STRINGS.CREATED_ON} <span>data</span>
-              </Typography>
-              <Typography variant="h4">
-                {STRINGS.CREATED_BY} <span>user email</span>
-              </Typography>
             </div>
           </div>
           <Box className={classes.descriptionBox}>
@@ -211,6 +209,7 @@ export const ModalEditTicket = memo((props: ModalLayoutProps) => {
               multiline={true}
               minRows={3}
               maxRows={3}
+              value={description}
               onChange={(event) => {
                 setDescription(event.target.value);
               }}
@@ -219,11 +218,15 @@ export const ModalEditTicket = memo((props: ModalLayoutProps) => {
           <Button className={classes.button} onClick={addTicketHandler}>
             {STRINGS.ADD_NEW_TICKET}
           </Button>
+          <Box className={classes.boxRow}>
+            <Typography>Delete task</Typography>
+            <DeleteForeverIcon />
+          </Box>
         </Box>
       </Box>
     </Modal>
   );
-});
+};
 
 const useStyles = makeStyles()((theme) => ({
   box: {
@@ -300,6 +303,13 @@ const useStyles = makeStyles()((theme) => ({
   },
   storyPointsInput: {
     width: "60px",
+  },
+  boxRow: {
+    display: "flex",
+    // justifyContent: "center",
+    flexDirection: "row",
+    marginTop: theme.spacing(3),
+    color: Colors.redCalendar,
   },
 }));
 

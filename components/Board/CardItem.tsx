@@ -10,12 +10,14 @@ import { TICKET_PRIORITY, TICKET_TYPE } from "@/utils/ticketsInfo";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import { getAllUserData } from "@/redux/getAllUsers/slice";
 import { useAppDispatch, useAppSelector } from "@/core/store";
+import { ModalUpdateTicket } from "../Modal/ModalUpdateTicket/ModalUpdateTicket";
 
 export const CardItem = (props: {
   data: INewTicket;
   index: number;
   numberColumns: number;
 }) => {
+  const [editTicket, setEditTicket] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const [ticketType, setTicketType] = useState<number>(
     PRIORITY_CODE.LOW_PRIORITY
@@ -45,8 +47,17 @@ export const CardItem = (props: {
     numberColumns: props.numberColumns,
   });
 
+  const editTicketHandler = () => {
+    setEditTicket(true);
+  };
+
   return (
-    <div className={classes.box}>
+    <div className={classes.box} onClick={editTicketHandler}>
+      <ModalUpdateTicket
+        isOpen={editTicket}
+        setIsOpen={setEditTicket}
+        data={props.data}
+      />
       <div className={classes.flexRow}>
         <Typography variant="body2" className={classes.priority}>
           {props.data.priority === TICKET_PRIORITY.HIGH_PRIORITY &&
