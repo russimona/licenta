@@ -84,8 +84,8 @@ export const CardItem = (props: {
         </div>
         <div className={classes.assigne}>
           <Typography>
-            {user.firstName.charAt(0).toUpperCase()}
-            {user.lastName.charAt(0).toUpperCase()}
+            {user && user.firstName.charAt(0).toUpperCase()}
+            {user && user.lastName.charAt(0).toUpperCase()}
           </Typography>
         </div>
       </div>

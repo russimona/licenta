@@ -9,8 +9,6 @@ export const moveTicketService = async (props: {
   const projRef = doc(db, "Projects", props.projectId);
   const taskStatus = Object.values(props.task);
 
-  console.log(taskStatus);
-
   return await updateDoc(projRef, {
     taskStatus: taskStatus,
   });

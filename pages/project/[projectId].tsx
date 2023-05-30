@@ -1,17 +1,11 @@
 import { CardItem } from "@/components/Board/CardItem";
 import { Navbar } from "@/components/Navbar/navbar";
 import { Colors } from "@/utils/colors";
-import { IColumnsDrag, INewTicket, ITaskStatus } from "@/utils/interface";
-import { PRIORITY_CODE } from "@/utils/priorityColors";
+import { ITaskStatus } from "@/utils/interface";
 import { Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import React, { useEffect, useState } from "react";
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { makeStyles } from "tss-react/mui";
 import { ModalAddTicket } from "@/components/Modal/ModalAddTicket/ModalAddTicket";
 import { useRouter } from "next/router";
@@ -19,12 +13,10 @@ import { useAppDispatch, useAppSelector } from "@/core/store";
 import { getAllProjectData } from "@/redux/getAllProjects/slice";
 import { onDragEnd } from "@/utils/functions";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
-import { updateTicketStatus } from "@/redux/updateTicketsStatus/slice";
 import { moveTickets } from "@/redux/moveTickets/slice";
 
 function App() {
   const dispatch = useAppDispatch();
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const router = useRouter();
   const { projectId } = router.query;
@@ -58,10 +50,6 @@ function App() {
     dispatch(getAllProjectData());
   }, [dispatch]);
 
-  const moveTicketsHandler = () => {
-    console.log("here");
-  };
-
   useEffect(() => {
     if (columns.length !== 0) {
       dispatch(
@@ -92,7 +80,6 @@ function App() {
           <DragDropContext
             onDragEnd={(result) => {
               onDragEnd(result, columns, setColumns);
-              moveTicketsHandler();
             }}
           >
             {Object.entries(columns).map(([columnId, column], index) => {
