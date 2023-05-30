@@ -8,18 +8,26 @@ import BugReportIcon from "@mui/icons-material/BugReport";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { TICKET_PRIORITY, TICKET_TYPE } from "@/utils/ticketsInfo";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
+import { getAllUserData } from "@/redux/getAllUsers/slice";
+import { useAppDispatch, useAppSelector } from "@/core/store";
 
 export const CardItem = (props: {
   data: INewTicket;
   index: number;
   numberColumns: number;
 }) => {
+  const dispatch = useAppDispatch();
   const [ticketType, setTicketType] = useState<number>(
     PRIORITY_CODE.LOW_PRIORITY
   );
 
+  const user = useAppSelector((state) => state.allUsers.user).filter((item) =>
+    item.uid.match(props.data.asigne)
+  )[0];
+
   useEffect(() => {
-    switch (props.data.ticketType) {
+    dispatch(getAllUserData());
+    switch (props.data.priority) {
       case TICKET_PRIORITY.LOW_PRIORITY:
         setTicketType(PRIORITY_CODE.LOW_PRIORITY);
         break;
@@ -30,7 +38,7 @@ export const CardItem = (props: {
         setTicketType(PRIORITY_CODE.HIGH_PRIORITY);
         break;
     }
-  }, [props.data.ticketType]);
+  }, [props.data.priority, dispatch]);
 
   const { classes, cx } = useStyles({
     ticketType: ticketType,
@@ -66,7 +74,7 @@ export const CardItem = (props: {
           )}
           {props.data.ticketType === TICKET_TYPE.REFACTOR && (
             <SettingsSuggestIcon
-              className={cx(classes.icons, classes.featureIcon)}
+              className={cx(classes.icons, classes.refactorIcon)}
             />
           )}
 
@@ -75,7 +83,10 @@ export const CardItem = (props: {
           </Typography>
         </div>
         <div className={classes.assigne}>
-          <Typography>{props.data.asigne}</Typography>
+          <Typography>
+            {user.firstName.charAt(0).toUpperCase()}
+            {user.lastName.charAt(0).toUpperCase()}
+          </Typography>
         </div>
       </div>
     </div>
@@ -102,13 +113,13 @@ const useStyles = makeStyles<{ ticketType: number; numberColumns: number }>()(
     assigne: {
       height: "fit-content",
       width: "fit-content",
-      background: Colors.darkYellow,
+      background: Colors.lightBlue,
       borderRadius: theme.spacing(10),
-      padding: "4px",
+      padding: "10px",
       textAlign: "center",
-      paddingTop: "3px",
+      paddingTop: "7px",
       float: "right",
-      marginTop: theme.spacing(-4.6),
+      marginTop: theme.spacing(-5),
       fontSize: theme.typography.body2.fontSize,
     },
     storyPoints: {
@@ -153,6 +164,9 @@ const useStyles = makeStyles<{ ticketType: number; numberColumns: number }>()(
     },
     featureIcon: {
       color: Colors.lightGreen,
+    },
+    refactorIcon: {
+      color: Colors.darkBlue,
     },
     ticketName: {
       marginTop: theme.spacing(1.6),

@@ -20,6 +20,7 @@ import { getAllProjectData } from "@/redux/getAllProjects/slice";
 import { onDragEnd } from "@/utils/functions";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 import { updateTicketStatus } from "@/redux/updateTicketsStatus/slice";
+import { moveTickets } from "@/redux/moveTickets/slice";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -31,8 +32,6 @@ function App() {
     (item) => item.id === projectId
   )[0];
   const projectStatus = useAppSelector((state) => state.projects.status);
-
-  // const taskStatus = project?.taskStatus;
 
   const [taskStatus, setTaskStatus] = useState<ITaskStatus[]>([]);
 
@@ -59,6 +58,18 @@ function App() {
     dispatch(getAllProjectData());
   }, [dispatch]);
 
+  const moveTicketsHandler = () => {
+    console.log("here");
+  };
+
+  useEffect(() => {
+    if (columns.length !== 0) {
+      dispatch(
+        moveTickets({ projectId: projectId?.toString() ?? "", task: columns })
+      );
+    }
+  }, [columns]);
+
   return (
     <div className={classes.background}>
       <Navbar />
@@ -79,7 +90,10 @@ function App() {
         </Typography>
         <div className={classes.box}>
           <DragDropContext
-            onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+            onDragEnd={(result) => {
+              onDragEnd(result, columns, setColumns);
+              moveTicketsHandler();
+            }}
           >
             {Object.entries(columns).map(([columnId, column], index) => {
               return (
