@@ -81,6 +81,7 @@ function App() {
             setIsOpen={setIsEdit}
             data={selectedTicket}
             setSelectedTicket={setSelectedTicket}
+            tickets={columns}
           />
         )}
         <ModalAddTicket isOpen={isOpen} setIsOpen={setIsOpen} />

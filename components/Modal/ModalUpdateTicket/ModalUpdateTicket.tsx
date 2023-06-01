@@ -19,20 +19,25 @@ import { STRINGS } from "@/utils/strings";
 import { TICKET_PRIORITY, TICKET_TYPE } from "@/utils/ticketsInfo";
 import { useAppDispatch, useAppSelector } from "@/core/store";
 import { getAllProjectData } from "@/redux/getAllProjects/slice";
-import { INewTicket } from "@/utils/interface";
+import { INewTicket, ITaskStatus } from "@/utils/interface";
 import { getAllUserData } from "@/redux/getAllUsers/slice";
 import { Colors } from "@/utils/colors";
+import { editTicketStatus } from "@/redux/editTicket /slice";
+import { useRouter } from "next/router";
 
 interface ModalTicketsProps {
   setIsOpen: React.Dispatch<SetStateAction<boolean>>;
   setSelectedTicket: React.Dispatch<SetStateAction<INewTicket | null>>;
   isOpen: boolean;
   data: INewTicket;
+  tickets: ITaskStatus[];
 }
 
 export const ModalUpdateTicket = (props: ModalTicketsProps) => {
   const { classes } = useStyles();
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { projectId } = router.query;
   const users = useAppSelector((state) => state.allUsers.user);
   const [asigne, setAsigne] = useState<string>(props.data.asigne);
   const [ticketType, setTicketType] = useState<string>(props.data?.ticketType);
@@ -46,12 +51,49 @@ export const ModalUpdateTicket = (props: ModalTicketsProps) => {
   const [description, setDescription] = useState<string>(
     props.data?.description
   );
+  const [ticketUpdated, setTicketUpdated] = useState<INewTicket>(props.data);
 
   const handleChangeTicketType = (event: SelectChangeEvent) => {
     setTicketType(event.target.value as string);
   };
   const handleChangeTicketPriority = (event: SelectChangeEvent) => {
     setTicketPriority(event.target.value as string);
+  };
+
+  const updateTicket = () => {
+    const newColumns = props.tickets.map((column) =>
+      column.items.map((ticket) =>
+        ticket.id.match(ticketUpdated.id)
+          ? {
+              id: props.data.id,
+              title,
+              asigne,
+              ticketType,
+              priority: ticketPriority,
+              storyPoints,
+              description,
+            }
+          : ticket
+      )
+    );
+    const finalColumns = props.tickets.map((item) => item.name);
+    const updatedList = [] as ITaskStatus[];
+    for (let i = 0; i < finalColumns.length; i++) {
+      updatedList.push({
+        name: finalColumns[i],
+        items: newColumns[i],
+      });
+    }
+    dispatch(
+      editTicketStatus({
+        projectId: projectId?.toString() ?? "",
+        task: updatedList,
+      })
+    );
+
+    dispatch(getAllProjectData());
+    props.setSelectedTicket(null);
+    props.setIsOpen(false);
   };
 
   useEffect(() => {
@@ -196,7 +238,9 @@ export const ModalUpdateTicket = (props: ModalTicketsProps) => {
               }}
             />
           </Box>
-          <Button className={classes.button}>{STRINGS.SAVE}</Button>
+          <Button className={classes.button} onClick={updateTicket}>
+            {STRINGS.SAVE}
+          </Button>
           <Box className={classes.boxRow}>
             <Typography>{STRINGS.DELETE_TASK}</Typography>
             <DeleteForeverIcon />
