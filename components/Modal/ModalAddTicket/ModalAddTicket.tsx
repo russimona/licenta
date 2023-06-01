@@ -40,7 +40,9 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
     (item) => item.id === projectId
   )[0];
   const users = useAppSelector((state) => state.allUsers.user);
-
+  const usersAsignedToProject = users.filter((user) =>
+    project.asigne.includes(user.email)
+  );
   const [asigne, setAsigne] = useState<string>();
 
   const [ticketType, setTicketType] = useState<string>(TICKET_TYPE.FEAT);
@@ -182,7 +184,7 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
                       setAsigne(event.target.value);
                     }}
                   >
-                    {users.map((user, index) => {
+                    {usersAsignedToProject.map((user, index) => {
                       return (
                         <MenuItem key={user.uid} value={user.uid}>
                           {user.email}

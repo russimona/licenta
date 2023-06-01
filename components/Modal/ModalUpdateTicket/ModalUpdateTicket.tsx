@@ -39,6 +39,12 @@ export const ModalUpdateTicket = (props: ModalTicketsProps) => {
   const router = useRouter();
   const { projectId } = router.query;
   const users = useAppSelector((state) => state.allUsers.user);
+  const project = useAppSelector((state) => state.projects.project).filter(
+    (item) => item.id === projectId
+  )[0];
+  const usersAsignedToProject = users.filter((user) =>
+    project.asigne.includes(user.email)
+  );
   const [asigne, setAsigne] = useState<string>(props.data.asigne);
   const [ticketType, setTicketType] = useState<string>(props.data?.ticketType);
   const [ticketPriority, setTicketPriority] = useState<string>(
@@ -236,7 +242,7 @@ export const ModalUpdateTicket = (props: ModalTicketsProps) => {
                       setAsigne(event.target.value);
                     }}
                   >
-                    {users.map((user) => {
+                    {usersAsignedToProject.map((user) => {
                       return (
                         <option value={user.uid} key={user.uid}>
                           {user.email}
