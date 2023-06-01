@@ -82,4 +82,5 @@ export const STRINGS = {
   CREATED_ON: "Created on :",
   CREATED_BY: "Created by :",
   PRIORITY: " Priority",
+  DELETE_TASK: "Delete task",
 };

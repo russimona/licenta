@@ -1,56 +1,50 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import {
   Modal,
   Box,
   Typography,
   Button,
-  Input,
   FormControl,
   SelectChangeEvent,
   Select,
   MenuItem,
   TextField,
   InputLabel,
+  NativeSelect,
 } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CloseIcon from "@mui/icons-material/Close";
 import { STRINGS } from "@/utils/strings";
 import { TICKET_PRIORITY, TICKET_TYPE } from "@/utils/ticketsInfo";
-import { AddAsignee } from "@/components/Project/add-ticket/AddAsigneeTicket";
 import { useAppDispatch, useAppSelector } from "@/core/store";
-import { useRouter } from "next/router";
 import { getAllProjectData } from "@/redux/getAllProjects/slice";
-import { addNewTicket } from "@/redux/addNewTicket/slice";
-import { PRIORITY_CODE } from "@/utils/priorityColors";
 import { INewTicket } from "@/utils/interface";
-import { numberTasks } from "@/utils/functions";
 import { getAllUserData } from "@/redux/getAllUsers/slice";
 import { Colors } from "@/utils/colors";
 
-interface ModalLayoutProps {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+interface ModalTicketsProps {
+  setIsOpen: React.Dispatch<SetStateAction<boolean>>;
+  setSelectedTicket: React.Dispatch<SetStateAction<INewTicket | null>>;
   isOpen: boolean;
   data: INewTicket;
 }
 
-export const ModalUpdateTicket = (props: ModalLayoutProps) => {
+export const ModalUpdateTicket = (props: ModalTicketsProps) => {
   const { classes } = useStyles();
   const dispatch = useAppDispatch();
   const users = useAppSelector((state) => state.allUsers.user);
-  const [asigne, setAsigne] = useState<string>(
-    users.filter((item) => item.uid.match(props.data.asigne))[0].email
-  );
-  const [ticketType, setTicketType] = useState<string>(props.data.ticketType);
+  const [asigne, setAsigne] = useState<string>(props.data.asigne);
+  const [ticketType, setTicketType] = useState<string>(props.data?.ticketType);
   const [ticketPriority, setTicketPriority] = useState<string>(
-    props.data.priority
+    props.data?.priority
   );
-  const [title, setTitle] = useState<string>(props.data.title);
+  const [title, setTitle] = useState<string>(props.data?.title);
   const [storyPoints, setStoryPoints] = useState<string>(
-    props.data.storyPoints
+    props.data?.storyPoints
   );
   const [description, setDescription] = useState<string>(
-    props.data.description
+    props.data?.description
   );
 
   const handleChangeTicketType = (event: SelectChangeEvent) => {
@@ -60,40 +54,22 @@ export const ModalUpdateTicket = (props: ModalLayoutProps) => {
     setTicketPriority(event.target.value as string);
   };
 
-  const onCloseHandler = () => {
-    console.log("here");
-    props.setIsOpen(false);
-  };
-
-  const addTicketHandler = () => {
-    props.setIsOpen(false);
-    // const task = {
-    //   id: (numberTasks(project.taskStatus) + 1).toString(),
-    //   title: title,
-    //   ticketType: ticketType,
-    //   priority: ticketPriority,
-    //   description: description,
-    //   asigne: asigne,
-    //   storyPoints: storyPoints,
-    // } as INewTicket;
-    // dispatch(addNewTicket({ projectId: project.id, task: task }));
-    // dispatch(getAllProjectData());
-    // props.setIsOpen(false);
-  };
-
   useEffect(() => {
     dispatch(getAllProjectData());
     dispatch(getAllUserData());
   }, [dispatch]);
 
+  const onCloseHandler = () => {
+    props.setIsOpen(false);
+    props.setSelectedTicket(null);
+  };
+
   return (
     <Modal open={props.isOpen}>
       <Box className={classes.box}>
+        {props.isOpen}
         <CloseIcon className={classes.avatar} onClick={onCloseHandler} />
         <Box className={classes.items}>
-          <Typography variant="h1" className={classes.title}>
-            {STRINGS.ADD_NEW_TICKET}
-          </Typography>
           <div className={classes.divRow}>
             <div className={classes.divColumn}>
               <div className={classes.divRow}>
@@ -181,21 +157,26 @@ export const ModalUpdateTicket = (props: ModalLayoutProps) => {
               </div>
               <div className={classes.divRow}>
                 <Typography variant="h4">{STRINGS.ASIGNEE}</Typography>
-                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <Select
-                    value={asigne}
+
+                <FormControl fullWidth>
+                  <NativeSelect
+                    defaultValue={asigne}
+                    inputProps={{
+                      name: "age",
+                      id: "uncontrolled-native",
+                    }}
                     onChange={(event) => {
                       setAsigne(event.target.value);
                     }}
                   >
-                    {users.map((user, index) => {
+                    {users.map((user) => {
                       return (
-                        <MenuItem key={user.uid} value={user.uid}>
+                        <option value={user.uid} key={user.uid}>
                           {user.email}
-                        </MenuItem>
+                        </option>
                       );
                     })}
-                  </Select>
+                  </NativeSelect>
                 </FormControl>
               </div>
             </div>
@@ -215,11 +196,9 @@ export const ModalUpdateTicket = (props: ModalLayoutProps) => {
               }}
             />
           </Box>
-          <Button className={classes.button} onClick={addTicketHandler}>
-            {STRINGS.ADD_NEW_TICKET}
-          </Button>
+          <Button className={classes.button}>{STRINGS.SAVE}</Button>
           <Box className={classes.boxRow}>
-            <Typography>Delete task</Typography>
+            <Typography>{STRINGS.DELETE_TASK}</Typography>
             <DeleteForeverIcon />
           </Box>
         </Box>
@@ -230,8 +209,7 @@ export const ModalUpdateTicket = (props: ModalLayoutProps) => {
 
 const useStyles = makeStyles()((theme) => ({
   box: {
-    height: "fit-content",
-    width: "70vw",
+    height: "70vh",
     background: theme.palette.secondary.light,
     radius: "5px",
     position: "absolute",
@@ -241,6 +219,7 @@ const useStyles = makeStyles()((theme) => ({
     boxShadow: `2px 2px 10px 0px ${theme.palette.primary.dark}`,
     borderRadius: "10px",
     padding: theme.spacing(2),
+    justifyContent: "center",
   },
   avatar: {
     float: "right",
@@ -255,13 +234,7 @@ const useStyles = makeStyles()((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  title: {
-    textAlign: "center",
-    marginTop: "1vh",
-    marginBottom: "5vh",
-    fontWeight: "bold",
-    color: theme.palette.primary.main,
-  },
+
   button: {
     height: "fit-content",
     width: "fit-content",
@@ -306,14 +279,12 @@ const useStyles = makeStyles()((theme) => ({
   },
   boxRow: {
     display: "flex",
-    // justifyContent: "center",
+    justifyContent: "center",
     flexDirection: "row",
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(5),
     color: Colors.redCalendar,
+    width: "fit-content",
+    alignSelf: "center",
+    cursor: "pointer",
   },
 }));
-
-interface ModalLayoutProps {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isOpen: boolean;
-}

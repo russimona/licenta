@@ -1,7 +1,7 @@
 import { CardItem } from "@/components/Board/CardItem";
 import { Navbar } from "@/components/Navbar/navbar";
 import { Colors } from "@/utils/colors";
-import { ITaskStatus } from "@/utils/interface";
+import { INewTicket, ITaskStatus } from "@/utils/interface";
 import { Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import React, { useEffect, useState } from "react";
@@ -14,19 +14,19 @@ import { getAllProjectData } from "@/redux/getAllProjects/slice";
 import { onDragEnd } from "@/utils/functions";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 import { moveTickets } from "@/redux/moveTickets/slice";
+import { ModalUpdateTicket } from "@/components/Modal/ModalUpdateTicket/ModalUpdateTicket";
 
 function App() {
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [edit, setIsEdit] = useState<boolean>(false);
   const router = useRouter();
   const { projectId } = router.query;
   const project = useAppSelector((state) => state.projects.project).filter(
     (item) => item.id === projectId
   )[0];
   const projectStatus = useAppSelector((state) => state.projects.status);
-
   const [taskStatus, setTaskStatus] = useState<ITaskStatus[]>([]);
-
   useEffect(() => {
     if (project) {
       setTaskStatus(project?.taskStatus ?? []);
@@ -34,6 +34,7 @@ function App() {
   }, [project]);
 
   const [columns, setColumns] = useState(taskStatus);
+  const [selectedTicket, setSelectedTicket] = useState<INewTicket | null>(null);
   const { classes } = useStyles({
     numberColumns: Object.keys(taskStatus ?? ([] as ITaskStatus[])).length,
   });
@@ -56,7 +57,12 @@ function App() {
         moveTickets({ projectId: projectId?.toString() ?? "", task: columns })
       );
     }
-  }, [columns]);
+  }, [columns, dispatch, projectId]);
+
+  const onSelectCardHandler = (item: INewTicket) => {
+    setSelectedTicket(item);
+    setIsEdit(true);
+  };
 
   return (
     <div className={classes.background}>
@@ -69,6 +75,14 @@ function App() {
           alignContent: "center",
         }}
       >
+        {selectedTicket && (
+          <ModalUpdateTicket
+            isOpen={edit && selectedTicket !== null}
+            setIsOpen={setIsEdit}
+            data={selectedTicket}
+            setSelectedTicket={setSelectedTicket}
+          />
+        )}
         <ModalAddTicket isOpen={isOpen} setIsOpen={setIsOpen} />
         <Typography
           variant="h1"
@@ -114,6 +128,7 @@ function App() {
                                       ref={provided.innerRef}
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
+                                      onClick={() => onSelectCardHandler(item)}
                                     >
                                       <CardItem
                                         data={item}
