@@ -113,13 +113,13 @@ export const onDragEnd = (
 };
 
 export const numberTasks = (taskStatus: ITaskStatus[]) => {
-  let number = 0;
+  let higherId = 0 as number;
 
   taskStatus.forEach((status) => {
     status.items.forEach((ticket) => {
-      number += 1;
+      if (Number(ticket.id) > higherId) higherId = Number(ticket.id);
     });
   });
 
-  return number;
+  return higherId;
 };
