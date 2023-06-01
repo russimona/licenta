@@ -96,6 +96,31 @@ export const ModalUpdateTicket = (props: ModalTicketsProps) => {
     props.setIsOpen(false);
   };
 
+  const deleteTicket = () => {
+    const newColumns = props.tickets.map((column) =>
+      column.items.filter((ticket) => !ticket.id.match(ticketUpdated.id))
+    );
+
+    const finalColumns = props.tickets.map((item) => item.name);
+    const updatedList = [] as ITaskStatus[];
+    for (let i = 0; i < finalColumns.length; i++) {
+      updatedList.push({
+        name: finalColumns[i],
+        items: newColumns[i],
+      });
+    }
+    dispatch(
+      editTicketStatus({
+        projectId: projectId?.toString() ?? "",
+        task: updatedList,
+      })
+    );
+
+    dispatch(getAllProjectData());
+    props.setSelectedTicket(null);
+    props.setIsOpen(false);
+  };
+
   useEffect(() => {
     dispatch(getAllProjectData());
     dispatch(getAllUserData());
@@ -241,7 +266,7 @@ export const ModalUpdateTicket = (props: ModalTicketsProps) => {
           <Button className={classes.button} onClick={updateTicket}>
             {STRINGS.SAVE}
           </Button>
-          <Box className={classes.boxRow}>
+          <Box className={classes.boxRow} onClick={deleteTicket}>
             <Typography>{STRINGS.DELETE_TASK}</Typography>
             <DeleteForeverIcon />
           </Box>
