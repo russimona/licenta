@@ -119,7 +119,7 @@ const ProjectPage = () => {
           onClick={addNewMembersHandler}
         >
           <PersonAddAltIcon className={classes.iconAddMember} />
-          {STRINGS.ADD_NEW_PROJECT_MEMBERS}
+          {STRINGS.ADD_MEMBERS_TO_PROJECT}
         </Typography>
         <Typography
           variant="h5"

@@ -114,7 +114,7 @@ export const ModalDeleteMember = memo((props: ModalLayoutProps) => {
           <Typography variant="h1" className={classes.title}>
             {STRINGS.REMOVE_MEMBERS_FROM_PROJECT}
           </Typography>
-          <FormControl sx={{ m: 1, width: "90%" }}>
+          <FormControl sx={{ m: 1, width: "100%" }}>
             <InputLabel />
             <Select
               multiple
@@ -142,7 +142,7 @@ export const ModalDeleteMember = memo((props: ModalLayoutProps) => {
             </Select>
           </FormControl>
           <Button className={classes.button} onClick={deleteMembersHandler}>
-            {STRINGS.ADD_MEMBERS}
+            {STRINGS.REMOVE_MEMBERS}
           </Button>
         </Box>
       </Box>

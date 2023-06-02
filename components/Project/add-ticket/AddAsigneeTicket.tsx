@@ -68,7 +68,7 @@ export const AddAsignee = (props: IAsigneeDropdown) => {
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: "90%" }}>
+      <FormControl sx={{ m: 1, width: "100%" }}>
         <InputLabel />
         <Select
           multiple
