@@ -2,15 +2,16 @@ import { Navbar } from "@/components/Navbar/navbar";
 import { STRINGS } from "@/utils/strings";
 import { Box, Button, Tab, Tabs, TextField, Typography } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { ITaskStatus } from "@/utils/interface";
-import { Colors } from "@/utils/colors";
 import { AddAsignee } from "@/components/Project/add-ticket/AddAsigneeTicket";
 import { TabContext, TabPanel } from "@material-ui/lab";
 import { addNewProject } from "@/redux/addNewProject/slice";
 import { useAppDispatch } from "@/core/store";
 import { getAllProjectData } from "@/redux/getAllProjects/slice";
+import { Colors } from "@/utils/colors";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 
 const AddProjectPage = () => {
   const { classes, cx } = useStyles();
@@ -43,6 +44,11 @@ const AddProjectPage = () => {
       })
     ).then(() => {
       dispatch(getAllProjectData());
+      setAsigne([]);
+      setCurrentTaskStatus("");
+      setProjectLeader([]);
+      setProjectName("");
+      setProjectDescription("");
     });
   };
 
@@ -119,13 +125,24 @@ const AddProjectPage = () => {
                   </Typography>
                   {taskStatus &&
                     taskStatus.map((item) => (
-                      <Typography
-                        variant="h5"
-                        className={classes.boartStatsTypo}
-                        key={item.name}
-                      >
-                        {item.name}
-                      </Typography>
+                      <Box key={item.name} className={classes.boxTaxkStatus}>
+                        <Typography
+                          variant="h5"
+                          className={classes.boartStatsTypo}
+                        >
+                          {item.name}
+                        </Typography>
+                        <DeleteForeverOutlinedIcon
+                          className={classes.iconDelete}
+                          onClick={() => {
+                            setTaskStatus((prev) =>
+                              prev.filter(
+                                (itemPref) => item.name !== itemPref.name
+                              )
+                            );
+                          }}
+                        />
+                      </Box>
                     ))}
                   <TextField
                     label={STRINGS.ADD_NEW_BOARD_STATS}
@@ -207,13 +224,15 @@ const useStyles = makeStyles()((theme) => ({
     marginTop: "0px",
   },
   boartStatsTypo: {
-    background: Colors.lightBlue,
-    borderRadius: theme.spacing(1),
+    borderStyle: "outset",
+    background: Colors.lightGray,
+    borderRadius: theme.spacing(0.7),
     color: theme.palette.secondary.dark,
     height: "40px",
     textAlign: "center",
     marginBottom: theme.spacing(1),
     paddingTop: "10px",
+    width: "30vw",
   },
   line: {
     height: "1px",
@@ -228,5 +247,22 @@ const useStyles = makeStyles()((theme) => ({
   title: {
     textAlign: "center",
     alignSelf: "center",
+  },
+  boxTaxkStatus: {
+    display: "flex",
+    flexDirection: "row",
+    width: "calc(20vw + 20px)",
+  },
+  iconDelete: {
+    color: "#5c5e69",
+    cursor: "pointer",
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
+    verticalAlign: "center",
+    height: "25px",
+    width: "23px",
+    marginTop: "7px",
+    marginLeft: theme.spacing(1),
   },
 }));

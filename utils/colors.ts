@@ -19,4 +19,6 @@ export const Colors = {
   grayGreenFreeDay: "#85adad",
   lavanderSelection: "#d1d1e0",
   lightBlue: "#ccd8de",
+  lightGray: "#f7f7f7",
+  deleteIcon: "#ababab",
 };
