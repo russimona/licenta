@@ -87,4 +87,9 @@ export const STRINGS = {
   ADD_MEMBERS_TO_PROJECT: "Add members to project",
   REMOVE_MEMBERS_FROM_PROJECT: "Remove members from project",
   REMOVE_MEMBERS: "Remove members",
+  PLEASE_COMPLETE_ALL_FIELDS_TO_ADD_NEW_PROJECT:
+    " Please complete all the fields in order to add a new project",
+  PLEASE_COMPLETE_ALL_FIELDS_TO_ADD_NEW_TICKET:
+    " Please complete all the fields in order to add a new ticket to the project",
+  PROJECT_ADDED_SUCCESFULLY: "Project added succesfully",
 };

@@ -63,7 +63,6 @@ export const AddAsignee = (props: IAsigneeDropdown) => {
     dispatch(getAllUserData());
     dispatch(getLoggedUserData());
     setNames([]);
-    setPersonName([]);
   }, [dispatch]);
 
   return (

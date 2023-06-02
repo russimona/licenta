@@ -1,6 +1,16 @@
 import { Navbar } from "@/components/Navbar/navbar";
 import { STRINGS } from "@/utils/strings";
-import { Box, Button, Tab, Tabs, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  IconButton,
+  Snackbar,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
@@ -12,6 +22,7 @@ import { useAppDispatch } from "@/core/store";
 import { getAllProjectData } from "@/redux/getAllProjects/slice";
 import { Colors } from "@/utils/colors";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 
 const AddProjectPage = () => {
   const { classes, cx } = useStyles();
@@ -20,6 +31,8 @@ const AddProjectPage = () => {
   const [projectName, setProjectName] = useState<string>("");
   const [projectDescription, setProjectDescription] = useState<string>("");
   const [currentTaskStatus, setCurrentTaskStatus] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+  const [openSuccess, setOpenSuccess] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const [taskStatus, setTaskStatus] = useState<ITaskStatus[]>([]);
@@ -34,27 +47,57 @@ const AddProjectPage = () => {
   };
 
   const addNewProjectHandler = () => {
-    dispatch(
-      addNewProject({
-        taskStatus,
-        asigne,
-        projectLeader,
-        projectName,
-        projectDescription,
-      })
-    ).then(() => {
-      dispatch(getAllProjectData());
-      setAsigne([]);
-      setCurrentTaskStatus("");
-      setProjectLeader([]);
-      setProjectName("");
-      setProjectDescription("");
-    });
+    if (
+      taskStatus.length === 0 ||
+      asigne.length === 0 ||
+      projectLeader.length === 0 ||
+      projectName.length === 0 ||
+      projectDescription.length === 0
+    ) {
+      setOpen(true);
+    } else {
+      dispatch(
+        addNewProject({
+          taskStatus,
+          asigne,
+          projectLeader,
+          projectName,
+          projectDescription,
+        })
+      ).then(() => {
+        dispatch(getAllProjectData());
+        setAsigne([]);
+        setCurrentTaskStatus("");
+        setProjectLeader([]);
+        setProjectName("");
+        setProjectDescription("");
+      });
+    }
   };
 
   const [value, setValue] = useState<string>("1");
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue.toString());
+  };
+
+  const handleClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const handleCloseSuccess = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSuccess(false);
   };
 
   return (
@@ -73,6 +116,26 @@ const AddProjectPage = () => {
             {STRINGS.ADD_NEW_PROJECT}
           </Button>
         </div>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+            {STRINGS.PLEASE_COMPLETE_ALL_FIELDS_TO_ADD_NEW_PROJECT}
+          </Alert>
+        </Snackbar>
+
+        <Snackbar
+          open={openSuccess}
+          autoHideDuration={6000}
+          onClose={handleCloseSuccess}
+        >
+          <Alert
+            onClose={handleCloseSuccess}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            {STRINGS.PROJECT_ADDED_SUCCESFULLY}
+          </Alert>
+        </Snackbar>
+
         <div>
           <Typography>{STRINGS.PROJECT_NAME}</Typography>
           <TextField

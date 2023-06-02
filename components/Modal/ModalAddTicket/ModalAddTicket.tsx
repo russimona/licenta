@@ -12,6 +12,8 @@ import {
   MenuItem,
   TextField,
   InputLabel,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { STRINGS } from "@/utils/strings";
@@ -44,6 +46,7 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
     project.asigne.includes(user.email)
   );
   const [asigne, setAsigne] = useState<string>();
+  const [open, setOpen] = useState<boolean>(false);
 
   const [ticketType, setTicketType] = useState<string>(TICKET_TYPE.FEAT);
   const [ticketPriority, setTicketPriority] = useState<string>(
@@ -65,18 +68,29 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
   };
 
   const addTicketHandler = () => {
-    const task = {
-      id: (numberTasks(project.taskStatus) + 1).toString(),
-      title: title,
-      ticketType: ticketType,
-      priority: ticketPriority,
-      description: description,
-      asigne: asigne,
-      storyPoints: storyPoints,
-    } as INewTicket;
-    dispatch(addNewTicket({ projectId: project.id, task: task }));
-    dispatch(getAllProjectData());
-    props.setIsOpen(false);
+    if (
+      title.length === 0 ||
+      ticketType.length === 0 ||
+      ticketPriority.length === 0 ||
+      description.length === 0 ||
+      asigne?.length == 0 ||
+      storyPoints.length === 0
+    ) {
+      setOpen(true);
+    } else {
+      const task = {
+        id: (numberTasks(project.taskStatus) + 1).toString(),
+        title: title,
+        ticketType: ticketType,
+        priority: ticketPriority,
+        description: description,
+        asigne: asigne,
+        storyPoints: storyPoints,
+      } as INewTicket;
+      dispatch(addNewTicket({ projectId: project.id, task: task }));
+      dispatch(getAllProjectData());
+      props.setIsOpen(false);
+    }
   };
 
   useEffect(() => {
@@ -84,9 +98,24 @@ export const ModalAddTicket = memo((props: ModalLayoutProps) => {
     dispatch(getAllUserData());
   }, [dispatch]);
 
+  const handleClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
   return (
     <Modal open={props.isOpen}>
       <Box className={classes.box}>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+            {STRINGS.PLEASE_COMPLETE_ALL_FIELDS_TO_ADD_NEW_TICKET}
+          </Alert>
+        </Snackbar>
         <CloseIcon className={classes.avatar} onClick={onCloseHandler} />
         <Box className={classes.items}>
           <Typography variant="h1" className={classes.title}>
