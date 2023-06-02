@@ -41,19 +41,6 @@ export const OptionBar = () => {
           {STRINGS.PROFILE}
         </Box>
       </Link>
-      <Link href={ROUTES.SETTINGS}>
-        <Box
-          className={cx(
-            classes.item,
-            routes.asPath.includes("settings")
-              ? classes.itemClicked
-              : classes.itemNotClicked
-          )}
-        >
-          <SettingsIcon className={classes.icons} />
-          {STRINGS.SETTINGS}
-        </Box>
-      </Link>
 
       <Link href={ROUTES.ADD_MEMBERS}>
         <Box
@@ -68,7 +55,7 @@ export const OptionBar = () => {
           {STRINGS.ADD_MEMBERS}
         </Box>
       </Link>
-      <Link href={ROUTES.ADD_MEMBERS}>
+      <Link href={ROUTES.ALL_MEMBERS}>
         <Box
           className={cx(
             classes.item,

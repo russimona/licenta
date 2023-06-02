@@ -6,9 +6,8 @@ export const ROUTES = {
   PROFILE: "/profile",
   SETTINGS: "/settings",
   ADD_MEMBERS: "/add-members",
-  BOOK_DESK: "/team/book-desk",
-  BOOK_PARKING_LOT: "/team/book-parking-lot",
   FREE_DAYS: "/team/free-days",
   PROJECT: "/project",
   ADD_NEW_PROJECT: "/project/new-project",
+  ALL_MEMBERS: "/all-members",
 };

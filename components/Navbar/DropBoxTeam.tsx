@@ -41,18 +41,6 @@ export const TeamItemDropBox = () => {
             <CalendarMonthIcon className={classes.icons} />
           </MenuItem>
         </Link>
-        <Link href={ROUTES.BOOK_DESK}>
-          <MenuItem onClick={handleClose}>
-            {STRINGS.BOOK_DESK}
-            <DeskIcon className={classes.icons} />
-          </MenuItem>
-        </Link>
-        <Link href={ROUTES.BOOK_PARKING_LOT}>
-          <MenuItem onClick={handleClose}>
-            {STRINGS.BOOK_PARKING}
-            <DirectionsCarIcon className={classes.icons} />
-          </MenuItem>
-        </Link>
       </Menu>
     </div>
   );
