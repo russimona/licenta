@@ -1,5 +1,7 @@
 import { useAppDispatch } from "@/core/store";
+import { getAllProjectData } from "@/redux/getAllProjects/slice";
 import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
+import { getNationalDaysOff } from "@/redux/getNationalDaysOff/slice";
 import { logInAnonymously } from "@/redux/loginSlice/slice";
 import { ROUTES } from "@/utils/routes";
 import { NoSsr } from "@mui/material";
@@ -16,6 +18,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       routes.push(ROUTES.LOGIN);
     } else {
       dispatch(getLoggedUserData());
+      dispatch(getAllProjectData());
+      dispatch(getNationalDaysOff());
     }
   }, [dispatch, routes, userId]);
   return (

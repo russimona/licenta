@@ -83,4 +83,6 @@ export const STRINGS = {
   CREATED_BY: "Created by :",
   PRIORITY: " Priority",
   DELETE_TASK: "Delete task",
+  ADD_NEW_PROJECT_MEMBERS: "Add new project members",
+  REMOVE_MEMBERS_FROM_PROJECT: "Remove members from project",
 };

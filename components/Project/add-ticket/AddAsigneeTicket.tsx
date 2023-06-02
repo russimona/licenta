@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "@/core/store";
 import { getAllUserData } from "@/redux/getAllUsers/slice";
 import { useState, useEffect } from "react";
 import { IAsigneeDropdown } from "@/utils/interface";
+import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -42,6 +43,7 @@ export const AddAsignee = (props: IAsigneeDropdown) => {
   const dispatch = useAppDispatch();
   const [names, setNames] = useState<string[]>([]);
   const allUsers = useAppSelector((state) => state.allUsers.user);
+  const loggedUser = useAppSelector((state) => state.loggedUser.user);
   const handleChange = (event: SelectChangeEvent<typeof personName>) => {
     const {
       target: { value },
@@ -52,15 +54,20 @@ export const AddAsignee = (props: IAsigneeDropdown) => {
   useEffect(() => {
     setNames([]);
     allUsers.forEach((user) => {
-      setNames((prevState) => [...prevState, user.email]);
+      if (user.companyId?.match(loggedUser.companyId))
+        setNames((prevState) => [...prevState, user.email]);
     });
-  }, [allUsers]);
+  }, [allUsers, loggedUser.companyId]);
+
   useEffect(() => {
     dispatch(getAllUserData());
+    dispatch(getLoggedUserData());
+    setNames([]);
   }, [dispatch]);
+
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
+      <FormControl sx={{ m: 1, width: "90%" }}>
         <InputLabel />
         <Select
           multiple

@@ -15,6 +15,12 @@ import { onDragEnd } from "@/utils/functions";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 import { moveTickets } from "@/redux/moveTickets/slice";
 import { ModalUpdateTicket } from "@/components/Modal/ModalUpdateTicket/ModalUpdateTicket";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import { STRINGS } from "@/utils/strings";
+import { ModalAddMember } from "../Modal/ModalAddNewMemberProj/ModalAddMemberProj";
+import PersonRemoveOutlinedIcon from "@mui/icons-material/PersonRemoveOutlined";
+import { ModalDeleteMember } from "../Modal/ModalDeleteMemberProj copy/ModalDeleteMemberProj";
+import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
 
 const ProjectPage = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +31,8 @@ const ProjectPage = () => {
   const project = useAppSelector((state) => state.projects.project).filter(
     (item) => item.id === projectId
   )[0];
+  const [addMembersOpen, setAddMembersOpen] = useState<boolean>(false);
+  const [removeMembersOpen, setRemoveMembersOpen] = useState<boolean>(false);
   const projectStatus = useAppSelector((state) => state.projects.status);
   const [taskStatus, setTaskStatus] = useState<ITaskStatus[]>([]);
   useEffect(() => {
@@ -49,6 +57,7 @@ const ProjectPage = () => {
 
   useEffect(() => {
     dispatch(getAllProjectData());
+    dispatch(getLoggedUserData());
   }, [dispatch]);
 
   useEffect(() => {
@@ -62,6 +71,14 @@ const ProjectPage = () => {
   const onSelectCardHandler = (item: INewTicket) => {
     setSelectedTicket(item);
     setIsEdit(true);
+  };
+
+  const addNewMembersHandler = () => {
+    setAddMembersOpen(true);
+  };
+
+  const removeMembersHandler = () => {
+    setRemoveMembersOpen(true);
   };
 
   return (
@@ -84,12 +101,33 @@ const ProjectPage = () => {
             tickets={columns}
           />
         )}
+        <ModalAddMember isOpen={addMembersOpen} setIsOpen={setAddMembersOpen} />
         <ModalAddTicket isOpen={isOpen} setIsOpen={setIsOpen} />
+        <ModalDeleteMember
+          isOpen={removeMembersOpen}
+          setIsOpen={setRemoveMembersOpen}
+        />
         <Typography
           variant="h1"
           style={{ marginTop: "100px", textAlign: "center", width: "100vw" }}
         >
           {project?.projectName}
+        </Typography>
+        <Typography
+          variant="h5"
+          className={classes.addNewMember}
+          onClick={addNewMembersHandler}
+        >
+          <PersonAddAltIcon className={classes.iconAddMember} />
+          {STRINGS.ADD_NEW_PROJECT_MEMBERS}
+        </Typography>
+        <Typography
+          variant="h5"
+          className={classes.deleteMember}
+          onClick={removeMembersHandler}
+        >
+          <PersonRemoveOutlinedIcon className={classes.iconDeleteMember} />
+          {STRINGS.REMOVE_MEMBERS_FROM_PROJECT}
         </Typography>
         <div className={classes.box}>
           <DragDropContext
@@ -229,6 +267,34 @@ const useStyles = makeStyles<{ numberColumns: number }>()(
         background: "#163a4d",
         borderRadius: theme.spacing(1),
       },
+    },
+    addNewMember: {
+      cursor: "pointer",
+      float: "right",
+      width: "fit-content",
+      paddingLeft: "2.5vw",
+      color: Colors.darkBlue,
+      display: "flex",
+      columnGap: theme.spacing(1),
+    },
+    iconAddMember: {
+      height: "20px",
+      width: "20px",
+      color: Colors.darkBlue,
+    },
+    iconDeleteMember: {
+      height: "20px",
+      width: "20px",
+      color: Colors.redCalendar,
+    },
+    deleteMember: {
+      cursor: "pointer",
+      float: "right",
+      width: "fit-content",
+      paddingLeft: "2.5vw",
+      color: Colors.redCalendar,
+      display: "flex",
+      columnGap: theme.spacing(1),
     },
   })
 );
