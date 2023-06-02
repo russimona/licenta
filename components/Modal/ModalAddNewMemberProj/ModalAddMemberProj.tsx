@@ -60,8 +60,10 @@ export const ModalAddMember = memo((props: ModalLayoutProps) => {
         projectId: projectId?.toString() ?? "",
         newMembers: personName,
       })
-    );
-    dispatch(getAllProjectData());
+    ).then(() => {
+      dispatch(getAllProjectData());
+    });
+    props.setIsOpen(false);
   };
   return (
     <Modal open={props.isOpen}>

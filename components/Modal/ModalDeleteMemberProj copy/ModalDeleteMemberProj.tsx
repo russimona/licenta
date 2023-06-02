@@ -102,7 +102,7 @@ export const ModalDeleteMember = memo((props: ModalLayoutProps) => {
       })
     );
     dispatch(getAllProjectData());
-    setNames([]);
+    setPersonName([]);
     props.setIsOpen(false);
   };
 
