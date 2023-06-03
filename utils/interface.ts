@@ -107,7 +107,6 @@ export type TEvent = {
 export interface INewCompany {
   name: string;
   address: string;
-  phoneNumber: string;
   email: string;
 }
 
@@ -137,6 +136,7 @@ export interface IProject {
   projectName: string;
   taskStatus: ITaskStatus[];
   createdAt: Date;
+  companyId: string;
 }
 
 export interface INewTicket {

@@ -5,5 +5,6 @@ export const addNewProject = async (props: INewProject) => {
   await addDoc(collection(db, "Projects"), {
     ...props,
     createdAt: new Date(),
+    companyId: sessionStorage.getItem("companyId") ?? "",
   });
 };

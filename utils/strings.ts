@@ -57,7 +57,6 @@ export const STRINGS = {
   ADD_YOUR_OWN_COMPANY: "ADD YOUR OWN COMPANY",
   NAME: "Name",
   ADDRESS: "Address",
-  PHONE_NUMBER: "Phone number",
   ERROR_FREE_DAYS:
     "The maximum number of free days you can select for vacantion type is ",
   ADD_NEW_PROJECT: "Add new project",
@@ -92,4 +91,13 @@ export const STRINGS = {
   PLEASE_COMPLETE_ALL_FIELDS_TO_ADD_NEW_TICKET:
     " Please complete all the fields in order to add a new ticket to the project",
   PROJECT_ADDED_SUCCESFULLY: "Project added succesfully",
+  PLEASE_COMPLETE_ALL_FIELDS_TO_ADD_NEW_MEMBER:
+    " Please complete all the fields in order to add a new member to the team",
+  REQUEST_SEND_SUCCESSFULLY: "Request send successfully",
+  JOIN_OUR_COMPANY: "Join our company",
+  WELCOME_TO_THE_TEAM: "WELCOME TO THE TEAM",
+  HELLO: "Hello",
+  JOIN_US_BY_CLICKING:
+    "Join us by clicking the button bellow, but first choose a password for your account.",
+  NO_PROJECTS_FOR_YOU: "No projects for you",
 };

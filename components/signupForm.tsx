@@ -10,7 +10,6 @@ import React, { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { STRINGS } from "@/utils/strings";
 import { Colors } from "@/utils/colors";
-import GoogleIcon from "@mui/icons-material/Google";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/utils/routes";
@@ -157,15 +156,6 @@ export const SignUpForm = () => {
         )}
         <Button onClick={submitSignUp} className={classes.button}>
           {STRINGS.SIGN_UP}
-        </Button>
-        <div className={classes.orBox}>
-          <div className={classes.line} />
-          <Typography>{STRINGS.OR}</Typography>
-          <div className={classes.line} />
-        </div>
-        <Button className={classes.googleLoginButton}>
-          <GoogleIcon />
-          {STRINGS.LOGIN_GOOGLE}
         </Button>
       </Box>
     </Box>

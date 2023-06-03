@@ -22,20 +22,15 @@ export const ModalAddNewCompany = memo((props: ModalLayoutProps) => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [address, setAddress] = useState<string>("");
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
+
   const [error, setError] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const createCompany = () => {
-    if (
-      name.length < 1 ||
-      email.length < 1 ||
-      address.length < 1 ||
-      phoneNumber.length < 10
-    ) {
+    if (name.length < 1 || email.length < 1 || address.length < 1) {
       setError(true);
     } else {
-      dispatch(addNewCompany({ name, email, address, phoneNumber }));
+      dispatch(addNewCompany({ name, email, address }));
       props.setIsOpen(false);
     }
   };
@@ -70,20 +65,6 @@ export const ModalAddNewCompany = memo((props: ModalLayoutProps) => {
               className={classes.inputField}
               onChange={(event) => {
                 setEmail(event.target.value);
-                setError(false);
-              }}
-            />
-          </div>
-          <div className={classes.flexRow}>
-            <Typography variant="h6" className={classes.itemName}>
-              {STRINGS.PHONE_NUMBER}
-            </Typography>
-            <TextField
-              variant="standard"
-              type="standard"
-              className={classes.inputField}
-              onChange={(event) => {
-                setPhoneNumber(event.target.value);
                 setError(false);
               }}
             />

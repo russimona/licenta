@@ -4,7 +4,7 @@ import { ISignUpData } from "@/utils/interface";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 import { STRINGS } from "@/utils/strings";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const initialState = {
   status: "idle",

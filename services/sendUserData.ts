@@ -1,4 +1,5 @@
 import { db } from "@/core/firebaseApp";
+import { USER_TYPE } from "@/utils/userType";
 import { doc, setDoc } from "firebase/firestore";
 
 export interface UserData {
@@ -12,5 +13,7 @@ export const sendUserData = (uid: string, data: UserData) => {
     ...data,
     createdOn: new Date(),
     firstTimeEntering: true,
+    role: USER_TYPE.BUSSINESS_OWNER,
+    freeDaysTotal: 24,
   });
 };

@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "tss-react/mui";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -9,22 +9,33 @@ import Person2Icon from "@mui/icons-material/Person2";
 import { STRINGS } from "@/utils/strings";
 import { ROUTES } from "@/utils/routes";
 import Link from "next/link";
-import { useAppDispatch } from "@/core/store";
+import { useAppDispatch, useAppSelector } from "@/core/store";
 import { logOut } from "@/redux/logOut/slice";
 import { logInActions, logInAnonymously } from "@/redux/loginSlice/slice";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
+import { USER_TYPE } from "@/utils/userType";
 
 export const OptionBar = () => {
   const { classes, cx } = useStyles();
   const routes = useRouter();
   const dispatch = useAppDispatch();
-
+  const user = useAppSelector((state) => state.loggedUser.user);
   const logOutHandler = () => {
     dispatch(logOut());
     dispatch(logInAnonymously());
     dispatch(logInActions.reset());
     routes.push(ROUTES.LOGIN);
+    sessionStorage.removeItem("authToken");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("companyId");
   };
+
+  useEffect(() => {
+    dispatch(getLoggedUserData());
+  }, [dispatch]);
+
+  console.log(user);
 
   return (
     <Box className={classes.box}>
@@ -42,19 +53,22 @@ export const OptionBar = () => {
         </Box>
       </Link>
 
-      <Link href={ROUTES.ADD_MEMBERS}>
-        <Box
-          className={cx(
-            classes.item,
-            routes.asPath.includes("add-members")
-              ? classes.itemClicked
-              : classes.itemNotClicked
-          )}
-        >
-          <PersonAddIcon className={classes.icons} />
-          {STRINGS.ADD_MEMBERS}
-        </Box>
-      </Link>
+      {(user.role === USER_TYPE.BUSSINESS_OWNER ||
+        user.role === USER_TYPE.HR) && (
+        <Link href={ROUTES.ADD_MEMBERS}>
+          <Box
+            className={cx(
+              classes.item,
+              routes.asPath.includes("add-members")
+                ? classes.itemClicked
+                : classes.itemNotClicked
+            )}
+          >
+            <PersonAddIcon className={classes.icons} />
+            {STRINGS.ADD_MEMBERS}
+          </Box>
+        </Link>
+      )}
       <Link href={ROUTES.ALL_MEMBERS}>
         <Box
           className={cx(

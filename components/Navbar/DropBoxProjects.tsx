@@ -9,12 +9,19 @@ import { ROUTES } from "@/utils/routes";
 import { useAppDispatch, useAppSelector } from "@/core/store";
 import { getAllProjectData } from "@/redux/getAllProjects/slice";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
+import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
+import { USER_TYPE } from "@/utils/userType";
 
 export const ProjectsItemDropBox = () => {
   const { classes } = useStyles();
   const dispatch = useAppDispatch();
 
-  const projects = useAppSelector((state) => state.projects.project);
+  const user = useAppSelector((state) => state.loggedUser.user);
+  const projects = useAppSelector((state) => state.projects.project).filter(
+    (project) =>
+      project.asigne.includes(user.email) ||
+      project.projectLeader.includes(user.email)
+  );
   const projectsStatus = useAppSelector((state) => state.projects.status);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -24,6 +31,7 @@ export const ProjectsItemDropBox = () => {
 
   useEffect(() => {
     dispatch(getAllProjectData());
+    dispatch(getLoggedUserData());
   }, [dispatch]);
   const handleClose = () => {
     setAnchorEl(null);
@@ -50,9 +58,19 @@ export const ProjectsItemDropBox = () => {
         ) : (
           <></>
         )}
-        <Link href={ROUTES.ADD_NEW_PROJECT}>
-          <MenuItem onClick={handleClose}>{STRINGS.ADD_NEW_PROJECT}</MenuItem>
-        </Link>
+        {(user.role === USER_TYPE.PM ||
+          user.role === USER_TYPE.BUSSINESS_OWNER) && (
+          <Link href={ROUTES.ADD_NEW_PROJECT}>
+            <MenuItem onClick={handleClose}>{STRINGS.ADD_NEW_PROJECT}</MenuItem>
+          </Link>
+        )}
+        {user.role !== USER_TYPE.PM &&
+          user.role !== USER_TYPE.BUSSINESS_OWNER &&
+          projects.length === 0 && (
+            <MenuItem onClick={handleClose}>
+              {STRINGS.NO_PROJECTS_FOR_YOU}
+            </MenuItem>
+          )}
       </Menu>
     </div>
   );

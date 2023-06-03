@@ -10,17 +10,12 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "tss-react/mui";
 import { STRINGS } from "@/utils/strings";
 import { Colors } from "@/utils/colors";
-import GoogleIcon from "@mui/icons-material/Google";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/utils/routes";
 import { useAppDispatch, useAppSelector } from "@/core/store";
-import { auth, googleProvider } from "@/core/firebaseApp";
-import { signInWithPopup } from "firebase/auth";
-import { sendUserData } from "@/services/sendUserData";
 import { logIn } from "@/redux/loginSlice/slice";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
-import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
 
 export const LoginForm = () => {
   const { classes } = useStyles();
@@ -71,32 +66,6 @@ export const LoginForm = () => {
     router.push(ROUTES.FORGOT_PASSWORD);
   };
 
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, googleProvider)
-      .then((result) => {
-        const user = result.user;
-        sessionStorage.setItem("authToken", result.user.uid);
-        sessionStorage.setItem("email", result.user.email ?? "");
-        const userData = {
-          email: user.email || "",
-          firstName: user.displayName?.split(" ")[0] || "",
-          lastName: user.displayName?.split(" ")[1] || "",
-          uid: user.uid,
-        };
-        sendUserData(user.uid, {
-          firstName: userData.firstName ?? "",
-          lastName: userData.lastName ?? "",
-          email: userData.email,
-          password: "",
-        });
-        dispatch(getLoggedUserData());
-        router.push(ROUTES.HOME);
-      })
-      .catch((error) => {
-        throw new Error(error as string);
-      });
-  };
-
   return (
     <Box className={classes.box}>
       <Box className={classes.info}>
@@ -145,7 +114,7 @@ export const LoginForm = () => {
         <Button onClick={submitLogin} className={classes.googleLoginButton}>
           {STRINGS.LOGIN}
         </Button>
-        <div className={classes.orBox}>
+        {/* <div className={classes.orBox}>
           <div className={classes.line} />
           <Typography>{STRINGS.OR}</Typography>
           <div className={classes.line} />
@@ -156,7 +125,7 @@ export const LoginForm = () => {
         >
           <GoogleIcon />
           {STRINGS.LOGIN_GOOGLE}
-        </Button>
+        </Button> */}
         <Typography className={classes.dontHaveAccount}>
           {STRINGS.DONT_HAVE_ACCOUNT}{" "}
           <span className={classes.signUP} onClick={signUpHandler}>

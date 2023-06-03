@@ -1,32 +1,89 @@
-import { Navbar } from "@/components/Navbar/navbar";
-import { STRINGS } from "@/utils/strings";
 import {
+  Alert,
   Box,
-  Button,
   FormControl,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { USER_TYPE } from "../../utils/userType";
 import { makeStyles } from "tss-react/mui";
 import { Colors } from "@/utils/colors";
+import { STRINGS } from "@/utils/strings";
 
-export const AddNewEmployee = () => {
+interface IAddNewEmployeeProps {
+  setRole: React.Dispatch<SetStateAction<string>>;
+  setEmail: React.Dispatch<SetStateAction<string>>;
+  setLastName: React.Dispatch<SetStateAction<string>>;
+  setFirstName: React.Dispatch<SetStateAction<string>>;
+  setNumberOfFreeDays: React.Dispatch<SetStateAction<number>>;
+  setError: React.Dispatch<SetStateAction<boolean>>;
+  setSuccess: React.Dispatch<SetStateAction<boolean>>;
+  role: string;
+  error: boolean;
+  success: boolean;
+}
+export const AddNewEmployee = (props: IAddNewEmployeeProps) => {
+  const {
+    setRole,
+    setEmail,
+    setLastName,
+    setFirstName,
+    setNumberOfFreeDays,
+    setError,
+    setSuccess,
+    role,
+    error,
+    success,
+  } = props;
   const { classes } = useStyles();
 
-  const [userType, setUserType] = useState<string>("");
-  const handleChangeUserType = (event: SelectChangeEvent) => {
-    setUserType(event.target.value as string);
+  const handleClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setError(false);
   };
+
+  const handleCloseSuccess = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSuccess(false);
+  };
+
+  const handleChangeUserType = (event: SelectChangeEvent) => {
+    setRole(event.target.value as string);
+  };
+
   return (
     <Box className={classes.grid}>
       <div className={classes.box}>
+        <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+            {STRINGS.PLEASE_COMPLETE_ALL_FIELDS_TO_ADD_NEW_MEMBER}
+          </Alert>
+        </Snackbar>
+        <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+          <Alert
+            onClose={handleCloseSuccess}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            {STRINGS.REQUEST_SEND_SUCCESSFULLY}
+          </Alert>
+        </Snackbar>
         <Box className={classes.itemsForm}>
           <Typography variant="h3" className={classes.typographyItemStyle}>
             Role :
@@ -34,7 +91,7 @@ export const AddNewEmployee = () => {
           <FormControl>
             <InputLabel />
             <Select
-              value={userType}
+              value={role}
               onChange={handleChangeUserType}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
@@ -56,31 +113,43 @@ export const AddNewEmployee = () => {
           <Typography variant="h3" className={classes.typographyItemStyle}>
             Email :{" "}
           </Typography>
-          <TextField variant="standard" className={classes.textInputStyle} />
+          <TextField
+            variant="standard"
+            className={classes.textInputStyle}
+            onChange={(event) => setEmail(event.target.value)}
+          />
         </Box>
         <Box className={classes.itemsForm}>
           <Typography variant="h3" className={classes.typographyItemStyle}>
             First name :{" "}
           </Typography>
-          <TextField variant="standard" className={classes.textInputStyle} />
+          <TextField
+            variant="standard"
+            className={classes.textInputStyle}
+            onChange={(event) => setFirstName(event.target.value)}
+          />
         </Box>
         <Box className={classes.itemsForm}>
           <Typography variant="h3" className={classes.typographyItemStyle}>
             Last name :{" "}
           </Typography>
-          <TextField variant="standard" className={classes.textInputStyle} />
-        </Box>
-        <Box className={classes.itemsForm}>
-          <Typography variant="h3" className={classes.typographyItemStyle}>
-            Phone number :{" "}
-          </Typography>
-          <TextField variant="standard" className={classes.textInputStyle} />
+          <TextField
+            variant="standard"
+            className={classes.textInputStyle}
+            onChange={(event) => setLastName(event.target.value)}
+          />
         </Box>
         <Box className={classes.itemsForm}>
           <Typography variant="h3" className={classes.typographyItemStyle}>
             Number of free days :
           </Typography>
-          <TextField variant="standard" className={classes.textInputStyle} />
+          <TextField
+            variant="standard"
+            className={classes.textInputStyle}
+            onChange={(event) =>
+              setNumberOfFreeDays(Number(event.target.value))
+            }
+          />
         </Box>
       </div>
     </Box>

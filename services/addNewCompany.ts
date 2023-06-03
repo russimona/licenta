@@ -9,7 +9,7 @@ export const addNewCompany = async (props: INewCompany) => {
 
   const uid = sessionStorage.getItem("authToken") ?? "";
   const logggedUserRef = doc(db, "Users", uid);
-
+  sessionStorage.setItem("companyId", result.id);
   await updateDoc(logggedUserRef, {
     companyId: result.id,
   });
