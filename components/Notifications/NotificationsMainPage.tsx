@@ -45,8 +45,8 @@ export const NotificationsMainPage = () => {
       })
     );
     dispatch(getDaysOffNotification());
-    dispatch(getAllUserData());
-    dispatch(getDaysOff());
+    // dispatch(getAllUserData());
+    // dispatch(getDaysOff());
   };
 
   const declineHandler = (item: TEventNotification, email: string) => {
@@ -58,9 +58,9 @@ export const NotificationsMainPage = () => {
       })
     );
     dispatch(getDaysOffNotification());
-    dispatch(getAllUserData());
-    dispatch(getDaysOff());
-    dispatch(getLoggedUserData());
+    // dispatch(getAllUserData());
+    // dispatch(getDaysOff());
+    // dispatch(getLoggedUserData());
   };
 
   return (
