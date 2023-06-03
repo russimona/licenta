@@ -35,8 +35,6 @@ export const getDaysOff = createAsyncThunk("getdaysOffData", async () => {
       });
     });
 
-    console.log(events);
-
     return events;
   } catch (e) {
     throw new Error(e as string);

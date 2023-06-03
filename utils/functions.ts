@@ -1,5 +1,10 @@
 import { useAppSelector } from "@/core/store";
-import { IColumnsDrag, ITaskStatus, TEvent } from "@/utils/interface";
+import {
+  IColumnsDrag,
+  ILoggedUserData,
+  ITaskStatus,
+  TEvent,
+} from "@/utils/interface";
 import { DropResult } from "react-beautiful-dnd";
 
 export const calculateWorkingDays = (
@@ -72,19 +77,54 @@ export const remainingDaysOff = (
   return takenDaysOff;
 };
 
+export const numberTasks = (taskStatus: ITaskStatus[]) => {
+  let higherId = 0 as number;
+
+  taskStatus.forEach((status) => {
+    status.items.forEach((ticket) => {
+      if (Number(ticket.id) > higherId) higherId = Number(ticket.id);
+    });
+  });
+
+  return higherId;
+};
+
 export const onDragEnd = (
   result: DropResult,
   columns: IColumnsDrag[],
-  setColumns: React.Dispatch<React.SetStateAction<IColumnsDrag[]>>
+  setColumns: React.Dispatch<React.SetStateAction<IColumnsDrag[]>>,
+  allUsers: ILoggedUserData[]
 ) => {
   if (!result.destination) return;
   const { source, destination } = result;
   if (source.droppableId !== destination.droppableId) {
     const sourceColumn = columns[parseInt(source.droppableId)];
     const destColumn = columns[parseInt(destination.droppableId)];
+
     const sourceItems = [...sourceColumn.items];
     const destItems = [...destColumn.items];
     const [removed] = sourceItems.splice(source.index, 1);
+
+    const from = sourceColumn.name;
+    const to = destColumn.name;
+    const userAssigned = allUsers.filter(
+      (user) => user.uid === removed.asigne
+    )[0];
+    const uid = sessionStorage.getItem("authToken") ?? "";
+    const email = sessionStorage.getItem("email") ?? "";
+    if (uid !== removed.asigne) {
+      fetch(
+        `https://us-central1-workease-2cf93.cloudfunctions.net/sendMail?subject=Updated ticket&text=Ticket number ${removed.id} have been moved from ${from} to ${to} by ${email}.&to=${userAssigned.email}`,
+        {
+          method: "GET",
+          headers: {
+            "X-RapidAPI-Key": "your-rapid-key",
+            "X-RapidAPI-Host": "famous-quotes4.p.rapidapi.com",
+          },
+        }
+      );
+    }
+
     destItems.splice(destination.index, 0, removed);
     setColumns({
       ...columns,
@@ -110,16 +150,4 @@ export const onDragEnd = (
       },
     });
   }
-};
-
-export const numberTasks = (taskStatus: ITaskStatus[]) => {
-  let higherId = 0 as number;
-
-  taskStatus.forEach((status) => {
-    status.items.forEach((ticket) => {
-      if (Number(ticket.id) > higherId) higherId = Number(ticket.id);
-    });
-  });
-
-  return higherId;
 };

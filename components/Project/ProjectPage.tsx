@@ -21,6 +21,7 @@ import { ModalAddMember } from "../Modal/ModalAddNewMemberProj/ModalAddMemberPro
 import PersonRemoveOutlinedIcon from "@mui/icons-material/PersonRemoveOutlined";
 import { ModalDeleteMember } from "../Modal/ModalDeleteMemberProj copy/ModalDeleteMemberProj";
 import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
+import { getAllUserData } from "@/redux/getAllUsers/slice";
 
 const ProjectPage = () => {
   const dispatch = useAppDispatch();
@@ -34,6 +35,7 @@ const ProjectPage = () => {
   const [addMembersOpen, setAddMembersOpen] = useState<boolean>(false);
   const [removeMembersOpen, setRemoveMembersOpen] = useState<boolean>(false);
   const projectStatus = useAppSelector((state) => state.projects.status);
+  const allUsers = useAppSelector((state) => state.allUsers.user);
   const [taskStatus, setTaskStatus] = useState<ITaskStatus[]>([]);
   useEffect(() => {
     if (project) {
@@ -49,6 +51,7 @@ const ProjectPage = () => {
 
   useEffect(() => {
     dispatch(getAllProjectData());
+    dispatch(getAllUserData());
   }, [dispatch]);
 
   useEffect(() => {
@@ -132,7 +135,7 @@ const ProjectPage = () => {
         <div className={classes.box}>
           <DragDropContext
             onDragEnd={(result) => {
-              onDragEnd(result, columns, setColumns);
+              onDragEnd(result, columns, setColumns, allUsers);
             }}
           >
             {Object.entries(columns).map(([columnId, column], index) => {

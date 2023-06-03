@@ -64,7 +64,6 @@ export const SelectFreeDaysDropdown = (props: ISelectFreeDaysDropdownProps) => {
       );
 
       const hrEmail = hr.map((item) => item.email);
-      // console.log(hrEmail);
 
       dispatch(
         addFreeDays({

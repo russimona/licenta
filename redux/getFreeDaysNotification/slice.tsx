@@ -37,7 +37,6 @@ export const getDaysOffNotification = createAsyncThunk(
           id: item.id,
         });
       });
-      console.log(result[0].status === FREE_DAYS_STATUS.PENDING);
 
       return events;
     } catch (e) {

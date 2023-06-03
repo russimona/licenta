@@ -21,8 +21,6 @@ export const getInvitedUserData = createAsyncThunk(
   "getInvitedUserData",
   async (props: { uid: string }) => {
     try {
-      console.log(props.uid);
-
       const result = getInvitedUserDataService(props.uid);
 
       return result;
