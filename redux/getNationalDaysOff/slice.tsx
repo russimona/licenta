@@ -24,6 +24,7 @@ export const getNationalDaysOff = createAsyncThunk(
           endDate: dayjs(item.endDate),
           eventBgColor: item.eventBgColor,
           eventTextColor: item.eventTextColor,
+          status: item.status,
         });
       });
       return events;

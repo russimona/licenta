@@ -8,15 +8,7 @@ import { TEvent } from "@/utils/interface";
 const initialState = {
   status: "idle",
   error: "",
-  event: [
-    {
-      startDate: dayjs(new Date()),
-      endDate: dayjs(new Date()),
-      eventName: "",
-      eventBgColor: "",
-      eventTextColor: "",
-    },
-  ],
+  event: [] as TEvent[],
 };
 
 export const getNationalDaysOff = createAsyncThunk(
@@ -31,6 +23,7 @@ export const getNationalDaysOff = createAsyncThunk(
           endDate: dayjs(item.endDate),
           eventBgColor: item.eventBgColor,
           eventTextColor: item.eventTextColor,
+          status: item.status,
         };
       });
 
@@ -58,6 +51,7 @@ const nationalDaysOffData = createSlice({
           eventName: item.eventName,
           eventBgColor: item.eventBgColor,
           eventTextColor: item.eventTextColor,
+          status: item.status,
         });
       });
       state.event = result;

@@ -102,6 +102,18 @@ export type TEvent = {
   eventName: string;
   eventBgColor: string;
   eventTextColor: string;
+  status: string;
+};
+
+export type TEventNotification = {
+  startDate: Dayjs;
+  endDate: Dayjs;
+  eventName: string;
+  eventBgColor: string;
+  eventTextColor: string;
+  status: string;
+  uid: string;
+  id: string;
 };
 
 export interface INewCompany {

@@ -7,7 +7,10 @@ import { FreeDaysCard } from "@/components/free-days/FreeDaysCard";
 import { ColorsMap } from "@/components/free-days/ColorsMap";
 import { SelectFreeDaysDropdown } from "@/components/free-days/SelectFreeDaysDropdown";
 import dayjs, { Dayjs } from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppDispatch } from "@/core/store";
+import { getNationalDaysOff } from "@/redux/getNationalDaysOff/slice";
+import { getDaysOff } from "@/redux/getFreeDays/slice";
 
 export default function Home() {
   const { classes } = useStyles();
@@ -15,6 +18,12 @@ export default function Home() {
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs(""));
   const [clearSelection, setClearSelection] = useState<boolean>(false);
   const [sendFreeDaysReq, setSendFreeDaysReq] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getNationalDaysOff());
+    dispatch(getDaysOff());
+  }, [dispatch]);
 
   return (
     <ProtectedRoute>

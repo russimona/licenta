@@ -7,6 +7,7 @@ import { getNationalDaysOff } from "@/redux/getNationalDaysOff/slice";
 import { ICalendarProps } from "@/utils/interface";
 import { getDaysOff } from "@/redux/getFreeDays/slice";
 import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
+import { FREE_DAYS_STATUS } from "@/utils/freeDaysStatus";
 
 export const Calendar = (props: ICalendarProps) => {
   const stateSendReqDaysOff = useAppSelector(
@@ -42,17 +43,30 @@ export const Calendar = (props: ICalendarProps) => {
   }, [daysOff, daysOffStatus, nationalDaysOff]);
 
   useEffect(() => {
+    const eventFinal = events.map((event) => {
+      return {
+        startDate: event.startDate,
+        endDate: event.endDate,
+        eventName: event.eventName,
+        eventBgColor: event.eventBgColor,
+        eventTextColor: "white",
+        status: event.status,
+      };
+    });
+
     if (props.startDate?.date() && props.endDate?.date()) {
       const newEvents = [
-        ...events,
+        ...eventFinal,
         {
           startDate: props.startDate,
           endDate: props.endDate?.date() ? props.endDate : props.startDate,
           eventName: "Selected free days",
           eventBgColor: Colors.lavanderSelection,
           eventTextColor: "white",
+          status: FREE_DAYS_STATUS.APPROVED,
         },
       ];
+
       setEvents(newEvents);
       sessionStorage.setItem("startDate", props.startDate.toString());
       sessionStorage.setItem("endDate", props.endDate.toString());

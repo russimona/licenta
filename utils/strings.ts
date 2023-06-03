@@ -100,4 +100,7 @@ export const STRINGS = {
   JOIN_US_BY_CLICKING:
     "Join us by clicking the button bellow, but first choose a password for your account.",
   NO_PROJECTS_FOR_YOU: "No projects for you",
+  NOTIFICATIONS: "Notifications",
+  APPROVE: "Approve",
+  DECLINE: "Decline",
 };

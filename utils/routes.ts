@@ -10,4 +10,5 @@ export const ROUTES = {
   PROJECT: "/project",
   ADD_NEW_PROJECT: "/project/new-project",
   ALL_MEMBERS: "/all-members",
+  NOTIFICATIONS: "/team/notifications",
 };

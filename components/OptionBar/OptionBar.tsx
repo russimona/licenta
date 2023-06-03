@@ -35,8 +35,6 @@ export const OptionBar = () => {
     dispatch(getLoggedUserData());
   }, [dispatch]);
 
-  console.log(user);
-
   return (
     <Box className={classes.box}>
       <Link href={ROUTES.PROFILE}>

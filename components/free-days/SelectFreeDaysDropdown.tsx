@@ -3,7 +3,7 @@ import { addFreeDays } from "@/redux/addFreeDays/slice";
 import { Colors } from "@/utils/colors";
 import { DAYS_OFF } from "@/utils/daysOffType";
 import { calculateWorkingDays, remainingDaysOff } from "@/utils/functions";
-import { ISelectFreeDaysDropdownProps } from "@/utils/interface";
+import { IAddFreeDays, ISelectFreeDaysDropdownProps } from "@/utils/interface";
 import { STRINGS } from "@/utils/strings";
 import {
   Button,
@@ -16,6 +16,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 import { useState } from "react";
 import { makeStyles } from "tss-react/mui";
+import { USER_TYPE } from "@/utils/userType";
 
 export const SelectFreeDaysDropdown = (props: ISelectFreeDaysDropdownProps) => {
   const { classes } = useStyles();
@@ -27,6 +28,9 @@ export const SelectFreeDaysDropdown = (props: ISelectFreeDaysDropdownProps) => {
   const nationalDaysOff = useAppSelector(
     (state) => state.nationalDaysOff.event
   );
+  const hr = useAppSelector((state) => state.allUsers.user).filter((item) => {
+    if (item.role === USER_TYPE.HR) return item.email;
+  });
 
   const userDaysOff = useAppSelector((state) => state.daysOff.event);
 
@@ -58,14 +62,21 @@ export const SelectFreeDaysDropdown = (props: ISelectFreeDaysDropdownProps) => {
         new Date(endDate),
         nationalDaysOff
       );
+
+      const hrEmail = hr.map((item) => item.email);
+      // console.log(hrEmail);
+
       dispatch(
         addFreeDays({
-          startDate: startDate,
-          endDate: endDate,
-          eventName: freeDaysType,
-          uid: sessionStorage.getItem("authToken") ?? "",
-          eventBgColor: eventBgColor,
-          eventTextColor: "white",
+          freeDayReq: {
+            startDate: startDate,
+            endDate: endDate,
+            eventName: freeDaysType,
+            uid: sessionStorage.getItem("authToken") ?? "",
+            eventBgColor: eventBgColor,
+            eventTextColor: "white",
+          } as IAddFreeDays,
+          hrEmail,
         })
       );
     }

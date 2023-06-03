@@ -12,9 +12,9 @@ const initialState = {
 
 export const addFreeDays = createAsyncThunk(
   "addFreeDays ",
-  async (props: IAddFreeDays) => {
+  async (props: { freeDayReq: IAddFreeDays; hrEmail: string[] }) => {
     try {
-      addFreeDaysService(props);
+      addFreeDaysService({ hrEmail: props.hrEmail, newReq: props.freeDayReq });
     } catch (e) {
       throw new Error(e as string);
     }

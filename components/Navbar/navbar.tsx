@@ -1,5 +1,8 @@
+import { useAppDispatch, useAppSelector } from "@/core/store";
+import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
+import { USER_TYPE } from "@/utils/userType";
 import { Avatar, Box } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "tss-react/mui";
 
 import { ProfileItemDropBox } from "./DropBoxProfile";
@@ -8,12 +11,17 @@ import { TeamItemDropBox } from "./DropBoxTeam";
 
 export const Navbar = () => {
   const { classes } = useStyles();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.loggedUser.user);
+  useEffect(() => {
+    dispatch(getLoggedUserData());
+  }, [dispatch]);
 
   return (
     <div className={classes.box}>
       <Avatar src="../weLogo.png" className={classes.avatar} />
       <Box className={classes.dropbox}>
-        <ProjectsItemDropBox />
+        {user.role !== USER_TYPE.HR && <ProjectsItemDropBox />}
         <TeamItemDropBox />
         <ProfileItemDropBox />
       </Box>

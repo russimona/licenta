@@ -20,7 +20,8 @@ export const ProjectsItemDropBox = () => {
   const projects = useAppSelector((state) => state.projects.project).filter(
     (project) =>
       project.asigne.includes(user.email) ||
-      project.projectLeader.includes(user.email)
+      project.projectLeader.includes(user.email) ||
+      user.role === USER_TYPE.BUSSINESS_OWNER
   );
   const projectsStatus = useAppSelector((state) => state.projects.status);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

@@ -15,8 +15,6 @@ const getInvitedUserDataService = async (uid: string) => {
 
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    console.log(docSnap.data());
-
     return {
       ...docSnap.data(),
       uid: docSnap.id,

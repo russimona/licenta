@@ -4,6 +4,8 @@ import { STRINGS } from "@/utils/strings";
 import dayjs from "dayjs";
 import { TEvent } from "@/utils/interface";
 import getDaysOffService from "@/services/getDaysOff";
+import { FREE_DAYS_STATUS } from "@/utils/freeDaysStatus";
+import { Colors } from "@/utils/colors";
 
 const initialState = {
   status: "idle",
@@ -15,15 +17,25 @@ export const getDaysOff = createAsyncThunk("getdaysOffData", async () => {
   try {
     const result = await getDaysOffService();
     const events: TEvent[] = [];
+
     result.map((item) => {
       events.push({
         eventName: item.eventName,
         startDate: dayjs(item.startDate),
         endDate: dayjs(item.endDate),
-        eventBgColor: item.eventBgColor,
-        eventTextColor: item.eventTextColor,
+        eventBgColor:
+          item.status === FREE_DAYS_STATUS.APPROVED
+            ? item.eventBgColor
+            : Colors.gray,
+        eventTextColor:
+          item.status === FREE_DAYS_STATUS.DENIED
+            ? Colors.black
+            : item.eventTextColor,
+        status: item.status,
       });
     });
+
+    console.log(events);
 
     return events;
   } catch (e) {

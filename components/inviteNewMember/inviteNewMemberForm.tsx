@@ -25,7 +25,6 @@ export const InviteNewMemberForm = () => {
   useEffect(() => {
     dispatch(logInAnonymously());
     if (inviteId?.toString()) {
-      console.log(inviteId.toString());
       dispatch(getInvitedUserData({ uid: inviteId?.toString() }));
     }
   }, [dispatch, inviteId]);

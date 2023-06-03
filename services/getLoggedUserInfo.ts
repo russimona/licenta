@@ -6,8 +6,6 @@ const getUserData = async (uid: string) => {
   const docRef = doc(db, "Users", uid ?? "");
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    console.log(docSnap.data());
-
     return docSnap.data();
   } else {
     throw STRINGS.DOCUMENT_NOT_FOUND;
