@@ -5,8 +5,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { TEvent } from "@/utils/interface";
 import { FREE_DAYS_STATUS } from "@/utils/freeDaysStatus";
 
-const getDaysOff = async () => {
-  const uid = sessionStorage.getItem("authToken") ?? "";
+const getDaysOff = async (uid: string) => {
   const q = query(collection(db, "FreeDays"), where("uid", "==", uid));
   const result: TEvent[] = [];
   const querySnapshot = await getDocs(q);

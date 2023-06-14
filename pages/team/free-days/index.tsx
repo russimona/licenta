@@ -21,8 +21,9 @@ export default function Home() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    const uid = sessionStorage?.getItem("authToken") ?? "";
     dispatch(getNationalDaysOff());
-    dispatch(getDaysOff());
+    dispatch(getDaysOff(uid));
   }, [dispatch]);
 
   return (

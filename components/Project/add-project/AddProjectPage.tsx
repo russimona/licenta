@@ -65,6 +65,7 @@ const AddProjectPage = () => {
           projectDescription,
         })
       ).then(() => {
+        alert("Project added succesfully");
         dispatch(getAllProjectData());
         setAsigne([]);
         setCurrentTaskStatus("");
@@ -103,6 +104,7 @@ const AddProjectPage = () => {
   return (
     <div className={classes.background}>
       <Navbar />
+
       <div style={{ paddingLeft: "50px", paddingRight: "50px" }}>
         <div className={classes.header}>
           <Typography variant="h1" className={classes.title}>

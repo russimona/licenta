@@ -47,6 +47,10 @@ export interface ICalendarProps {
   endDate: Dayjs | null;
 }
 
+export interface ICalendarAllProps {
+  userId: string;
+}
+
 export interface IAddFreeDays {
   startDate: string;
   endDate: string;

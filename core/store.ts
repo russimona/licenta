@@ -2,6 +2,7 @@ import { addFreeDaysReducer } from "@/redux/addFreeDays/slice";
 import { addNewProjectReducer } from "@/redux/addNewProject/slice";
 import { allProjectDataReducer } from "@/redux/getAllProjects/slice";
 import { allUserDataReducer } from "@/redux/getAllUsers/slice";
+import { companyDataReducer } from "@/redux/getCompany/slice";
 import { daysOffReducer } from "@/redux/getFreeDays/slice";
 import { daysOffNotificationDataReducer } from "@/redux/getFreeDaysNotification/slice";
 import { InvitedUserDataReducer } from "@/redux/getInvitedUser/slice";
@@ -25,6 +26,7 @@ export const store = configureStore({
     projects: allProjectDataReducer,
     invitedUser: InvitedUserDataReducer,
     daysOffNotification: daysOffNotificationDataReducer,
+    companyData: companyDataReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
   middleware: (getDefaultMiddleware) =>

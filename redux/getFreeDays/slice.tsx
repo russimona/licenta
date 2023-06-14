@@ -13,33 +13,36 @@ const initialState = {
   event: [] as TEvent[],
 };
 
-export const getDaysOff = createAsyncThunk("getdaysOffData", async () => {
-  try {
-    const result = await getDaysOffService();
-    const events: TEvent[] = [];
+export const getDaysOff = createAsyncThunk(
+  "getdaysOffData",
+  async (uid: string) => {
+    try {
+      const result = await getDaysOffService(uid);
+      const events: TEvent[] = [];
 
-    result.map((item) => {
-      events.push({
-        eventName: item.eventName,
-        startDate: dayjs(item.startDate),
-        endDate: dayjs(item.endDate),
-        eventBgColor:
-          item.status === FREE_DAYS_STATUS.APPROVED
-            ? item.eventBgColor
-            : Colors.gray,
-        eventTextColor:
-          item.status === FREE_DAYS_STATUS.DENIED
-            ? Colors.black
-            : item.eventTextColor,
-        status: item.status,
+      result.map((item) => {
+        events.push({
+          eventName: item.eventName,
+          startDate: dayjs(item.startDate),
+          endDate: dayjs(item.endDate),
+          eventBgColor:
+            item.status === FREE_DAYS_STATUS.APPROVED
+              ? item.eventBgColor
+              : Colors.gray,
+          eventTextColor:
+            item.status === FREE_DAYS_STATUS.DENIED
+              ? Colors.black
+              : item.eventTextColor,
+          status: item.status,
+        });
       });
-    });
 
-    return events;
-  } catch (e) {
-    throw new Error(e as string);
+      return events;
+    } catch (e) {
+      throw new Error(e as string);
+    }
   }
-});
+);
 
 const daysOffData = createSlice({
   name: "daysOffData",

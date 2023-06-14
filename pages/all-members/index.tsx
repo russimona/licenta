@@ -4,8 +4,7 @@ import { Button, Typography } from "@mui/material";
 import React from "react";
 import { OptionBar } from "@/components/OptionBar/OptionBar";
 import { makeStyles } from "tss-react/mui";
-import AddNewEmployee from "@/components/Employee/AddNewEmployee";
-import { AllMembersTable } from "@/components/AllMembersTable";
+import { AllMembersTable } from "@/components/all-members-profile/AllMembersTable";
 
 function App() {
   const { classes } = useStyles();

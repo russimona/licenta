@@ -1,7 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/core/store";
 import { getLoggedUserData } from "@/redux/getLoggedUser/slice";
+import { ROUTES } from "@/utils/routes";
 import { USER_TYPE } from "@/utils/userType";
-import { Avatar, Box } from "@mui/material";
+import { Avatar, Box, Link } from "@mui/material";
 import React, { useEffect } from "react";
 import { makeStyles } from "tss-react/mui";
 
@@ -19,7 +20,9 @@ export const Navbar = () => {
 
   return (
     <div className={classes.box}>
-      <Avatar src="../weLogo.png" className={classes.avatar} />
+      <Link href={ROUTES.HOME}>
+        <Avatar src="../weLogo.png" className={classes.avatar} />
+      </Link>
       <Box className={classes.dropbox}>
         {user.role !== USER_TYPE.HR && <ProjectsItemDropBox />}
         <TeamItemDropBox />
@@ -56,5 +59,6 @@ const useStyles = makeStyles()((theme) => ({
     height: "70px",
     width: "110px",
     marginLeft: "10px",
+    cursor: "pointer",
   },
 }));

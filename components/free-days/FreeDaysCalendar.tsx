@@ -10,6 +10,7 @@ import { ReduxThunkStatuses } from "@/utils/reduxThunkStatuses";
 import { FREE_DAYS_STATUS } from "@/utils/freeDaysStatus";
 
 export const Calendar = (props: ICalendarProps) => {
+  const uid = sessionStorage.getItem("authToken") ?? "";
   const stateSendReqDaysOff = useAppSelector(
     (state) => state.requestDaysOff.status
   );
@@ -26,14 +27,14 @@ export const Calendar = (props: ICalendarProps) => {
 
   useEffect(() => {
     dispatch(getNationalDaysOff());
-    dispatch(getDaysOff());
-  }, [dispatch]);
+    dispatch(getDaysOff(uid));
+  }, [dispatch, uid]);
 
   useEffect(() => {
     if (stateSendReqDaysOff === ReduxThunkStatuses.FULFILLED) {
-      dispatch(getDaysOff());
+      dispatch(getDaysOff(uid));
     }
-  }, [dispatch, stateSendReqDaysOff]);
+  }, [dispatch, stateSendReqDaysOff, uid]);
 
   useEffect(() => {
     if (daysOff.length) {

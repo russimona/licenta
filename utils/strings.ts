@@ -103,4 +103,8 @@ export const STRINGS = {
   NOTIFICATIONS: "Notifications",
   APPROVE: "Approve",
   DECLINE: "Decline",
+  WE_RE_DELOGHTED_TO_HAVE_YOU_HERE:
+    "We're delighted to have you here and thrilled that you've chosen to explore our platform. Get ready to embark on an exciting journey filled with incredible features and endless possibilities!",
+  OUR_WEB_IS_DESIGNED_TO_MAKE:
+    "Our Web App is designed to make your experience seamless and enjoyable. From intuitive navigation to powerful functionalities, we've crafted this platform with your needs in mind.",
 };
