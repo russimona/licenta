@@ -102,10 +102,6 @@ export const AddNewEmployee = (props: IAddNewEmployeeProps) => {
               </MenuItem>
               <MenuItem value={USER_TYPE.HR}>{USER_TYPE.HR}</MenuItem>
               <MenuItem value={USER_TYPE.PM}>{USER_TYPE.PM}</MenuItem>
-              <MenuItem value={USER_TYPE.DEVELOPER}>
-                {USER_TYPE.DEVELOPER}
-              </MenuItem>
-              <MenuItem value={USER_TYPE.QA}>{USER_TYPE.QA}</MenuItem>
             </Select>
           </FormControl>
         </Box>

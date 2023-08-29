@@ -13,10 +13,7 @@ import { TEvent, TEventNotification } from "@/utils/interface";
 import { FREE_DAYS_STATUS } from "@/utils/freeDaysStatus";
 
 const getDaysOffNotificationService = async () => {
-  const q = query(
-    collection(db, "FreeDays")
-    // where("status", "==", FREE_DAYS_STATUS.PENDING)
-  );
+  const q = query(collection(db, "FreeDays"));
   const result: TEventNotification[] = [];
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {

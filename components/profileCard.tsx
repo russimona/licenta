@@ -71,21 +71,7 @@ export const ProfileCard = () => {
           }}
         />
       </div>
-      {user.password.length !== 0 && (
-        <div className={classes.item}>
-          <Typography variant="h2">{STRINGS.PASSWORD} :</Typography>
-          <input
-            disabled={!enabledEdit}
-            type={"password"}
-            defaultValue={user.password}
-            className={
-              enabledEdit
-                ? classes.editFieldsEnabled
-                : classes.editFieldsDisabled
-            }
-          />
-        </div>
-      )}
+  
       <div className={classes.buttons}>
         {!enabledEdit ? (
           <div

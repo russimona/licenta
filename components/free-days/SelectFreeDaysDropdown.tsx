@@ -63,6 +63,11 @@ export const SelectFreeDaysDropdown = (props: ISelectFreeDaysDropdownProps) => {
         nationalDaysOff
       );
 
+      if (freeDaysTaken > freeDaysRemaining) {
+        alert("The amount of free days have been depasit");
+        return;
+      }
+
       const hrEmail = hr.map((item) => item.email);
 
       dispatch(

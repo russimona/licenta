@@ -95,8 +95,9 @@ export const NotificationsMainPage = () => {
                   <Box className={classes.boxButons}>
                     <Button
                       className={cx(
-                        classes.buttonDecline,
-                        classes.buttonDecline
+                        classes.buttonApprove,
+                        classes.buttonApprove
+                        
                       )}
                       onClick={() => {
                         const email =
@@ -112,8 +113,8 @@ export const NotificationsMainPage = () => {
                     </Button>
                     <Button
                       className={cx(
-                        classes.buttonApprove,
-                        classes.buttonApprove
+                        classes.buttonDecline,
+                        classes.buttonDecline
                       )}
                       onClick={() => {
                         const email =

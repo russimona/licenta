@@ -6,6 +6,8 @@ import {
   TEvent,
 } from "@/utils/interface";
 import { DropResult } from "react-beautiful-dnd";
+import { DAYS_OFF } from "./daysOffType";
+import { FREE_DAYS_STATUS } from "./freeDaysStatus";
 
 export const calculateWorkingDays = (
   startDate: Date,
@@ -65,13 +67,14 @@ export const remainingDaysOff = (
 ) => {
   let takenDaysOff = 0;
   daysOff.forEach((item) => {
-    takenDaysOff =
-      takenDaysOff +
-      calculateWorkingDays(
-        item.startDate.toDate(),
-        item.endDate.toDate(),
-        nationalDaysOff
-      );
+    if (item.eventName === DAYS_OFF.VACANTION)
+      takenDaysOff =
+        takenDaysOff +
+        calculateWorkingDays(
+          item.startDate.toDate(),
+          item.endDate.toDate(),
+          nationalDaysOff
+        );
   });
 
   return takenDaysOff;
